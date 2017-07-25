@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_n_solid_white"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/height_60"
+            android:layout_marginLeft="@dimen/height_60"
+            android:layout_marginBottom="@dimen/margin_35"
+            android:layout_marginTop="@dimen/margin_35">
+
+            <include layout="@layout/view_line_d1" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/wexin"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/wexin"/>
+                <TextView
+                    android:text="微信好友"
+                    style="@style/share_dialogtext" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/wexinfriends"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/wexinfriends"/>
+                <TextView
+                    style="@style/share_dialogtext"
+                    android:text="朋友圈" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/qqfriends"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/qqfriends"/>
+                <TextView
+                    style="@style/share_dialogtext"
+                    android:text="QQ好友" />
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/height_60"
+            android:layout_marginLeft="@dimen/height_60"
+            android:layout_marginTop="@dimen/margin_35">
+
+            <include layout="@layout/view_line_d1" />
+        </RelativeLayout>
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="@dimen/margin_20"
+            android:background="@drawable/shape_n_solid_black"
+            android:text="@string/main_cancel" />
+
+</LinearLayout>

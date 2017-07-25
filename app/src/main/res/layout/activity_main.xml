@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    tools:context=".Activity.MainActivity">
+    <TextView
+        android:id="@+id/text_log_quxiao"
+        android:text="取消"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/topback_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text_phone"
+        android:text="手机号登录"
+        android:textColor="@color/black_33"
+        android:layout_marginTop="100dp"
+        android:textSize="22sp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:paddingLeft="20dp"
+        android:id="@+id/linear_address"
+        android:layout_marginTop="185dp"
+        android:layout_below="@id/image_logo"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_guojia"
+            android:text="国家/地区"
+            android:layout_below="@id/image_logo"
+            android:textSize="20sp"
+            android:textColor="@color/black_66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_china"
+            android:text="中国"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/black_66"
+            android:layout_toRightOf="@id/text_guojia"
+            android:layout_alignRight="@id/text_guojia"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/back"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
+        <TextView
+            android:id="@+id/text_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:paddingLeft="20dp"
+        android:id="@+id/linear_phone"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/linear_address"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="+86"
+            android:textSize="20sp"
+            android:textColor="@color/black_66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:paddingLeft="20dp"
+            android:digits="@string/number"
+            android:id="@+id/edit_callphone_main"
+            android:background="@null"
+            android:layout_below="@id/linear_address"
+            android:hint="输入手机号码"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+    <View
+        android:layout_below="@id/linear_phone"
+        android:background="#E6E6E6"
+        android:layout_marginLeft="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/text_qq_log"
+        android:text="QQ登录"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:textColor="#808EAE"
+        android:layout_below="@id/linear_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text_weixin_log"
+        android:text="微信登录"
+        android:textColor="#808EAE"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/linear_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text_next"
+        android:layout_below="@+id/text_qq_log"
+        android:background="@drawable/shape_circle_orange_5"
+        android:layout_margin="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20"
+        android:gravity="center"
+        android:layout_height="45dp" />
+</RelativeLayout>
+

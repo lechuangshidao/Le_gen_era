@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.Lechuang.app.Fragment.Fragment_main_wode">》
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <View
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/background_EDF2F7" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_wode_geren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/image_wode_geren" />
+
+            <TextView
+                android:id="@+id/text_wode_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_wode_geren"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="阿喵"
+                android:textColor="@color/black_66"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/view_background"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@id/text_wode_name"
+                android:layout_marginTop="10dp"
+                android:background="@color/background_EDF2F7" />
+
+            <LinearLayout
+                android:layout_width="118.3dp"
+                android:layout_height="84.5dp"
+                android:layout_alignTop="@+id/linearLayout"
+                android:layout_marginLeft="17dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_guanzhu_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="00"
+                    android:textSize="@dimen/textsize_22" />
+
+                <TextView
+                    android:id="@+id/text_guanzhu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:text="关注"
+                    android:textSize="@dimen/textsize_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_fensi"
+                android:layout_width="118.3dp"
+                android:layout_height="84.5dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/view_background"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_fensi_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="000"
+                    android:textSize="@dimen/textsize_22" />
+
+                <TextView
+                    android:id="@+id/text_fensi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="粉丝数"
+                    android:textSize="@dimen/textsize_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="118.3dp"
+                android:layout_height="84.5dp"
+                android:gravity="center"
+                android:layout_below="@id/view_background"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_jifen_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0000"
+                    android:textSize="@dimen/textsize_22" />
+
+                <TextView
+                    android:id="@+id/text_jifen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:text="积分"
+                    android:textSize="@dimen/textsize_16" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_background_two"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@id/linear_fensi"
+                android:background="@color/background_EDF2F7" />
+
+            <www.xcd.com.mylibrary.base.view.BaseMeGridView
+                android:layout_marginTop="@dimen/margin_25"
+                android:id="@+id/gridview"
+                android:layout_below="@id/view_background_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="auto_fit"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
+                android:columnWidth="80dp"
+                android:stretchMode="columnWidth"
+                android:gravity="center">
+            </www.xcd.com.mylibrary.base.view.BaseMeGridView>
+            <View
+                android:id="@+id/view_background_three"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@id/gridview"
+                android:layout_marginTop="10dp"
+                android:background="@color/background_EDF2F7" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

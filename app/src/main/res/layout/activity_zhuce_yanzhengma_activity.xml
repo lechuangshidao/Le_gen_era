@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Recommend_YanZhengMa_Activity">
+    <TextView
+        android:id="@+id/text_back"
+        android:text="返回"
+        android:textSize="20dp"
+        android:textColor="#FFBD11"
+        android:layout_margin="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="请填写短信验证码"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:textSize="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/linear_callphone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_logo"
+        android:layout_marginTop="185dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:id="@+id/text_callphone_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edit_callphone_note"
+            android:textCursorDrawable="@null"
+            android:digits="@string/number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/linear_address"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="输入手机号码"
+            android:textSize="20dp" />
+    </LinearLayout>
+    <View
+        android:layout_below="@id/linear_callphone"
+        android:background="#E6E6E6"
+        android:layout_marginLeft="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <LinearLayout
+        android:id="@+id/linear_yanzhengma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_callphone"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edit_password_note"
+            android:digits="@string/number"
+            android:textCursorDrawable="@null"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/linear_call_log"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:textSize="20dp" />
+    </LinearLayout>
+    <View
+        android:layout_below="@id/linear_yanzhengma"
+        android:background="#E6E6E6"
+        android:layout_marginLeft="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <ImageView
+        android:id="@+id/image_tijiao"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/linear_yanzhengma"
+        android:src="@mipmap/image_tijiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text_mob_time"
+        android:textSize="15dp"
+        android:layout_below="@id/image_tijiao"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="接收短信大约需要60秒"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

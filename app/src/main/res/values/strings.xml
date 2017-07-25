@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Le_gen_era</string>
+    <string name="mGeRen_name">铲屎官</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="number">0123456789</string>
+    <string name="age_Data">0123456789/</string>
+    <string name="next">下一步</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="mypet">我的萌宠</string>
+    <string name="meinfo">个人信息</string>
+    <string name="mypetmessage">我的宠物</string>
+    <string name="petmessage">宠物信息</string>
+    <string name="integraltask">积分任务</string>
+    <string name="startaction">发起</string>
+    <string name="locationmanage">地址管理</string>
+    <string name="chang_head">修改头像</string>
+    <string name="pet_head">宠物头像</string>
+    <string name="ok">完成</string>
+    <string name="interval">1</string>
+    <string name="defaultInteval">1</string>
+    <string name="alarmInterval">1</string>
+    <string name="needAddress">1</string>
+    <string name="gpsFirst">1</string>
+    <string name="startLocation">1</string>
+    <string name="startAssistantLocation">1</string>
+    <string name="urlLocation">1</string>
+    <string name="errorCodeInfo">1</string>
+    <string name="fenceRadius">1</string>
+    <string name="meter">1</string>
+    <string name="alertIn">1</string>
+    <string name="alertOut">1</string>
+    <string name="addFence">1</string>
+    <string name="getLastLocation">1</string>
+
+    <string name="coordinateConvert">1</string>
+    <string name="checkIsChina">1</string>
+
+    <string name="fence_round">1</string>
+    <string name="fence_polygon">1</string>
+    <string name="fence_keyword">1</string>
+    <string name="fence_nearby">1</string>
+    <string name="fence_district">1</string>
+    <string name="activatesAction">1</string>
+    <string name="alertStated">1</string>
+    <string name="showOption">1</string>
+
+    <string name="battery_saving">1</string>
+    <string name="device_sensors">1</string>
+    <string name="hight_accuracy">1</string>
+    <string name="httpTimeout">1</string>
+    <string name="defaultHttpTimeout">1</string>
+    <string name="location_once">1</string>
+    <string name="onceLastest">1</string>
+    <string name="useSensor">1</string>
+    <string name="cacheAble">1</string>
+
+    <string name="pickerview_cancel">取消</string>
+    <string name="pickerview_submit">确定</string>
+    <string name="pickerview_year">年</string>
+    <string name="pickerview_month">月</string>
+    <string name="pickerview_day">日</string>
+    <string name="pickerview_hours">时</string>
+    <string name="pickerview_minutes">分</string>
+    <string name="pickerview_seconds">秒</string>
+</resources>

@@ -1,0 +1,76 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="petmessageadapter_info">
+        <item name="android:layout_marginTop">@dimen/margin_15</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:textSize">@dimen/textsize_18</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="style_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/enter</item>
+        <item name="android:windowExitAnimation">@anim/exit</item>
+    </style>
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>移除边框
+        <item name="android:windowNoTitle">false</item>去除顶部标题栏
+        <item name="android:windowIsTranslucent">true</item>窗体透明
+        <item name="android:background">@android:color/transparent</item>背景透明
+        <item name="android:windowBackground">@android:color/transparent</item>窗体背景透明
+        <item name="android:windowIsFloating">false</item>窗体是否浮动
+        <item name="android:backgroundDimEnabled">true</item>背景是否昏暗
+        <item name="android:backgroundDimAmount">0.6</item>昏暗数量
+
+    </style>
+
+    <style name="share_dialogtext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="addlocationtext">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/black_33</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/textsize_20</item>
+    </style>
+
+    <style name="addlocationeditedittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/black_33</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:textColorHint">@color/black_99</item>
+        <item name="android:textSize">@dimen/textsize_18</item>
+        <item name="android:background">@drawable/shape_n_solid_white</item>
+    </style>
+    <style name="compilelocationeditedittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/black_33</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:textColorHint">@color/black_99</item>
+        <item name="android:textSize">@dimen/textsize_18</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:background">@drawable/shape_n_solid_white</item>
+    </style>
+</resources>
