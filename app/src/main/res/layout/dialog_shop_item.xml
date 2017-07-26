@@ -27,6 +27,7 @@
         android:layout_height="45dp"
         android:layout_below="@id/text_dialog_name"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_20"
         android:background="@drawable/shape_circle_orange_5"
         android:text="完成"
         android:layout_marginTop="@dimen/margin_20"

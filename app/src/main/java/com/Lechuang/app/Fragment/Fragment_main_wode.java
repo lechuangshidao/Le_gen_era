@@ -14,6 +14,7 @@ import com.Lechuang.app.Activity.MyPetIntegralTaskActivty;
 import com.Lechuang.app.Activity.MyPetLocationManageAvtivity;
 import com.Lechuang.app.R;
 import com.Lechuang.app.adapter.MeGridViewAdapter;
+import com.Lechuang.app.func.MyPetSettingTopBtnFunc;
 
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
@@ -24,7 +25,13 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
     private GridView gridview;
     private int[] ItemTexttop = {R.mipmap.image_geren_pet, R.mipmap.image_wode_pet, R.mipmap.integraltask,R.mipmap.image_wode_pet};
     private int[] ItemTextbottom = {R.string.meinfo, R.string.petmessage, R.string.integraltask,R.string.locationmanage};
-//    private static Class<?> accountrightFuncArray[] = {MyPetAddTopBtnFunc.class};
+    private static Class<?> accountrightFuncArray[] = {MyPetSettingTopBtnFunc.class};
+
+    @Override
+    protected Class<?>[] getTopbarRightFuncArray() {
+        return accountrightFuncArray;
+    }
+
     @Override
     protected Object getTopbarTitle() {
         return R.string.mypet;
