@@ -34,8 +34,7 @@ public class ViewPager_Activity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.m_text_page_login:
-//                Intent intent_log = new Intent(ViewPager_Activity.this, MainActivity.class);
-                Intent intent_log = new Intent(ViewPager_Activity.this, Home_Pager.class);
+                Intent intent_log = new Intent(ViewPager_Activity.this, MainActivity.class);
                 startActivity(intent_log);
                 break;
             case R.id.m_text_page_zhuce:

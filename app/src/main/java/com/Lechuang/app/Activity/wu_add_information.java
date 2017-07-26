@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
@@ -19,8 +20,8 @@ public class wu_add_information extends AppCompatActivity{
     EditText editAddName;
     @Bind(R.id.edit_age_date)
     EditText editAgeDate;
-    @Bind(R.id.image_next_add)
-    ImageView imageNextAdd;
+    @Bind(R.id.Text_next_add)
+    TextView Text_next_add;
     private ImageView button_wancheng;
 
     @Override
@@ -36,7 +37,7 @@ public class wu_add_information extends AppCompatActivity{
     }
 
 
-    @OnClick(R.id.image_next_add)
+    @OnClick(R.id.Text_next_add)
     public void onViewClicked() {
         Intent intent = new Intent(wu_add_information.this, Have_Or_Not_Pet.class);
         startActivity(intent);

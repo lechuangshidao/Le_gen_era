@@ -24,8 +24,8 @@ import butterknife.OnClick;
 
 public class mZhuce_activity extends LCBaseActivity {
 
-    @Bind(R.id.m_image_zhuce)
-    TextView mImageZhuce;
+    @Bind(R.id.button_next_zhuce)
+    TextView button_next_zhuce;
     @Bind(R.id.edit_callphone_zhuce)
     EditText editCallphoneZhuce;
     private PopupWindow ppw;
@@ -73,14 +73,11 @@ public class mZhuce_activity extends LCBaseActivity {
                 getWindow().setAttributes(lp);
             }
         });
-        text_quxiao = (TextView) findViewById(R.id.text_quxiao);
-        text_quxiao.setOnClickListener(this);
     }
-
     /*
     * 跳转事件
     * */
-    @OnClick(R.id.m_image_zhuce)
+    @OnClick(R.id.button_next_zhuce)
     public void onViewClicked() {
         String userphone = editCallphoneZhuce.getText().toString().trim();
         if (TextUtils.isEmpty(userphone)) {
@@ -101,11 +98,7 @@ public class mZhuce_activity extends LCBaseActivity {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.text_quxiao:
-                finish();
-                break;
-        }
+
     }
 }
 

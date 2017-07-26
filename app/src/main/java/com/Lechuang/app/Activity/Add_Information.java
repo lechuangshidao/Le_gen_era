@@ -1,33 +1,28 @@
 package com.Lechuang.app.Activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-
+import android.widget.TextView;
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
-
+import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_right;
 import java.io.IOException;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 public class Add_Information extends SimpleTopbarActivity {
-
+    private static Class<?> rightFuncArray1[] = {CommonBackTopBtnFunc_right.class};
     @Bind(R.id.edit_add_name)
     EditText editAddName;
     @Bind(R.id.edit_age_date)
     EditText editAgeDate;
-    @Bind(R.id.image_next_add)
-    ImageView imageNextAdd;
-    @Bind(R.id.image_wu_callback)
-    ImageView imageWuCallback;
-    private ImageView button_wancheng;
+    @Bind(R.id.Text_next_add)
+    TextView TextNextAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +37,11 @@ public class Add_Information extends SimpleTopbarActivity {
         Call_Phone_Utils.setEditTextInhibitInputSpeChat(editAddName);//宠物昵称禁止为特殊字符
     }
 
-    @OnClick({R.id.image_wu_callback, R.id.image_next_add,R.id.image_wu_gerentouxiang})
+    @OnClick({R.id.Text_next_add, R.id.image_wu_gerentouxiang})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            //回退
-            case R.id.image_wu_callback:
-                finish();
-                break;
             //下一步
-            case R.id.image_next_add:
+            case R.id.Text_next_add:
                 Intent intent = new Intent(Add_Information.this, Have_Or_Not_Pet.class);
                 startActivity(intent);
                 break;
@@ -58,6 +49,16 @@ public class Add_Information extends SimpleTopbarActivity {
             case R.id.image_wu_gerentouxiang:
                 break;
         }
+    }
+
+    @Override
+    protected Class<?> getTopbarLeftFunc() {
+        return CommonBackTopBtnFunc_or.class;
+    }
+
+    @Override
+    protected Class<?>[] getTopbarRightFuncArray() {
+        return rightFuncArray1;
     }
 
     @Override
@@ -85,3 +86,4 @@ public class Add_Information extends SimpleTopbarActivity {
 
     }
 }
+

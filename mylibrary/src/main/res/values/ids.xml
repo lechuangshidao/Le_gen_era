@@ -7,6 +7,9 @@
     <item name="home_merchant_mybankcard" type="id"/>
     <item name="home_merchant_mytwocode" type="id"/>
     <item name="home_merchant_describe" type="id"/>
+    <item name="topbar_back_or" type="id"/>
+    <item name="topbar_back_Right" type="id"/>
+
 
     <item name="topbaror_back" type="id"/>
     <item name="topbar_back" type="id"/>

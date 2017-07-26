@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.Lechuang.app.Activity.FuWuActivity;
+import com.Lechuang.app.Activity.Fujin_Activity;
+import com.Lechuang.app.Activity.Gift_Activity;
 import com.Lechuang.app.R;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -25,7 +28,6 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
@@ -64,7 +66,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         if (view == null) {
             view = inflater.inflate(R.layout.activity_fragment_main_shouye, null);
         }
-
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
             parent.removeView(view);
@@ -92,11 +93,13 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         if (aMap == null) {
             aMap = mMapView.getMap();
             //设置显示定位按钮 并且可以点击
-            UiSettings settings = aMap.getUiSettings();
+            UiSettings settings =  aMap.getUiSettings();
             aMap.setLocationSource(this);//设置了定位的监听,这里要实现LocationSource接口
             // 是否显示定位按钮
-            settings.setMyLocationButtonEnabled(true);
+            settings.setMyLocationButtonEnabled(false);
             aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
+            settings.setScrollGesturesEnabled(false);
+            settings.setZoomControlsEnabled(false);
         }
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
@@ -122,14 +125,11 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         mLocationClient.startLocation();
         // 自定义系统定位小蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
-        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-                .fromResource(R.drawable.image_pet));// 设置小蓝点的图标
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("TAG_","onDestroy");
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -137,7 +137,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("TAG_","onResume");
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
     }
@@ -145,19 +144,8 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("TAG_","onPause");
         //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         mMapView.onPause();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden){
-            mMapView.onResume();
-        }else {
-            mMapView.onPause();
-        }
     }
 
     @Override
@@ -206,7 +194,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-
                 //定位成功回调信息，设置相关消息
                 aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见官方定位类型表
                 aMapLocation.getLatitude();//获取纬度
@@ -224,7 +211,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                 aMapLocation.getStreetNum();//街道门牌号信息
                 aMapLocation.getCityCode();//城市编码
                 aMapLocation.getAdCode();//地区编码
-
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
                     //设置缩放级别
@@ -253,8 +239,13 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                 Toast.makeText(getActivity(), "定位失败", Toast.LENGTH_LONG).show();
             }
         }
+        //获取经纬度信息
+        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+            }
+        });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -265,10 +256,14 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_gift:
+                Intent intent_gift=new Intent(getActivity(), Gift_Activity.class);
+                startActivity(intent_gift);
                 break;
             case R.id.image_news:
                 break;
             case R.id.image_shouye_fujin:
+                Intent intent_fujin=new Intent(getActivity(),Fujin_Activity.class);
+                startActivity(intent_fujin);
                 break;
             case R.id.image_shouye_fuwu:
                 Intent intent_fuwu=new Intent(getActivity(),FuWuActivity.class);

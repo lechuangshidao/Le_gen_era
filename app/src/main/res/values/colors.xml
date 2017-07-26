@@ -6,6 +6,7 @@
     <color name="topback_cancel">#FFD361</color>
     <color name="line_background">#E6E6E6</color>
     <color name="orange">#FFBD11</color>
+    <color name="nor">#CCCCCC</color>
     <!-- picker view-->
     <color name="pickerview_timebtn_nor">#057dff</color>
     <color name="pickerview_timebtn_pre">#c2daf5</color>

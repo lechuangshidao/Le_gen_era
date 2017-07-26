@@ -6,14 +6,15 @@
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
     tools:context=".Activity.MainActivity">
+    <include layout="@layout/view_simple_topbar"></include>
     <TextView
-        android:id="@+id/text_log_quxiao"
-        android:text="取消"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/topback_cancel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="14dp"
+        android:text="返回"
+        android:textColor="#FFBD11"
+        android:textSize="16sp" />
     <TextView
         android:id="@+id/text_phone"
         android:text="手机号登录"

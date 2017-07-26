@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:layout_margin="@dimen/margin_20"
+    app:contentPaddingBottom="@dimen/margin_10"
+    app:contentPaddingLeft="@dimen/margin_15"
+    app:cardElevation="@dimen/margin_3"
+    app:cardCornerRadius="15dp"
+    app:cardUseCompatPadding="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_marginTop="@dimen/margin_10"
+        android:id="@+id/image_myclosest"
+        android:src="@mipmap/image_myclosest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_marginTop="@dimen/margin_10"
+        android:id="@+id/linear_pet_name"
+        android:layout_toRightOf="@id/image_myclosest"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="宠物名称："
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="15sp"
+            android:id="@+id/text_pet_name"
+            android:text="土豆炖蘑菇"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_toRightOf="@id/image_myclosest"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_below="@id/linear_pet_name"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="品种："
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="15sp"
+            android:id="@+id/text_pet_var"
+            android:text="阿拉斯加"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/text_closest_juli"
+        android:text="距离：100米以内"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_15"
+        android:layout_marginTop="@dimen/height_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+</android.support.v7.widget.CardView>

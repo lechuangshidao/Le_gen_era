@@ -4,25 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.Lechuang.app.Activity.Login_Pet">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <ImageView
-            android:layout_margin="10dp"
-            android:id="@+id/image_callback"
-            android:src="@mipmap/chongwu_fanhui"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="登录"
-            android:textSize="20dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    tools:context="com.Lechuang.app.activity.Login_Pet">
+    <include layout="@layout/view_simple_topbar"></include>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="14dp"
+        android:text="返回"
+        android:textColor="#FFBD11"
+        android:textSize="16sp" />
     <LinearLayout
         android:layout_centerVertical="true"
         android:layout_marginLeft="50dp"

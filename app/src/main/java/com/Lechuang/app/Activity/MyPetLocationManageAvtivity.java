@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
-import com.Lechuang.app.adapter.HomeMerchantPlaceLocationAdapter;
+import com.Lechuang.app.adapter.MyPetLocationManageAdapter;
 import com.Lechuang.app.func.MyPetLocationManageTopRightBtnFunc;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ import www.xcd.com.mylibrary.utils.ToastUtil;
 public class MyPetLocationManageAvtivity extends SimpleTopbarActivity {
 
     private static Class<?> rightFuncArray[] = {MyPetLocationManageTopRightBtnFunc.class};
-    private HomeMerchantPlaceLocationAdapter adapter;
+    private MyPetLocationManageAdapter adapter;
     private ListView listview;
     private Thread thread,thread2;
     private Context context;
@@ -63,7 +63,7 @@ public class MyPetLocationManageAvtivity extends SimpleTopbarActivity {
 
     private void initData() {
         adapter = new
-                HomeMerchantPlaceLocationAdapter(MyPetLocationManageAvtivity.this,handler);
+                MyPetLocationManageAdapter(MyPetLocationManageAvtivity.this,handler);
         List<Map<String,String>> list = new ArrayList();
         for (int i = 0; i < 5; i++) {
             Map<String,String> map = new HashMap();

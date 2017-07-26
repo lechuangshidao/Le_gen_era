@@ -3,16 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
     tools:context=".Activity.CallPhone_Activity">
 
+    <include layout="@layout/view_simple_topbar"></include>
     <TextView
-        android:id="@+id/text_log_quxiao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="取消"
-        android:textColor="#FFC736"
-        android:textSize="20dp" />
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="14dp"
+        android:text="返回"
+        android:textColor="#FFBD11"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/text_phone"
@@ -38,7 +41,13 @@
             android:layout_height="wrap_content"
             android:text="手机号"
             android:textSize="20sp" />
-
+        <TextView
+            android:id="@+id/text_86"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:textSize="20sp"
+            android:text="+86"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <EditText
             android:digits="@string/number"
             android:textCursorDrawable="@null"
@@ -104,17 +113,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/linear_yanzhengma"
-        android:layout_margin="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_20"
         android:text="用密码登录"
         android:textColor="#808EAE"
         android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/image_next_note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/button_next_note"
+        android:text="登录"
         android:layout_below="@id/text_pwd_log"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_circle_orange_5"
+        android:layout_width="320dp"
         android:layout_marginTop="30dp"
-        android:src="@mipmap/login" />
+        android:layout_centerHorizontal="true"
+        android:layout_height="45dp" />
 </RelativeLayout>

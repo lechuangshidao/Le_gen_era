@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/ZBLibrary/ZBLibrary.iml" filepath="$PROJECT_DIR$/ZBLibrary/ZBLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tabitem/tabitem.iml" filepath="$PROJECT_DIR$/tabitem/tabitem.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '24.0.1'
+    //resourcePrefix "tabitem" // 随意命名
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //compile 'com.android.support:appcompat-v7:22.0.1'
+    testCompile 'junit:junit:4.12'
+}
+
+/*
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'tabitem'
+    publishedGroupId = 'com.xyz.tabitem'
+    libraryName = 'TabItem'
+    artifact = 'tabitem'
+    libraryDescription = ''
+    libraryVersion = '1.0.1'
+
+    siteUrl = 'https://github.com/zhangxuyang321/BottomTabItem'
+    gitUrl = 'https://github.com/zhangxuyang321/BottomTabItem.git'
+
+    developerId = 'xyz'
+    developerName = 'xyz'
+    developerEmail = 'zhangxuyang321@gmail.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'*/

@@ -36,12 +36,12 @@
         "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\anim\\push_in.xml"
     },
     {
-        "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\bottom_push_in.xml",
-        "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\anim\\bottom_push_in.xml"
-    },
-    {
         "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\left_push_out.xml",
         "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\anim\\left_push_out.xml"
+    },
+    {
+        "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\bottom_push_in.xml",
+        "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\anim\\bottom_push_in.xml"
     },
     {
         "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\bottom_push_in_keyboard.xml",

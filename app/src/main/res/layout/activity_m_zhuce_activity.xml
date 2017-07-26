@@ -2,16 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
     android:layout_height="match_parent"
     tools:context=".Activity.Zhuce_Activity">
+    <include layout="@layout/view_simple_topbar"></include>
     <TextView
-        android:id="@+id/text_quxiao"
-        android:text="取消"
-        android:layout_margin="20dp"
-        android:textColor="#FFD361"
-        android:textSize="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="14dp"
+        android:text="返回"
+        android:textColor="#FFBD11"
+        android:textSize="16sp" />
     <ImageView
         android:id="@+id/image_logo"
         android:src="@mipmap/logo"
@@ -87,11 +90,14 @@
         android:background="#E6E6E6"
         android:layout_width="match_parent"
         android:layout_height="1dp"></View>
-    <ImageView
-        android:id="@+id/m_image_zhuce"
-        android:layout_marginTop="50dp"
+    <Button
+        android:id="@+id/button_next_zhuce"
+        android:text="注册"
         android:layout_below="@id/linear_phone"
-        android:src="@mipmap/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/white"
+        android:background="@drawable/shape_circle_orange_5"
+        android:layout_width="320dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="45dp" />
 </RelativeLayout>

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Lechuang.app.R;
@@ -16,8 +16,8 @@ import butterknife.OnClick;
 
 public class zhuce_yanzhengma_activity extends AppCompatActivity {
 
-    @Bind(R.id.image_tijiao)
-    ImageView imageTijiao;
+    @Bind(R.id.button_next_tijiao)
+    TextView button_next_tijiao;
     @Bind(R.id.edit_callphone_note)
     EditText editCallphoneNote;
     @Bind(R.id.edit_password_note)
@@ -38,7 +38,7 @@ public class zhuce_yanzhengma_activity extends AppCompatActivity {
         editCallphoneNote.setText(callphone);
     }
 
-    @OnClick(R.id.image_tijiao)
+    @OnClick(R.id.button_next_tijiao)
     public void onViewClicked() {
         //验证码不能为空
         if(!TextUtils.isEmpty(editPasswordNote.getText().toString())){

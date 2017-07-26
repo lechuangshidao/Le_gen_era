@@ -3,18 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Activity.Home_Pager">
-    <FrameLayout
-        android:id="@+id/fragment_mian_home"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0px"></FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <RadioGroup
+        <com.xyz.tabitem.BottmTabItem
+            android:id="@+id/main_buttom_shouye"
+            style="@style/bottomitem"
+            app:xyzIcon="@mipmap/image_shouye_gray"
+            app:xyzIconHeight="20dp"
+            app:xyzIconWidth="20dp"
+            app:xyzSelectIcon="@mipmap/image_shouye"
+            app:xyzSelectState="true"
+            app:xyzTitle="首页"
+            app:xyzTitleSelectColor="#FE7105"
+            app:xyzTitleSize="12sp"
+             />
+
+        <com.xyz.tabitem.BottmTabItem
+            android:id="@+id/main_buttom_pet"
+            style="@style/bottomitem"
+            app:xyzIcon="@mipmap/image_pet_gray"
+            app:xyzIconHeight="20dp"
+            app:xyzIconWidth="20dp"
+            app:xyzSelectIcon="@mipmap/image_pet"
+            app:xyzSelectState="false"
+            app:xyzTitle="宠物故事"
+            app:xyzTitleColor="#888888"
+            app:xyzTitleSelectColor="#FE7105"
+            app:xyzTitleSize="12sp" />
+
+        <com.xyz.tabitem.BottmTabItem
+            android:id="@+id/main_buttom_gouwuche"
+            style="@style/bottomitem"
+            app:xyzIcon="@mipmap/image_unselector_gouwuche"
+            app:xyzIconHeight="20dp"
+            app:xyzIconWidth="20dp"
+            app:xyzSelectIcon="@mipmap/image_icon_gouwuche"
+            app:xyzSelectState="false"
+            app:xyzTitle="购物车"
+            app:xyzTitleSelectColor="#FE7105"
+            app:xyzTitleSize="12sp" />
+
+        <com.xyz.tabitem.BottmTabItem
+            android:id="@+id/main_buttom_wode"
+            style="@style/bottomitem"
+            app:xyzIcon="@mipmap/image_wode_gray"
+            app:xyzIconHeight="20dp"
+            app:xyzIconWidth="20dp"
+            app:xyzSelectIcon="@mipmap/image_wode"
+            app:xyzSelectState="false"
+            app:xyzTitle="我的"
+            app:xyzTitleSelectColor="#FE7105"
+            app:xyzTitleSize="12sp" />
+    </LinearLayout>
+    <!--<RadioGroup
             android:id="@+id/main_rg"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             android:orientation="horizontal"
@@ -57,5 +117,5 @@
                 android:drawableTop="@drawable/selector_wode"
                 android:gravity="center"
                 android:text="我的" />
-        </RadioGroup>
+        </RadioGroup>-->
 </LinearLayout>

@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
-import com.Lechuang.app.func.CommonBackTopOrBtnFunc;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_right;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -25,17 +26,12 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 public class MainActivity extends SimpleTopbarActivity {
 
-
+    private static Class<?> rightFuncArray1[] = {CommonBackTopBtnFunc_right.class};
     @Bind(R.id.edit_callphone_main)
     EditText editCallphoneMain;
     @Bind(R.id.text_next)
     TextView textNext;
     private UMShareAPI umShareAPI;
-
-    @Override
-    protected Class<?> getTopbarLeftFunc() {
-        return CommonBackTopOrBtnFunc.class;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +40,7 @@ public class MainActivity extends SimpleTopbarActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.text_qq_log, R.id.text_weixin_log, R.id.text_next, R.id.text_log_quxiao})
+    @OnClick({R.id.text_qq_log, R.id.text_weixin_log, R.id.text_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_qq_log:
@@ -61,7 +57,7 @@ public class MainActivity extends SimpleTopbarActivity {
                     return;
                 }
                 boolean result = Call_Phone_Utils.isPhone(userphone);
-                if (result == false && userphone.length()!=11) {
+                if (result == false && userphone.length() != 11) {
                     Toast.makeText(MainActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -72,9 +68,6 @@ public class MainActivity extends SimpleTopbarActivity {
                 } else {
                     textNext.setEnabled(true);
                 }
-                break;
-            case R.id.text_log_quxiao:
-                finish();
                 break;
         }
     }
@@ -116,6 +109,11 @@ public class MainActivity extends SimpleTopbarActivity {
             }
         });
 
+    }
+
+    @Override
+    protected Class<?> getTopbarLeftFunc() {
+        return CommonBackTopBtnFunc_or.class;
     }
 
     @Override

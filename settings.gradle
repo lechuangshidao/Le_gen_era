@@ -1,1 +1,1 @@
-include ':app', ':mylibrary', ':ZBLibrary'
+include ':app', ':mylibrary', ':ZBLibrary', ':tabitem'

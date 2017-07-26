@@ -3,30 +3,34 @@ package com.Lechuang.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+
+import java.io.IOException;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
-public class Zhuce_Activity extends AppCompatActivity {
+public class Zhuce_Activity extends SimpleTopbarActivity {
 
-    @Bind(R.id.m_image_zhuce)
-    ImageView mImageZhuce;
+    @Bind(R.id.button_next_zhuce)
+    Button  button_next_zhuce;
     @Bind(R.id.edit_callphone_zhuce)
     EditText editCallphoneZhuce;
     private PopupWindow ppw;
@@ -74,13 +78,10 @@ public class Zhuce_Activity extends AppCompatActivity {
             }
         });
     }
-    @OnClick({R.id.text_quxiao, R.id.m_image_zhuce})
+    @OnClick({ R.id.button_next_zhuce})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.text_quxiao:
-                finish();
-                break;
-            case R.id.m_image_zhuce:
+            case R.id.button_next_zhuce:
                 String userphone = editCallphoneZhuce.getText().toString().trim();
                 if (TextUtils.isEmpty(userphone)) {
                     Toast.makeText(Zhuce_Activity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
@@ -100,6 +101,36 @@ public class Zhuce_Activity extends AppCompatActivity {
                 ppw.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                 break;
         }
+    }
+
+    @Override
+    protected Class<?> getTopbarLeftFunc() {
+        return CommonBackTopBtnFunc_or.class;
+    }
+
+    @Override
+    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
+    }
+
+    @Override
+    public void onCancelResult() {
+
+    }
+
+    @Override
+    public void onErrorResult(int errorCode, IOException errorExcep) {
+
+    }
+
+    @Override
+    public void onParseErrorResult(int errorCode) {
+
+    }
+
+    @Override
+    public void onFinishResult() {
+
     }
 }
 

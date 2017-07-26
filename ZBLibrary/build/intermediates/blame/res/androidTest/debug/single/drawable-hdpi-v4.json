@@ -44,12 +44,12 @@
         "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\down2.png"
     },
     {
-        "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\back2.png",
-        "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\back2.png"
-    },
-    {
         "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\forward_light.png",
         "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\forward_light.png"
+    },
+    {
+        "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\back2.png",
+        "source": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\back2.png"
     },
     {
         "merged": "D:\\androidproject\\Le_gen_era\\ZBLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\forward2_light.png",
