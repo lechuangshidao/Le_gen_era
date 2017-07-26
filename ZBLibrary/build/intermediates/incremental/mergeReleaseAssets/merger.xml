@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\androidproject\Le_gen_era\ZBLibrary\src\main\assets"/><source path="D:\androidproject\Le_gen_era\ZBLibrary\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="D:\androidproject\Le_gen_era\ZBLibrary\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="H:\HapptStudio_git\android\ZBLibrary\src\main\assets"/></dataSet><dataSet config="release"><source path="H:\HapptStudio_git\android\ZBLibrary\src\release\assets"/></dataSet></merger>
