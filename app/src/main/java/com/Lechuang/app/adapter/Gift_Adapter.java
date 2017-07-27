@@ -75,6 +75,7 @@ public class Gift_Adapter extends BaseAdapter{
      * 由于dialog_customize.xml只放置了一个EditView，因此和图8一样
      * dialog_customize.xml可自定义更复杂的View
      */
+
         final AlertDialog.Builder customizeDialog =
                 new AlertDialog.Builder(context);
         View view = View.inflate(context, R.layout.dialog_shop_item, null);
@@ -82,18 +83,25 @@ public class Gift_Adapter extends BaseAdapter{
         final ImageView image_dialog_back=  (ImageView) view.findViewById(R.id.image_dialog_back);
         TextView text_dialog_name=  (TextView) view.findViewById(R.id.text_dialog_name);
         final Button button_dialog_wancheng= (Button) view.findViewById(R.id.button_dialog_wancheng);
+        final AlertDialog alertDialog;alertDialog = customizeDialog.create();
+        alertDialog.show();
+        image_dialog_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
         button_dialog_wancheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customizeDialog.create().dismiss();
+                alertDialog.dismiss();
             }
         });
         image_dialog_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customizeDialog.create().dismiss();
+                alertDialog.dismiss();
             }
         });
-        customizeDialog.create().show();
     }
 }

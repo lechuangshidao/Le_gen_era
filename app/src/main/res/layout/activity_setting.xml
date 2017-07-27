@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_EDF2F7"
+    android:fitsSystemWindows="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/updata_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:clickable="true"
+                android:layout_marginTop="@dimen/margin_15"
+                android:background="@color/white"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:duplicateParentState="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/updata_password"
+                    android:textColor="@color/black_33"
+                    android:textSize="@dimen/textsize_18" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:contentDescription="@null"
+                    android:duplicateParentState="true"
+                    android:src="@mipmap/home_top_arrows" />
+            </RelativeLayout>
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/height_45"-->
+                <!--android:layout_marginTop="@dimen/margin_15"-->
+                <!--android:background="@color/white"-->
+                <!--android:visibility="gone"-->
+                <!--android:clickable="false"-->
+                <!--android:focusable="false">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="@dimen/margin_15"-->
+                    <!--android:duplicateParentState="true"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:text="新消息推送"-->
+                    <!--android:textColor="@color/black_33"-->
+                    <!--android:textSize="@dimen/textsize_18" />-->
+
+                <!--<www.yuanka.com.quankamerchant.base.BaseSlideSwitch-->
+                    <!--android:id="@+id/message_push"-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_gravity="center_vertical" />-->
+
+            <!--</RelativeLayout>-->
+
+            <RelativeLayout
+                android:id="@+id/clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:layout_marginTop="@dimen/margin_1"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:duplicateParentState="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="清空缓存"
+                    android:textColor="@color/black_33"
+                    android:textSize="@dimen/textsize_18" />
+
+                <TextView
+                    android:id="@+id/cache_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:duplicateParentState="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="0.00KB"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_18" />
+            </RelativeLayout>
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/opinion_feedback"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/margin_45"-->
+                <!--android:clickable="true"-->
+                <!--android:layout_marginTop="@dimen/margin_15"-->
+                <!--android:background="@color/white"-->
+                <!--android:focusable="true">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="@dimen/margin_15"-->
+                    <!--android:duplicateParentState="true"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:text="意见反馈"-->
+                    <!--android:textColor="@color/black_33"-->
+                    <!--android:textSize="@dimen/textsize_18" />-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/margin_15"-->
+                    <!--android:layout_height="@dimen/margin_15"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginRight="@dimen/margin_15"-->
+                    <!--android:contentDescription="@null"-->
+                    <!--android:duplicateParentState="true"-->
+                    <!--android:src="@mipmap/home_top_arrows" />-->
+            <!--</RelativeLayout>-->
+            <RelativeLayout
+                android:id="@+id/about"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:clickable="true"
+                android:layout_marginTop="@dimen/margin_1"
+                android:background="@color/white"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:duplicateParentState="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="关于宠爱"
+                    android:textColor="@color/black_33"
+                    android:textSize="@dimen/textsize_18" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:contentDescription="@null"
+                    android:duplicateParentState="true"
+                    android:src="@mipmap/home_top_arrows" />
+            </RelativeLayout>
+            <Button
+                android:id="@+id/exit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:layout_marginTop="@dimen/margin_45"
+                android:background="@color/white"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_18"
+                android:text="退出当前账号"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
