@@ -87,6 +87,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         super.onClick(v);
         switch (v.getId()){
             case R.id.action_image:
+                setTpye("");
                 getChoiceDialog().show();
                 break;
             case R.id.ok:
@@ -147,18 +148,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     }
     private void uploadImage(final List<File> list) {
         // 调用上传
-        thread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-//                String iamgeresult = HelpUtils.uploadImg(qk_id, list,"head.png");
-//                Message message = handler.obtainMessage();
-//                message.what = 1;
-//                message.obj = iamgeresult;
-//                handler.sendMessage(message);
-            }
-        };
-        thread.start();
+
     }
 
     @Override

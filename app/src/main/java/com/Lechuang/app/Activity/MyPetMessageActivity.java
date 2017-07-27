@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
@@ -25,6 +26,7 @@ public class MyPetMessageActivity extends BaseDataActivity {
     private int[] selectedDate = new int[]{1971, 0, 1};
     private TextView select_birthday;
     private EditText edit_name,select_breed;
+    private ImageView meinfo_head;
     @Override
     protected Object getTopbarTitle() {
         return R.string.petmessage;
@@ -50,6 +52,8 @@ public class MyPetMessageActivity extends BaseDataActivity {
         edit_name.setOnFocusChangeListener(this);
         select_breed = (EditText) findViewById(R.id.select_breed);
         select_breed.setOnFocusChangeListener(this);
+        meinfo_head = (ImageView) findViewById(R.id.meinfo_head);
+        meinfo_head.setOnClickListener(this);
     }
 
     @Override
@@ -69,6 +73,8 @@ public class MyPetMessageActivity extends BaseDataActivity {
             case R.id.select_birthday:
                 toActivity(DatePickerWindow.createIntent(MyPetMessageActivity.this, new int[]{1971, 0, 1}
                         , TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
+              break;
+            case R.id.meinfo_head:
                 break;
         }
     }

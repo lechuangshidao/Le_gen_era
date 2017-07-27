@@ -2,6 +2,8 @@ package com.Lechuang.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -14,8 +16,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-import static www.xcd.com.mylibrary.utils.DialogUtil.handler;
 
 public class SettingActivity extends SimpleTopbarActivity {
 
@@ -69,6 +69,7 @@ public class SettingActivity extends SimpleTopbarActivity {
                     @Override
                     public void run() {
                         try {
+                            Thread.sleep(2000);
                             boolean cleanCatchDisk = HelpUtils.cleanCatchDisk(SettingActivity.this);
                             if (cleanCatchDisk) {
                                 handler.sendEmptyMessage(CLEANCATCHDISK_OK);
@@ -98,6 +99,20 @@ public class SettingActivity extends SimpleTopbarActivity {
                 break;
         }
     }
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case CLEANCATCHDISK_OK:
+                    dialogDissmiss();
+                    break;
+                case CLEANCATCHDISK_FAILURE:
+                    dialogDissmiss();
+                    break;
+            }
+        }
+    };
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
 

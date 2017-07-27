@@ -161,6 +161,20 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 		addViewToRightFunctionZone();
 	}
 
+	/**
+	 * AlbumPhotoActivity.TYPE_SINGLE为单选
+	 * ""多选
+	 */
+	private String tpye;
+
+	public String getTpye() {
+		return tpye;
+	}
+
+	public void setTpye(String tpye) {
+		this.tpye = tpye;
+	}
+
 	@Override
 	public void onClick(View v) {
 		int i = v.getId();
@@ -171,8 +185,11 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 			closeChoiceDialog();
 			// album
 			Intent albumIntent = new Intent(SimpleTopbarActivity.this, AlbumPhotoActivity.class);
-//                albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, AlbumPhotoActivity.TYPE_SINGLE);
-			albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, "");
+			 if (getTpye().equals(AlbumPhotoActivity.TYPE_SINGLE)){
+				 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, AlbumPhotoActivity.TYPE_SINGLE);
+			 }else {
+				 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, "");
+			 }
 			// start
 			SimpleTopbarActivity.this.startActivityForResult(albumIntent, REQUEST_CODE_HEAD_ALBUM);
 
@@ -203,7 +220,6 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 
 		}
 	}
-
 	/**
 	 * 在中间放置自定义的控件
 	 * 
