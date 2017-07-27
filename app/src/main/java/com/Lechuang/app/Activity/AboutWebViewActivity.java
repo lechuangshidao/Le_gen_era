@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
 
 public class AboutWebViewActivity extends SimpleTopbarActivity {
 
@@ -35,6 +36,9 @@ public class AboutWebViewActivity extends SimpleTopbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         webview = (WebView) findViewById(R.id.webview);
+        ToastUtil.showToast("fasfa");
+        ToastUtil.showToast("fasfa");
+        ToastUtil.showToast("fasfa");
         Intent intent = getIntent();
         resetTopbarTitle(intent.getStringExtra("title"));
         String type = intent.getStringExtra("type");

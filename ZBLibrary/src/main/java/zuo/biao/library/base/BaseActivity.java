@@ -14,6 +14,17 @@ limitations under the License.*/
 
 package zuo.biao.library.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import zuo.biao.library.R;
+import zuo.biao.library.interfaces.ActivityPresenter;
+import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.manager.SystemBarTintManager;
+import zuo.biao.library.manager.ThreadManager;
+import zuo.biao.library.util.Log;
+import zuo.biao.library.util.ScreenUtil;
+import zuo.biao.library.util.StringUtil;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
@@ -38,18 +49,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import zuo.biao.library.R;
-import zuo.biao.library.interfaces.ActivityPresenter;
-import zuo.biao.library.interfaces.OnBottomDragListener;
-import zuo.biao.library.manager.SystemBarTintManager;
-import zuo.biao.library.manager.ThreadManager;
-import zuo.biao.library.util.Log;
-import zuo.biao.library.util.ScreenUtil;
-import zuo.biao.library.util.StringUtil;
 
 /**基础android.support.v4.app.FragmentActivity，通过继承可获取或使用 里面创建的 组件 和 方法
  * *onFling内控制左右滑动手势操作范围，可自定义
