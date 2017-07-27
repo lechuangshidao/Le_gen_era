@@ -63,11 +63,12 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 startActivity(intent_note);
                 break;
             case R.id.Text_next_log_note:
+                editPassword.setText("1");
                 if (!TextUtils.isEmpty(edit_callphone.getText().toString().trim()) && !TextUtils.isEmpty(editPassword.getText().toString().trim())) {
                     Intent intent_main = new Intent(CallPhone_Activity.this, Home_Pager.class);
                     startActivity(intent_main);
                 } else {
-                    Toast.makeText(CallPhone_Activity.this, "用户信息不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CallPhone_Activity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     text_note_log.setEnabled(true);
                 }
                 break;
