@@ -38,7 +38,6 @@ public class AboutWebViewActivity extends SimpleTopbarActivity {
         webview = (WebView) findViewById(R.id.webview);
         ToastUtil.showToast("fasfa");
         ToastUtil.showToast("fasfa");
-        ToastUtil.showToast("fasfa");
         Intent intent = getIntent();
         resetTopbarTitle(intent.getStringExtra("title"));
         String type = intent.getStringExtra("type");
