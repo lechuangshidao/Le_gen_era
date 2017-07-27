@@ -61,20 +61,20 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
 
     private void initListView() {
         for (int i = 0, length = textlist.length; i < length; i++) {
-                final LayoutInflater inflater = LayoutInflater.from(this);
+            final LayoutInflater inflater = LayoutInflater.from(this);
             LinearLayout pet_include = (LinearLayout) inflater.inflate(
                     R.layout.petaddtask_include, null);
             pet_include.setId(i);
-                TextView text = (TextView) pet_include.findViewById(R.id.parent_add);
-                text.setText(textlist[i]);
+            TextView text = (TextView) pet_include.findViewById(R.id.parent_add);
+            text.setText(textlist[i]);
             TextView parent_addplan = (TextView) pet_include.findViewById(R.id.parent_addplan);
             parent_addplan.setText("进度"+i+"/"+i);
-                pet_include.setOnClickListener(this);
+            pet_include.setOnClickListener(this);
 //                ImageView image = (ImageView) pet_include.findViewById(R.id.image);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0,PADDING1,0,0);
-                pet_include.setLayoutParams(lp);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0,PADDING1,0,0);
+            pet_include.setLayoutParams(lp);
             mypettask_parent.setLayoutParams(lp);//设置布局参数
             pet_include.setPadding(PADDING20,PADDING10,PADDING20,PADDING10);
             mypettask_parent.addView(pet_include);

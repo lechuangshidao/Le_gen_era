@@ -107,6 +107,7 @@ public class MeInfoActivity extends BaseDataActivity {
                 image_woman.setVisibility(View.VISIBLE);
                 break;
             case R.id.meinfo_head:
+                //上传头像
                 setTpye(AlbumPhotoActivity.TYPE_SINGLE);
                 getChoiceDialog().show();
                 break;
