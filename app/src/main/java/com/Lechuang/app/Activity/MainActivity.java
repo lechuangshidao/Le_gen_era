@@ -51,7 +51,7 @@ public class MainActivity extends SimpleTopbarActivity {
                 login(SHARE_MEDIA.WEIXIN);
                 break;
             case R.id.text_next:
-                editCallphoneMain.setText("15010481234");
+//                editCallphoneMain.setText("15010481234");
                 String userphone = editCallphoneMain.getText().toString().trim();
                 if (TextUtils.isEmpty(userphone)) {
                     Toast.makeText(MainActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
