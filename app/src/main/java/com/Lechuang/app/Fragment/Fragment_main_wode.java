@@ -17,6 +17,7 @@ import com.Lechuang.app.adapter.MeGridViewAdapter;
 import com.Lechuang.app.func.MyPetSettingTopBtnFunc;
 
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
+import www.xcd.com.mylibrary.utils.ToastUtil;
 
 
 public class Fragment_main_wode extends BaseFragment implements AdapterView.OnItemClickListener{
@@ -50,7 +51,7 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
         }
         gridview = (GridView) view.findViewById(R.id.gridview);
         initData();
-//        ToastUtil.showToast("测试合并");
+        ToastUtil.showToast("测试合并");
     }
 
     private void initData() {

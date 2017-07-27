@@ -1,17 +1,13 @@
 package com.Lechuang.app.Activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,16 +45,8 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     private ImageView action_image;
     private Button action_ok;
     private TextView action_titletext,action_contexttext;
-    public static final String IMAGE_UNSPECIFIED = "image/*";
-    /** 头像Image */
-    private ImageView imageHead;
-    /** 头像修改菜单 */
-    private View viewChoice;
-    /** 头像修改dialog */
-    private Dialog dlgChoice;
 
-    /** 照片地址 */
-    private String photoPath;
+
     private Thread thread;
     @Override
     protected Object getTopbarTitle() {
@@ -101,81 +89,11 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
             case R.id.action_image:
                 getChoiceDialog().show();
                 break;
-            case R.id.action_ok:
+            case R.id.ok:
                 break;
-            case R.id.account_head_choice_cancel:
-                // 关闭对话框
-                closeChoiceDialog();
-                break;
-            case R.id.account_head_choice_album:
-                // 关闭对话框
-                closeChoiceDialog();
-                // album
-                Intent albumIntent = new Intent(MyPetActionActivity.this, AlbumPhotoActivity.class);
-//                albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, AlbumPhotoActivity.TYPE_SINGLE);
-                albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, "");
-                // start
-                MyPetActionActivity.this.startActivityForResult(albumIntent, REQUEST_CODE_HEAD_ALBUM);
-                break;
-            case R.id.account_head_choice_camera://相机
-                try {
-                    // 关闭对话框
-                    closeChoiceDialog();
-                    // 调用系统相机
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // 生成photoPath
-                    File photoFile = new File(YYStorageUtil.getImagePath(MyPetActionActivity.this), UUID.randomUUID().toString() + ".jpg");
-                    photoPath = photoFile.getPath();
-                    // uri
-                    Uri photoUri = Uri.fromFile(new File(photoPath));
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    cameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                    // start
-                    MyPetActionActivity.this.startActivityForResult(cameraIntent, REQUEST_CODE_HEAD_CAMERA);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
+        }
+    }
 
-        }
-    }
-    /**
-     * 菜单View
-     *
-     * @param
-     * @return
-     */
-    private View getChoiceView() {
-        if (viewChoice == null) {
-            // 初始化选择菜单
-            viewChoice = LayoutInflater.from(MyPetActionActivity.this).inflate(R.layout.view_head_choice, null);
-            viewChoice.findViewById(R.id.account_head_choice_album).setOnClickListener(this);
-            viewChoice.findViewById(R.id.account_head_choice_camera).setOnClickListener(this);
-            viewChoice.findViewById(R.id.account_head_choice_cancel).setOnClickListener(this);
-        }
-        return viewChoice;
-    }
-    /**
-     * 修改头像对话框
-     *
-     * @return
-     */
-    private Dialog getChoiceDialog() {
-        if (dlgChoice == null) {
-            dlgChoice = new Dialog(MyPetActionActivity.this, R.style.DialogStyle);
-            dlgChoice.setContentView(getChoiceView());
-            return dlgChoice;
-        }
-        return dlgChoice;
-    }
-    /**
-     * 关闭对话框
-     */
-    private void closeChoiceDialog() {
-        if (dlgChoice != null && dlgChoice.isShowing()) {
-            dlgChoice.cancel();
-        }
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -251,24 +169,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         }
     }
 
-    private void startCrop(String imagePath) {
-        try {
-            Uri uri = Uri.fromFile(new File(imagePath));
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            intent.setDataAndType(uri, IMAGE_UNSPECIFIED);
-            intent.putExtra("crop", "true");
-            // aspectX aspectY 是宽高的比例
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            // outputX outputY 是裁剪图片宽高
-            intent.putExtra("outputX", 160);
-            intent.putExtra("outputY", 160);
-            intent.putExtra("return-data", true);
-            MyPetActionActivity.this.startActivityForResult(intent, REQUEST_CODE_HEAD_CROP);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
 

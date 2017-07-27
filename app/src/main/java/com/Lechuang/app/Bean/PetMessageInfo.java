@@ -10,6 +10,7 @@ public class PetMessageInfo implements Serializable {
     private String name;
     private String age;
     private String breed;
+
     private String label;
     private String id;
     private String petheadurl;
