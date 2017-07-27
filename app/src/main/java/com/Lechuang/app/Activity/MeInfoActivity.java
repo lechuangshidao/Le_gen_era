@@ -24,7 +24,7 @@ public class MeInfoActivity extends BaseDataActivity {
 
     private static final int REQUEST_TO_DATE_PICKER = 33;
     private TextView select_birthday,sex_man,sex_woman;
-    private ImageView image_man,image_woman;
+    private ImageView image_man,image_woman,meinfo_head;
     private int[] selectedDate = new int[]{1971, 0, 1};
     private RelativeLayout relat_woman,relat_man;
     private EditText edit_name;
@@ -53,6 +53,8 @@ public class MeInfoActivity extends BaseDataActivity {
         image_man = (ImageView) findViewById(R.id.image_man);
         edit_name = (EditText) findViewById(R.id.edit_name);
         edit_name.setOnFocusChangeListener(this);
+        meinfo_head = (ImageView) findViewById(R.id.meinfo_head);
+        meinfo_head.setOnClickListener(this);
     }
 
     @Override
@@ -89,6 +91,9 @@ public class MeInfoActivity extends BaseDataActivity {
                 sex_woman.setBackgroundResource(R.drawable.shape_y_solid_orange);
                 sex_woman.setTextColor(getResources().getColor(R.color.orange));
                 image_woman.setVisibility(View.VISIBLE);
+                break;
+            case R.id.meinfo_head:
+                getChoiceDialog().show();
                 break;
         }
     }
