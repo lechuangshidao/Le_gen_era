@@ -78,13 +78,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name=".Activity.Add_Information"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity
             android:name=".Activity.CallPhone_Activity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
@@ -261,6 +254,19 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name=".Activity.Set_password_Activity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
+        <activity android:name=".Activity.Fujin_Activity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            ></activity>
     </application>
 
 </manifest>

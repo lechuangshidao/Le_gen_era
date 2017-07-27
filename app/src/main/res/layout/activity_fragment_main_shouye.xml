@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <ImageView
-            android:id="@+id/image_gift"
+            android:id="@+id/image_news"
             android:layout_margin="20dp"
-            android:src="@mipmap/image_gift"
+            android:src="@mipmap/image_news"
             android:layout_width="20dp"
             android:layout_height="20dp" />
         <TextView
@@ -26,9 +26,9 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content" />
         <ImageView
-            android:id="@+id/image_news"
+            android:id="@+id/image_gift"
             android:layout_margin="20dp"
-            android:src="@mipmap/image_news"
+            android:src="@mipmap/image_gift"
             android:layout_width="20dp"
             android:layout_height="20dp" />
     </LinearLayout>

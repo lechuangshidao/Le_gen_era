@@ -57,11 +57,6 @@ public class Add_Information extends SimpleTopbarActivity {
     }
 
     @Override
-    protected Class<?>[] getTopbarRightFuncArray() {
-        return rightFuncArray1;
-    }
-
-    @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
 
     }
