@@ -270,6 +270,10 @@ public abstract class BaseDataActivity extends SimpleTopbarActivity implements A
 		});
 	}
 
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//	}
 
 	/**隐藏加载进度
 	 */
