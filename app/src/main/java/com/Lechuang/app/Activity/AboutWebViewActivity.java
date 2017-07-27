@@ -1,5 +1,6 @@
 package com.Lechuang.app.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -30,7 +31,7 @@ public class AboutWebViewActivity extends SimpleTopbarActivity {
     protected Object getTopbarTitle() {
         return R.string.about;
     }
-
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class AboutWebViewActivity extends SimpleTopbarActivity {
         webview = (WebView) findViewById(R.id.webview);
         ToastUtil.showToast("fasfa");
         ToastUtil.showToast("fasfa");
+        ToastUtil.showToast("侯增宇");
         Intent intent = getIntent();
         resetTopbarTitle(intent.getStringExtra("title"));
         String type = intent.getStringExtra("type");
