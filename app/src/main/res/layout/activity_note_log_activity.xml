@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:digits="@string/number"
+            android:inputType="number"
             android:textCursorDrawable="@null"
             android:id="@+id/edit_callphone_note"
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
          <EditText
             android:id="@+id/edit_password_note"
              android:textCursorDrawable="@null"
-             android:digits="@string/number"
+             android:inputType="number"
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_below="@id/linear_call_log"

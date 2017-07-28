@@ -78,7 +78,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:paddingLeft="20dp"
-            android:digits="@string/number"
+            android:inputType="number"
             android:id="@+id/edit_callphone_main"
             android:background="@null"
             android:layout_below="@id/linear_address"

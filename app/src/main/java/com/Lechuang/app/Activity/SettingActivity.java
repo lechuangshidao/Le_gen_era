@@ -93,7 +93,7 @@ public class SettingActivity extends SimpleTopbarActivity {
                 startActivity(intent);
                 break;
             case R.id.exit:
-                Intent in = new Intent("android.intent.action.LOGIN");
+                Intent in = new Intent("com.Lechuang.app.action.LOGIN");
                 in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(in);
                 break;

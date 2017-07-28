@@ -73,7 +73,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:paddingLeft="20dp"
-            android:digits="@string/number"
+            android:inputType="number"
             android:textCursorDrawable="@null"
             android:id="@+id/edit_callphone_zhuce"
             android:background="@null"

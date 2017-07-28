@@ -20,7 +20,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import www.xcd.com.mylibrary.base.application.BaseApplication;
-import www.xcd.com.mylibrary.entity.GlobalParam;
 import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
 /**
@@ -125,10 +124,9 @@ public class HelpUtils {
                 dpVal, context.getResources().getDisplayMetrics());
     }
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-    public static String uploadImg(String qk_id, List<File> listpath, String imagenema) {
+    public static String uploadImg(String qk_id, List<File> listpath, String imagenema,String path) {
         String reString = "";
         try {
-            String path = GlobalParam.PICUPLOAD;
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
             //遍历listpath中所有图片绝对路径到builder，并约定key如“img”作为后台接受多张图片的key

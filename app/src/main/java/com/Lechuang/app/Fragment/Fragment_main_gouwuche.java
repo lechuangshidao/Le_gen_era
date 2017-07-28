@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.Lechuang.app.R;
 
+import java.io.IOException;
+import java.util.Map;
+
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
 public class Fragment_main_gouwuche extends BaseFragment {
@@ -37,5 +40,30 @@ public class Fragment_main_gouwuche extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
+    }
+
+    @Override
+    public void onCancelResult() {
+
+    }
+
+    @Override
+    public void onErrorResult(int errorCode, IOException errorExcep) {
+
+    }
+
+    @Override
+    public void onParseErrorResult(int errorCode) {
+
+    }
+
+    @Override
+    public void onFinishResult() {
+
     }
 }

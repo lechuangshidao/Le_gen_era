@@ -8,17 +8,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Lechuang.app.Bean.LoginInfo;
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
+import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
+
 
 public class CallPhone_Activity extends SimpleTopbarActivity{
 
@@ -26,9 +33,9 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     EditText editPassword;
     private TextView text_note_log;
     private String callphone;
-    private EditText edit_callphone;
+    private TextView edit_callphone;
     private TextView Text_next_log_note;
-
+    private LoginInfo logininfo ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +49,7 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     private void getInitView() {
         Text_next_log_note = (TextView) findViewById(R.id.Text_next_log_note);
         text_note_log = (TextView) findViewById(R.id.text_note_log);
-        edit_callphone = (EditText) findViewById(R.id.edit_callphone);
+        edit_callphone = (TextView) findViewById(R.id.edit_callphone);
     }
 
     //初始化数据
@@ -63,10 +70,16 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 startActivity(intent_note);
                 break;
             case R.id.Text_next_log_note:
-                editPassword.setText("1");
-                if (!TextUtils.isEmpty(edit_callphone.getText().toString().trim()) && !TextUtils.isEmpty(editPassword.getText().toString().trim())) {
-                    Intent intent_main = new Intent(CallPhone_Activity.this, Home_Pager.class);
-                    startActivity(intent_main);
+                editPassword.setText("123456");
+                String userlogin = edit_callphone.getText().toString().trim();
+                String userpwd = editPassword.getText().toString().trim();
+                if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("userlogin", userlogin);
+                    params.put("userpwd", userpwd);
+                    params.put("type", "pwd");
+                    okHttpPost(100, GlobalParam.LOGIN, params);
+
                 } else {
                     Toast.makeText(CallPhone_Activity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     text_note_log.setEnabled(true);
@@ -82,7 +95,21 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if (1==returnCode){
+                    logininfo = JSON.parseObject(returnData, LoginInfo.class);
+                    String token = logininfo.getData().getToken();
+                    String user_id = logininfo.getData().getUser_id();
+                    XCDSharePreference.getInstantiation(this).setSharedPreferences("user_id", user_id);
+                    XCDSharePreference.getInstantiation(this).setSharedPreferences("token", token);
+                    Intent intent_main = new Intent(CallPhone_Activity.this, Home_Pager.class);
+                    startActivity(intent_main);
+                }else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override

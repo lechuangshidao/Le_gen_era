@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.Lechuang.app.R;
 import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
@@ -18,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
 
 public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
 
@@ -43,19 +43,22 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
         callphone = intent.getStringExtra("callphone");
         editCallphoneNote.setText(callphone);
     }
+
+
     @OnClick({ R.id.button_next_tijiao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_next_tijiao:
                 //验证码不能为空
-                if (!TextUtils.isEmpty(editPasswordNote.getText().toString())) {
-                    Intent intent = new Intent(Recommend_YanZhengMa_Activity.this, Set_password_Activity.class);
-                    intent.putExtra("login_password",callphone);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(Recommend_YanZhengMa_Activity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
+                String edit_code = editPasswordNote.getText().toString().trim();
+                if (TextUtils.isEmpty(edit_code)){
+                    ToastUtil.showToast("验证码不能为空");
                     return;
                 }
+                    Intent intent = new Intent(Recommend_YanZhengMa_Activity.this, Set_password_Activity.class);
+                    intent.putExtra("callphone",callphone);
+                    intent.putExtra("VERIFICATIONCODE",edit_code);
+                    startActivity(intent);
                 break;
         }
     }
