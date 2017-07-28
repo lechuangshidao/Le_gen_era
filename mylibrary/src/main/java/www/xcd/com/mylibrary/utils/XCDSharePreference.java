@@ -24,7 +24,7 @@ public class XCDSharePreference {
      */
     public static void setSharedPreferences(String key, String value) {
         //实例化SharedPreferences对象（第一步）
-        SharedPreferences mySharedPreferences= context.getSharedPreferences("quanka",
+        SharedPreferences mySharedPreferences= context.getSharedPreferences("lechaungshidai",
                 Activity.MODE_PRIVATE);
         //实例化SharedPreferences.Editor对象（第二步）
         SharedPreferences.Editor editor = mySharedPreferences.edit();
@@ -39,7 +39,7 @@ public class XCDSharePreference {
      */
     public static String getSharedPreferences(String key) {
         //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-        SharedPreferences sharedPreferences= context.getSharedPreferences("quanka",
+        SharedPreferences sharedPreferences= context.getSharedPreferences("lechaungshidai",
                 Activity.MODE_PRIVATE);
         // 使用getString方法获得value，注意第2个参数是value的默认值
         String value =sharedPreferences.getString(key, "");

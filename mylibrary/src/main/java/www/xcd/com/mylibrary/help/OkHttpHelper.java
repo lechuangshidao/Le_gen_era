@@ -195,30 +195,32 @@ public class OkHttpHelper {
                         }
                         try {
                             JSONObject jsonObject = new JSONObject(result);
-                            int returnCode = jsonObject.getInt("status");
+                            String returnCode = jsonObject.optString("state");
                             String returnMsg = null;
-                            if (returnCode != 10001) {
-                                returnMsg = jsonObject.getString("error");
+                            if ("0".equals(returnCode)) {
+                                returnMsg = jsonObject.optString("message");
+
                             } else {
                                 returnMsg = "成功";
                             }
-                            String returnData = null;
-                            if (!jsonObject.isNull("result")) {
-                                returnData = jsonObject.getString("result");
-                            } else {
-                                returnData = result;
-                            }
+                            String returnData = result;
+//                            if (!jsonObject.isNull("data")) {
+//                                returnData = jsonObject.getString("data");
+
+//                            } else {
+//                                returnData = result;
+//                            }
                             Message message = new Message();
                             Bundle bundle = new Bundle();
                             bundle.putInt("requestCode", requestCode);
-                            bundle.putInt("returnCode", returnCode);
+                            bundle.putInt("returnCode", Integer.valueOf(returnCode));
                             bundle.putString("returnMsg", returnMsg);
                             bundle.putString("returnData", returnData);
                             message.setData(bundle);
                             message.what = HttpConfig.SUCCESSCODE;
                             message.obj = paramsMaps;
                             mHandler.sendMessage(message);
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             mHandler.sendEmptyMessage(HttpConfig.PARSEERROR);
                         }
                     }

@@ -3,6 +3,8 @@ package www.xcd.com.mylibrary.base.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +14,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.R;
+import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.func.BaseTopFunc;
+import www.xcd.com.mylibrary.help.OkHttpHelper;
+import www.xcd.com.mylibrary.http.HttpInterface;
+import www.xcd.com.mylibrary.utils.NetUtil;
+
+import static www.xcd.com.mylibrary.utils.ToastUtil.showToast;
 
 /**
  * fragment基类
@@ -24,7 +34,7 @@ import www.xcd.com.mylibrary.func.BaseTopFunc;
  * @date 2014年10月8日
  * @version 1.0
  */
-public abstract class BaseFragment extends Fragment implements View.OnClickListener,View.OnFocusChangeListener {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener,View.OnFocusChangeListener,HttpInterface {
 
 	/** 右侧功能对象的MAP，可以通过id获得指定的功能对象 */
 	protected Hashtable<Integer, BaseTopFunc> funcMap = new Hashtable<Integer, BaseTopFunc>();
@@ -242,5 +252,130 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 			view.requestFocus();
 			imm.showSoftInput(view, 0);
 		}
+	}
+	/**
+	 * POST网络请求
+	 *
+	 * @param url        地址
+	 * @param paramsMaps 参数
+	 */
+	public void okHttpPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
+		if (NetUtil.getNetWorking(getActivity()) == false) {
+			showToast("请检查网络。。。");
+			return;
+		}
+		OkHttpHelper.getInstance().postAsyncHttp(requestCode, url, paramsMaps,new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+					//请求错误
+					case HttpConfig.REQUESTERROR:
+						IOException error = (IOException) msg.obj;
+						onErrorResult(HttpConfig.REQUESTERROR, error);
+						break;
+					//解析错误
+					case HttpConfig.PARSEERROR:
+						onParseErrorResult(HttpConfig.PARSEERROR);
+						break;
+					//网络错误
+					case HttpConfig.NETERROR:
+						break;
+					//请求成功
+					case HttpConfig.SUCCESSCODE:
+						Bundle bundle = msg.getData();
+						int requestCode = bundle.getInt("requestCode");
+						int returnCode = bundle.getInt("returnCode");
+						String returnMsg = bundle.getString("returnMsg");
+						String returnData = bundle.getString("returnData");
+						Map<String, Object> paramsMaps = (Map) msg.obj;
+						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * GET网络请求
+	 *
+	 * @param url        地址
+	 * @param paramsMaps 参数
+	 */
+	public void okHttpGet(final int requestCode, String url, final Map<String, Object> paramsMaps) {
+		if (NetUtil.getNetWorking(getActivity()) == false) {
+			showToast("请检查网络。。。");
+			return;
+		}
+		OkHttpHelper.getInstance().getAsyncHttp(requestCode, url, paramsMaps, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+					//请求错误
+					case HttpConfig.REQUESTERROR:
+						IOException error = (IOException) msg.obj;
+						onErrorResult(HttpConfig.REQUESTERROR, error);
+						break;
+					//解析错误
+					case HttpConfig.PARSEERROR:
+						onParseErrorResult(HttpConfig.PARSEERROR);
+						break;
+					//网络错误
+					case HttpConfig.NETERROR:
+						break;
+					//请求成功
+					case HttpConfig.SUCCESSCODE:
+						Bundle bundle = msg.getData();
+						int requestCode = bundle.getInt("requestCode");
+						int returnCode = bundle.getInt("returnCode");
+						String returnMsg = bundle.getString("returnMsg");
+						String returnData = bundle.getString("returnData");
+						Map<String, Object> paramsMaps = (Map) msg.obj;
+						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * POST网络请求上传图片
+	 *
+	 * @param url        地址
+	 * @param paramsMaps 参数
+	 */
+	public void okHttpImgPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
+		if (NetUtil.getNetWorking(getActivity()) == false) {
+			showToast("请检查网络。。。");
+			return;
+		}
+		OkHttpHelper.getInstance().postAsyncPicHttp(requestCode, url, paramsMaps, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+					//请求错误
+					case HttpConfig.REQUESTERROR:
+						IOException error = (IOException) msg.obj;
+						onErrorResult(HttpConfig.REQUESTERROR, error);
+						break;
+					//解析错误
+					case HttpConfig.PARSEERROR:
+						onParseErrorResult(HttpConfig.PARSEERROR);
+						break;
+					//网络错误
+					case HttpConfig.NETERROR:
+						break;
+					//请求成功
+					case HttpConfig.SUCCESSCODE:
+						Bundle bundle = msg.getData();
+						int requestCode = bundle.getInt("requestCode");
+						int returnCode = bundle.getInt("returnCode");
+						String returnMsg = bundle.getString("returnMsg");
+						String returnData = bundle.getString("returnData");
+						Map<String, Object> paramsMaps = (Map) msg.obj;
+						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						break;
+				}
+			}
+		});
 	}
 }
