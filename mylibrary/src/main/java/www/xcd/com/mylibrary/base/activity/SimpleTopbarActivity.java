@@ -33,6 +33,7 @@ import www.xcd.com.mylibrary.help.OkHttpHelper;
 import www.xcd.com.mylibrary.http.HttpInterface;
 import www.xcd.com.mylibrary.utils.DialogUtil;
 import www.xcd.com.mylibrary.utils.NetUtil;
+import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
 import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
@@ -500,13 +501,19 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 					case HttpConfig.REQUESTERROR:
 						IOException error = (IOException) msg.obj;
 						onErrorResult(HttpConfig.REQUESTERROR, error);
+						ToastUtil.showToast("请求错误");
+						dialogDissmiss();
 						break;
 					//解析错误
 					case HttpConfig.PARSEERROR:
 						onParseErrorResult(HttpConfig.PARSEERROR);
+						ToastUtil.showToast("解析错误");
+						dialogDissmiss();
 						break;
 					//网络错误
 					case HttpConfig.NETERROR:
+						ToastUtil.showToast("网络错误");
+						dialogDissmiss();
 						break;
 					//请求成功
 					case HttpConfig.SUCCESSCODE:
@@ -517,6 +524,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						String returnData = bundle.getString("returnData");
 						Map<String, Object> paramsMaps = (Map) msg.obj;
 						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						dialogDissmiss();
 						break;
 				}
 			}
@@ -542,13 +550,16 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 					case HttpConfig.REQUESTERROR:
 						IOException error = (IOException) msg.obj;
 						onErrorResult(HttpConfig.REQUESTERROR, error);
+						dialogDissmiss();
 						break;
 					//解析错误
 					case HttpConfig.PARSEERROR:
 						onParseErrorResult(HttpConfig.PARSEERROR);
+						dialogDissmiss();
 						break;
 					//网络错误
 					case HttpConfig.NETERROR:
+						dialogDissmiss();
 						break;
 					//请求成功
 					case HttpConfig.SUCCESSCODE:
@@ -559,6 +570,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						String returnData = bundle.getString("returnData");
 						Map<String, Object> paramsMaps = (Map) msg.obj;
 						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						dialogDissmiss();
 						break;
 				}
 			}
@@ -584,13 +596,17 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 					case HttpConfig.REQUESTERROR:
 						IOException error = (IOException) msg.obj;
 						onErrorResult(HttpConfig.REQUESTERROR, error);
+						dialogDissmiss();
 						break;
 					//解析错误
 					case HttpConfig.PARSEERROR:
 						onParseErrorResult(HttpConfig.PARSEERROR);
+						dialogDissmiss();
 						break;
 					//网络错误
 					case HttpConfig.NETERROR:
+						ToastUtil.showToast("网络错误");
+						dialogDissmiss();
 						break;
 					//请求成功
 					case HttpConfig.SUCCESSCODE:
@@ -601,6 +617,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						String returnData = bundle.getString("returnData");
 						Map<String, Object> paramsMaps = (Map) msg.obj;
 						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						dialogDissmiss();
 						break;
 				}
 			}

@@ -145,9 +145,7 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
                 activity = activity.getParent();
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(MyPetIntegralTaskActivty.this,R.style.DialogTheme);
-//            builder.setView(serviceView);
             mUpgradeNotifyDialog = builder.create();
-//            mUpgradeNotifyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mUpgradeNotifyDialog.show();
             mUpgradeNotifyDialog.setContentView(serviceView);
             Window window = mUpgradeNotifyDialog.getWindow();
@@ -158,9 +156,6 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
             lp.width = WindowManager.LayoutParams.MATCH_PARENT;
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
             window.setAttributes(lp);
-            //取消状态栏
-//            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } catch (Exception e) {
             e.printStackTrace();
         }

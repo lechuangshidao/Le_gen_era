@@ -1,6 +1,7 @@
 package com.Lechuang.app.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,16 @@ import static com.Lechuang.app.R.id.pet_head;
  */
 public class PetMessageAdapter extends BaseAdapter {
     private Context context;
-    private List<PetMessageInfo> list;
+    private List<PetMessageInfo.PetMessageData> list;
 
-    public PetMessageAdapter(Context context, List<PetMessageInfo> list) {
+    public PetMessageAdapter(Context context) {
         this.context = context;
-        this.list = list;
-    }
 
+    }
+    public void setData(List<PetMessageInfo.PetMessageData> list){
+        this.list = list;
+//        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return list == null ? 0 : list.size();
@@ -47,6 +51,7 @@ public class PetMessageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
+        Log.e("TAG_","GETvIEW");
         ViewHodler hodler = null;
         if (convertView == null) {
             hodler = new ViewHodler();
@@ -61,18 +66,18 @@ public class PetMessageAdapter extends BaseAdapter {
         } else {
             hodler = (ViewHodler) convertView.getTag();
         }
-        PetMessageInfo result = list.get(position);
-        String name = result.getName();
+        PetMessageInfo.PetMessageData result = list.get(position);
+        String name = result.getPet_name();
         hodler.pet_name.setText((name==null)?("未知"+position):name);
 
-        String breed = result.getBreed();
+        String breed = result.getPet_type();
         hodler.pet_breed.setText("宠物品种："+((breed==null)?("未知"+position):breed));
 
-        String age = result.getAge();
+        String age = result.getPet_age();
         hodler.pet_age.setText("宠物年龄："+((age==null)?("未知"+position):age));
-        String label = result.getLabel();
+        String label = result.getPet_tag();
         hodler.pet_label.setText("宠物标签："+((label==null)?("未知"+position):label));
-        String imgurl = result.getPetheadurl();
+        String imgurl = result.getPet_img();
         Glide.with(context.getApplicationContext())
                 .load(imgurl)
                 .centerCrop()

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,6 +15,9 @@ import android.widget.TextView;
 
 import com.Lechuang.app.R;
 import com.Lechuang.app.base.BaseDataActivity;
+import com.Lechuang.app.entity.GlobalParam;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yonyou.sns.im.entity.album.YYPhotoItem;
 import com.yonyou.sns.im.util.common.FileUtils;
 
@@ -20,11 +25,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 import www.xcd.com.mylibrary.utils.YYStorageUtil;
 import zuo.biao.library.ui.DatePickerWindow;
 import zuo.biao.library.util.TimeUtil;
@@ -42,6 +50,12 @@ public class MeInfoActivity extends BaseDataActivity {
     private int[] selectedDate = new int[]{1971, 0, 1};
     private RelativeLayout relat_woman,relat_man;
     private EditText edit_name;
+    private Button button;
+    private int type = 1;
+    private String sex;
+    private String image_head;
+    private String nickname;
+    private String userbirthday;
     @Override
     protected Object getTopbarTitle() {
         return R.string.meinfo;
@@ -55,7 +69,14 @@ public class MeInfoActivity extends BaseDataActivity {
     }
 
     public void initView() {
+        Intent intent = getIntent();
+        image_head = intent.getStringExtra("MEINFOHEAD");
+        nickname = intent.getStringExtra("NICKNAME");
+        sex = intent.getStringExtra("SEX");
+        userbirthday = intent.getStringExtra("USERBIRTHDAY");
+        //修改生日
         select_birthday = (TextView) findViewById(R.id.select_birthday);
+        select_birthday.setHint(userbirthday==null?select_birthday.getHint().toString():userbirthday);
         select_birthday.setOnClickListener(this);
         relat_man = (RelativeLayout) findViewById(R.id.relat_man);
         relat_man.setOnClickListener(this);
@@ -65,10 +86,25 @@ public class MeInfoActivity extends BaseDataActivity {
         sex_woman = (TextView) findViewById(R.id.sex_woman);
         image_woman = (ImageView) findViewById(R.id.image_woman);
         image_man = (ImageView) findViewById(R.id.image_man);
+        //修改昵称
         edit_name = (EditText) findViewById(R.id.edit_name);
         edit_name.setOnFocusChangeListener(this);
+        edit_name.setHint(nickname==null?"未知":nickname);
+        //修改头像
         meinfo_head = (ImageView) findViewById(R.id.meinfo_head);
         meinfo_head.setOnClickListener(this);
+        Glide.with(getActivity())
+                .load(image_head)
+                .centerCrop()
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.mipmap.image_wode_geren)
+                .error(R.mipmap.image_wode_geren)
+                .into(meinfo_head);
+
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(this);
+        switchSex(Integer.parseInt(sex));
     }
 
     @Override
@@ -91,29 +127,59 @@ public class MeInfoActivity extends BaseDataActivity {
                         , TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
                 break;
             case R.id.relat_man:
-                sex_man.setBackgroundResource(R.drawable.shape_y_solid_orange);
-                sex_man.setTextColor(getResources().getColor(R.color.orange));
-                image_man.setVisibility(View.VISIBLE);
-                sex_woman.setBackgroundResource(R.drawable.shape_y_solid_black);
-                sex_woman.setTextColor(getResources().getColor(R.color.black_33));
-                image_woman.setVisibility(View.INVISIBLE);
+                type = 1;
+                switchSex(type);
                 break;
             case R.id.relat_woman:
-                sex_man.setBackgroundResource(R.drawable.shape_y_solid_black);
-                sex_man.setTextColor(getResources().getColor(R.color.black_33));
-                image_man.setVisibility(View.INVISIBLE);
-                sex_woman.setBackgroundResource(R.drawable.shape_y_solid_orange);
-                sex_woman.setTextColor(getResources().getColor(R.color.orange));
-                image_woman.setVisibility(View.VISIBLE);
+                type = 0;
+                switchSex(type);
                 break;
             case R.id.meinfo_head:
                 //上传头像
                 setTpye(AlbumPhotoActivity.TYPE_SINGLE);
                 getChoiceDialog().show();
                 break;
+            case R.id.button:
+                nickname = edit_name.getText().toString().trim();
+                if (TextUtils.isEmpty(nickname)){
+                    ToastUtil.showToast("昵称不能为空");
+                    return;
+                }
+                userbirthday = select_birthday.getText().toString().trim();
+                if (TextUtils.isEmpty(userbirthday)){
+                    ToastUtil.showToast("生日不能为空");
+                    return;
+                }
+                String user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
+                String token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("id", user_id);
+                params.put("token", token);
+                params.put("nickname", nickname);
+                params.put("userbirthday", userbirthday);
+                params.put("sex", type);//默认男性
+                okHttpPost(100, GlobalParam.MEINFO, params);
+                createDialogshow();
+                break;
         }
     }
-
+    private void switchSex( int type){
+        if (type == 1){
+            sex_man.setBackgroundResource(R.drawable.shape_y_solid_orange);
+            sex_man.setTextColor(getResources().getColor(R.color.orange));
+            image_man.setVisibility(View.VISIBLE);
+            sex_woman.setBackgroundResource(R.drawable.shape_y_solid_black);
+            sex_woman.setTextColor(getResources().getColor(R.color.black_33));
+            image_woman.setVisibility(View.INVISIBLE);
+        }else {
+            sex_man.setBackgroundResource(R.drawable.shape_y_solid_black);
+            sex_man.setTextColor(getResources().getColor(R.color.black_33));
+            image_man.setVisibility(View.INVISIBLE);
+            sex_woman.setBackgroundResource(R.drawable.shape_y_solid_orange);
+            sex_woman.setTextColor(getResources().getColor(R.color.orange));
+            image_woman.setVisibility(View.VISIBLE);
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,6 +242,7 @@ public class MeInfoActivity extends BaseDataActivity {
                     e.printStackTrace();
                 }
                 break;
+
             default:
                 break;
         }
@@ -186,7 +253,23 @@ public class MeInfoActivity extends BaseDataActivity {
     }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if (returnCode ==1){
+                    Intent intent = new Intent();
+                    intent.putExtra("MEINFOHEAD",image_head);
+                    intent.putExtra("NICKNAME",nickname);
+                    intent.putExtra("SEX",sex);
+                    intent.putExtra("USERBIRTHDAY",userbirthday);
+                    // 设置结果，并进行传送
+                    this.setResult(Activity.RESULT_FIRST_USER, intent);
+                    ToastUtil.showToast(returnMsg);
+                    finish();
+                }else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override

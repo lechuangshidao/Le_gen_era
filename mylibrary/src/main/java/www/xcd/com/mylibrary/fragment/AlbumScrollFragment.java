@@ -14,9 +14,11 @@ import com.yonyou.sns.im.util.common.FileUtils;
 import com.yonyou.sns.im.util.common.LocalBigImageUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
@@ -89,6 +91,31 @@ public class AlbumScrollFragment extends PhotoFragment {
 		viewPager.setAdapter(new ScrollPageAdapter());
 		// 设置选中
 		viewPager.setCurrentItem(curIndex < 0 ? 0 : curIndex, false);
+	}
+
+	@Override
+	public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
+	}
+
+	@Override
+	public void onCancelResult() {
+
+	}
+
+	@Override
+	public void onErrorResult(int errorCode, IOException errorExcep) {
+
+	}
+
+	@Override
+	public void onParseErrorResult(int errorCode) {
+
+	}
+
+	@Override
+	public void onFinishResult() {
+
 	}
 
 	/**

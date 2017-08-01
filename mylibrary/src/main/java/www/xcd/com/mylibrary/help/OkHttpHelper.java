@@ -3,6 +3,7 @@ package www.xcd.com.mylibrary.help;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -170,6 +171,7 @@ public class OkHttpHelper {
                             value = paramsMaps.get(key).toString();
                         }
                         formEncodingBuilder.add(key, value);
+                        Log.e("TAG_","KEY="+ key+";value="+value);
                     }
                     builder.post(formEncodingBuilder.build());
                 }
@@ -193,23 +195,12 @@ public class OkHttpHelper {
                             result = response.body().string();
 //                            result = response.networkResponse().toString();
                         }
+                        Log.e("TAG_","result="+result);
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             String returnCode = jsonObject.optString("state");
-                            String returnMsg = null;
-                            if ("0".equals(returnCode)) {
-                                returnMsg = jsonObject.optString("message");
-
-                            } else {
-                                returnMsg = "成功";
-                            }
+                            String returnMsg = jsonObject.optString("message");
                             String returnData = result;
-//                            if (!jsonObject.isNull("data")) {
-//                                returnData = jsonObject.getString("data");
-
-//                            } else {
-//                                returnData = result;
-//                            }
                             Message message = new Message();
                             Bundle bundle = new Bundle();
                             bundle.putInt("requestCode", requestCode);
@@ -222,6 +213,8 @@ public class OkHttpHelper {
                             mHandler.sendMessage(message);
                         } catch (Exception e) {
                             mHandler.sendEmptyMessage(HttpConfig.PARSEERROR);
+
+                            Log.e("TAG_","CODE = "+response.code());
                         }
                     }
                 });
@@ -252,7 +245,7 @@ public class OkHttpHelper {
                     MultipartBody.Builder multiBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     for (String key : paramsMaps.keySet()) {
                         String value = paramsMaps.get(key).toString();
-                        if (key.equals("img")) {
+                        if (key.equals("pet_img")) {
                             multiBuilder.addFormDataPart(key, "head.png", RequestBody.create(MEDIA_TYPE_PNG, new File(value)));
                         } else {
                             multiBuilder.addFormDataPart(key, value);
@@ -280,21 +273,17 @@ public class OkHttpHelper {
                             result = response.body().string();
 //                            result = response.networkResponse().toString();
                         }
+                        Log.e("TAG_","result="+result);
                         try {
                             JSONObject jsonObject = new JSONObject(result);
-                            int returnCode = jsonObject.getInt("status");
+                            String returnCode = jsonObject.optString("state");
                             String returnMsg = null;
-                            String returnData = "";
-                            if (returnCode != 10001) {
-                                returnMsg = jsonObject.getString("error");
-                            } else {
-                                returnMsg = "成功";
-                                returnData = jsonObject.getString("result");
-                            }
+                            returnMsg = jsonObject.optString("message");
+                            String returnData = result;
                             Message message = new Message();
                             Bundle bundle = new Bundle();
                             bundle.putInt("requestCode", requestCode);
-                            bundle.putInt("returnCode", returnCode);
+                            bundle.putInt("returnCode", Integer.valueOf(returnCode));
                             bundle.putString("returnMsg", returnMsg);
                             bundle.putString("returnData", returnData);
                             message.setData(bundle);

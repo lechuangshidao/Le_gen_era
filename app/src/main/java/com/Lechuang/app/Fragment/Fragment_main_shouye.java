@@ -152,7 +152,9 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
-        mMapView.onSaveInstanceState(outState);
+        if (mMapView!=null){
+            mMapView.onSaveInstanceState(outState);
+        }
     }
 
     //查找sHA1

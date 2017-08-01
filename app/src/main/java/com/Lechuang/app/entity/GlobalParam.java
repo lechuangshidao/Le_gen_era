@@ -13,6 +13,22 @@ public class GlobalParam {
     public final static String REGISTER =URL+"s=/Register/userAdd";
     //获取验证码
     public final static String VERIFICATIONCODE =IP+"/api/user/register";
-    //我的个人信息
+    //我的Fragment
     public final static String FRAGMENTWODEINFO =URL+"s=My/Message";
+    //我的个人信息
+    public final static String MEINFO =URL+"s=/index/modify";
+    //我的宠物信息
+    public final static String MYPETINFO =URL+"s=index/myPet";
+    //添加宠物信息
+    public final static String AAMYPETINFO =URL+"s=index/addPet";
+    //地址管理
+    public final static String MYPETLOCATIONMANAGE =URL+"s=index/Locations";
+    //添加地址
+    public final static String MYPETADDLOCATION =URL+"s=index/addLocation";
+    //编辑地址
+    public final static String MYPETADDLOCATIONCOMPILE =URL+"s=/index/modLocation";
+    //编辑地址
+    public final static String MYPETDELLOCATION =URL+"s=/index/delLocation";
+    //单个地址详情
+    public final static String MYPETADDLOCATIONSINLE =URL+"s=/index/Locations";
 }

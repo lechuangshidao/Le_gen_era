@@ -70,14 +70,14 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 startActivity(intent_note);
                 break;
             case R.id.Text_next_log_note:
-                editPassword.setText("123456");
+                editPassword.setText("123");
                 String userlogin = edit_callphone.getText().toString().trim();
                 String userpwd = editPassword.getText().toString().trim();
                 if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {
                     Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("type", "pwd");
                     params.put("userlogin", userlogin);
                     params.put("userpwd", userpwd);
-                    params.put("type", "pwd");
                     okHttpPost(100, GlobalParam.LOGIN, params);
 
                 } else {

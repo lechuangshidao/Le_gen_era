@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Lechuang.app.Bean.MyPetLocationManageInfo;
 import com.Lechuang.app.R;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -23,14 +23,14 @@ import java.util.Map;
 
 public class MyPetLocationManageAdapter extends BaseAdapter {
 
-    private List<Map<String,String>> list;
+    private List<MyPetLocationManageInfo.MyPetLocationManageData> list;
     private Context context;
     private Handler handler;
     public MyPetLocationManageAdapter(Context context, Handler handler) {
         this.context = context;
         this.handler = handler;
     }
-    public void setData(List<Map<String,String>> list){
+    public void setData(List<MyPetLocationManageInfo.MyPetLocationManageData> list){
         this.list = list;
     }
     @Override
@@ -67,55 +67,58 @@ public class MyPetLocationManageAdapter extends BaseAdapter {
         } else {
             hodler = (ViewHodler) convertView.getTag();
         }
-        Map map = list.get(position);
-        String recive_name = (String) map.get("name");
-        hodler.name.setText(recive_name);
+        MyPetLocationManageInfo.MyPetLocationManageData data = list.get(position);
+        if (data!=null){
+            String recive_name =  data.getConsignee();
+            hodler.name.setText(recive_name);
 
-        String phone = (String) map.get("phone");
-        hodler.phone.setText(phone);
+            String phone = data.getPhone();
+            hodler.phone.setText(phone);
 
-        String address = (String) map.get("address");
-        hodler.address.setText(address);
+            String address =  data.getAddress();
+            hodler.address.setText(address);
 
-        String status = (String) map.get("status");
-        if ("1".equals(status)){
-            hodler.opt_text.setTextColor(context.getResources().getColor(R.color.red));
-            hodler.opt_image.setBackgroundResource(R.mipmap.red_radio);
-        }else {
-            hodler.opt_text.setTextColor(context.getResources().getColor(R.color.black_99));
-            hodler.opt_image.setBackgroundResource(R.mipmap.white_radio);
+            String status =  data.getPretermit();
+            if ("1".equals(status)){
+                hodler.opt_text.setTextColor(context.getResources().getColor(R.color.red));
+                hodler.opt_image.setBackgroundResource(R.mipmap.red_radio);
+            }else {
+                hodler.opt_text.setTextColor(context.getResources().getColor(R.color.black_99));
+                hodler.opt_image.setBackgroundResource(R.mipmap.white_radio);
+            }
+            final String id = (String) data.getAddress_id();
+            hodler.type.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Message message = handler.obtainMessage();
+                    message.obj = id;
+                    message.arg1 = position;
+                    message.what = 1;
+                    handler.sendMessage(message);
+                }
+            });
+            hodler.compile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Message message = handler.obtainMessage();
+                    message.obj = id;
+                    message.arg1 = position;
+                    message.what = 3;
+                    handler.sendMessage(message);
+                }
+            });
+            hodler.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Message message = handler.obtainMessage();
+                    message.obj = id;
+                    message.arg1 = position;
+                    message.what = 4;
+                    handler.sendMessage(message);
+                }
+            });
         }
-        final String id = (String) map.get("id");
-        hodler.type.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Message message = handler.obtainMessage();
-                message.obj = id;
-                message.arg1 = position;
-                message.what = 1;
-                handler.sendMessage(message);
-            }
-        });
-        hodler.compile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Message message = handler.obtainMessage();
-                message.obj = id;
-                message.arg1 = position;
-                message.what = 3;
-                handler.sendMessage(message);
-            }
-        });
-        hodler.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Message message = handler.obtainMessage();
-                message.obj = id;
-                message.arg1 = position;
-                message.what = 4;
-                handler.sendMessage(message);
-            }
-        });
+
         return convertView;
     }
 

@@ -32,6 +32,7 @@ import com.yonyou.sns.im.entity.album.YYPhotoAlbum;
 import com.yonyou.sns.im.entity.album.YYPhotoItem;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -279,6 +280,31 @@ public class AlbumPhotoFragment extends PhotoFragment implements OnClickListener
 			e.printStackTrace();
 		}
 		return aibumList;
+	}
+
+	@Override
+	public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
+	}
+
+	@Override
+	public void onCancelResult() {
+
+	}
+
+	@Override
+	public void onErrorResult(int errorCode, IOException errorExcep) {
+
+	}
+
+	@Override
+	public void onParseErrorResult(int errorCode) {
+
+	}
+
+	@Override
+	public void onFinishResult() {
+
 	}
 
 	/**

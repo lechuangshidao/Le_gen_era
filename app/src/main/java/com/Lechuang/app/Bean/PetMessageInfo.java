@@ -1,65 +1,93 @@
 package com.Lechuang.app.Bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Android on 2017/7/20.
  */
 
 public class PetMessageInfo implements Serializable {
-    private String name;
-    private String age;
-    private String breed;
+    private String message;
+    private String state;
+    private List<PetMessageData> data;
+    public class PetMessageData{
+        private String pet_name;
+        private String pet_age;
+        private String pet_tag;
+        private String pet_img;
+        private String pet_id;
+        private String pet_type;
 
-    private String label;
-    private String id;
-    private String petheadurl;
+        public String getPet_type() {
+            return pet_type;
+        }
 
-    public String getName() {
-        return name;
+        public void setPet_type(String pet_type) {
+            this.pet_type = pet_type;
+        }
+
+        public String getPet_name() {
+            return pet_name;
+        }
+
+        public void setPet_name(String pet_name) {
+            this.pet_name = pet_name;
+        }
+
+        public String getPet_age() {
+            return pet_age;
+        }
+
+        public void setPet_age(String pet_age) {
+            this.pet_age = pet_age;
+        }
+
+        public String getPet_tag() {
+            return pet_tag;
+        }
+
+        public void setPet_tag(String pet_tag) {
+            this.pet_tag = pet_tag;
+        }
+
+        public String getPet_img() {
+            return pet_img;
+        }
+
+        public void setPet_img(String pet_img) {
+            this.pet_img = pet_img;
+        }
+
+        public String getPet_id() {
+            return pet_id;
+        }
+
+        public void setPet_id(String pet_id) {
+            this.pet_id = pet_id;
+        }
+    }
+    public String getMessage() {
+        return message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getAge() {
-        return age;
+    public String getState() {
+        return state;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getBreed() {
-        return breed;
+    public List<PetMessageData> getData() {
+        return data;
     }
 
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPetheadurl() {
-        return petheadurl;
-    }
-
-    public void setPetheadurl(String petheadurl) {
-        this.petheadurl = petheadurl;
+    public void setData(List<PetMessageData> data) {
+        this.data = data;
     }
 }

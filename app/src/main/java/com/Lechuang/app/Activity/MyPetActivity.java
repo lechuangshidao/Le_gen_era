@@ -10,22 +10,25 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.Gallery;
 
 import com.Lechuang.app.Bean.PetMessageInfo;
 import com.Lechuang.app.R;
 import com.Lechuang.app.adapter.PetMessageAdapter;
+import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.MyPetAddTopRightBtnFunc;
 import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.view.XListView;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
 public class MyPetActivity extends SimpleTopbarActivity implements
         XListView.IXListViewListener,AdapterView.OnItemClickListener {
@@ -33,10 +36,12 @@ public class MyPetActivity extends SimpleTopbarActivity implements
     private static Class<?> rightFuncArray[] = {MyPetAddTopRightBtnFunc.class};
     private XListView mListView;
     private PetMessageAdapter adapter;
-    private List<PetMessageInfo> list ;
+    private PetMessageInfo info ;
     private Handler mHandler;
     private int start = 0;
     private static int refreshCnt = 0;
+    public static final int REQUEST_MYPETADD = 10000;
+    private List<PetMessageInfo.PetMessageData> data;
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
 
@@ -57,7 +62,7 @@ public class MyPetActivity extends SimpleTopbarActivity implements
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
-        geneItems();
+//        geneItems();
         mListView = (XListView) findViewById(R.id.xListView);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -69,23 +74,25 @@ public class MyPetActivity extends SimpleTopbarActivity implements
                 return true;
             }
         });
-        initAdapter();
-
+        initData();
+        adapter = new PetMessageAdapter(this);
         mListView.setPullLoadEnable(false);//设置上拉刷新
         mListView.setPullRefreshEnable(true);//设置下拉刷新
         mListView.setXListViewListener(this); //设置监听事件，重写两个方法
         mHandler = new Handler();
     }
 
-    private void initAdapter() {
-        adapter = new PetMessageAdapter(this, list);
-        mListView.setAdapter(adapter);
+    private void initData() {
+
+        String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+        String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user_id);
+        params.put("token", token);
+        okHttpPost(100, GlobalParam.MYPETINFO, params);
+        createDialogshow();
     }
 
-    private void geneItems() {
-        String jsonStr = "[{\"name\":\"张学友\",\"breed\":\"aaa\",\"age\":\"1\",\"label\":\"ssas\"},{\"name\":\"郭富城\",\"breed\":\"aaa\",\"age\":\"1\",\"label\":\"ssas\"}]" ;
-        list = JSON.parseArray(jsonStr, PetMessageInfo.class);
-    }
 
     private void onLoad() {
         mListView.stopRefresh();
@@ -98,9 +105,7 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.clear();
-                geneItems();
-                initAdapter();
+                initData();
                 onLoad();
             }
         }, 2000);
@@ -111,7 +116,6 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                geneItems();
                 adapter.notifyDataSetChanged();
                 onLoad();
             }
@@ -119,12 +123,36 @@ public class MyPetActivity extends SimpleTopbarActivity implements
     }
 
     public void addPetButton(){
-        startActivity(new Intent(MyPetActivity.this,MyPetAddActivity.class));
+        startActivityForResult(new Intent(MyPetActivity.this,MyPetAddActivity.class),REQUEST_MYPETADD);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode){
+                case REQUEST_MYPETADD:
+                    initData();
+                    break;
+            }
+        }
     }
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        switch (requestCode){
+            case 100:
+                if (returnCode==1){
+                    info = JSON.parseObject(returnData, PetMessageInfo.class);
+                    data = info.getData();
+                    adapter.setData(data);
+                    mListView.setAdapter(adapter);
 
+                }else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override
@@ -149,21 +177,17 @@ public class MyPetActivity extends SimpleTopbarActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (list!=null&&list.size()>0){
-            PetMessageInfo petMessageInfo = list.get(i-1);
-            String id = petMessageInfo.getId();
+        if (data!=null&&data.size()>0){
+            PetMessageInfo.PetMessageData petMessageData = data.get(i - 1);
+            String id = petMessageData.getPet_id();
             Intent intent = new Intent(MyPetActivity.this, MyPetMessageActivity.class);
             intent.putExtra("id",id);
             startActivity(intent);
         }
     }
-
-    /**
-     * 初始化版本更新对话框
-     */
     protected AlertDialog mUpgradeNotifyDialog;
     private void showUpgradeDialog() {
-        LayoutInflater factor = (LayoutInflater) MyPetActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.mypetlist_dialog, null);
         serviceView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,29 +207,22 @@ public class MyPetActivity extends SimpleTopbarActivity implements
             }
         });
         try {
-            Activity activity = MyPetActivity.this;
+            Activity activity = this;
             while (activity.getParent() != null) {
                 activity = activity.getParent();
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(MyPetActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.DialogTheme);
             mUpgradeNotifyDialog = builder.create();
             mUpgradeNotifyDialog.show();
             mUpgradeNotifyDialog.setContentView(serviceView);
             Window window = mUpgradeNotifyDialog.getWindow();
-            window.setGravity( Gravity.BOTTOM);
-//            WindowManager.LayoutParams lp = window.getAttributes();
-//            // 设置透明度 alpha属性
-//            lp.alpha = 0.5f;
-////            lp.alpha = 1.0f;
-//            //设置黑暗度
-////            lp.dimAmount = 0.8f;
-//            lp.width = FrameLayout.LayoutParams.MATCH_PARENT;
-//            lp.height = FrameLayout.LayoutParams.MATCH_PARENT;
-//            window.setAttributes(lp);
-            mUpgradeNotifyDialog.setCanceledOnTouchOutside(true);// 设置点击屏幕Dialog消失
-            FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
-            //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
-            serviceView.setLayoutParams(layout);
+            window.setGravity(Gravity.BOTTOM);
+            window.setWindowAnimations(R.style.dialog_animation);
+            window.getDecorView().setPadding(0, 0, 0 ,0);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(lp);
         } catch (Exception e) {
             e.printStackTrace();
         }

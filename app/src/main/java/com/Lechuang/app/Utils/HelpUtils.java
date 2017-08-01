@@ -134,7 +134,7 @@ public class HelpUtils {
                 Log.e("TAG_","imagenema="+imagenema+";imagepath="+imagepath);
                 builder.addFormDataPart("img", imagenema, RequestBody.create(MEDIA_TYPE_PNG, imagepath));
             }
-            builder.addFormDataPart("qk_id", qk_id);
+            builder.addFormDataPart("lesd", qk_id);
             MultipartBody requestBody = builder.build();
             reString = postokHttpClient(path, requestBody);
         } catch (Exception e) {
@@ -245,5 +245,13 @@ public class HelpUtils {
             e.printStackTrace();
             return false;
         }
+    }
+    public static String getString(String all, String single)//s是需要删除某个子串的字符串s1是需要删除的子串
+    {
+        int postion = all.indexOf(single);
+        int length = single.length();
+        int Length = all.length();
+        String newString = all.substring(0,postion) + all.substring(postion + length, Length);
+        return newString;//返回已经删除好的字符串
     }
 }
