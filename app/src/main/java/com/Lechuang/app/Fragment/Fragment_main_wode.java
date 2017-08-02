@@ -53,7 +53,7 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
 
     @Override
     protected Object getTopbarTitle() {
-        return R.string.mypet;
+        return R.string.me;
     }
 
     @Override

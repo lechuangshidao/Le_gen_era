@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yonyou.sns.im.entity.album.YYPhotoItem;
 import com.yonyou.sns.im.util.common.FileUtils;
 
@@ -22,12 +24,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
 import static www.xcd.com.mylibrary.activity.AlbumPhotoActivity.IS_ORIGANL;
@@ -39,15 +44,14 @@ import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP
  * Created by Android on 2017/7/24.
  */
 
-public class MyPetActionActivity extends SimpleTopbarActivity implements TextWatcher{
+public class MyPetActionActivity extends SimpleTopbarActivity implements TextWatcher {
 
-    private EditText action_title,action_context;
+    private EditText action_title, action_context;
     private ImageView action_image;
     private Button action_ok;
-    private TextView action_titletext,action_contexttext;
+    private TextView action_titletext, action_contexttext;
+    private String picurl;
 
-
-    private Thread thread;
     @Override
     protected Object getTopbarTitle() {
         return R.string.startaction;
@@ -85,12 +89,35 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.action_image:
-                setTpye("");
+                setTpye(AlbumPhotoActivity.TYPE_SINGLE);
                 getChoiceDialog().show();
                 break;
-            case R.id.ok:
+            case R.id.action_ok:
+                String title = action_title.getText().toString().trim();
+                if (TextUtils.isEmpty(title)) {
+                    ToastUtil.showToast("活动标题不能为空！");
+                    return;
+                }
+                String context_string = action_context.getText().toString().trim();
+                if (TextUtils.isEmpty(context_string)) {
+                    ToastUtil.showToast("活动内容不能为空！");
+                    return;
+                }
+                if (picurl == null) {
+                    picurl = "";
+                }
+                String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+                String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
+                createDialogshow();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("user_id", user_id);
+                params.put("token", token);
+                params.put("title", title);
+                params.put("content", context_string);
+                params.put("picurl", picurl);
+                okHttpPost(100, GlobalParam.MYPETACTOIN, params);
                 break;
         }
     }
@@ -100,14 +127,14 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_HEAD_ALBUM:
-                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL,true);
+                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL, true);
                     YYPhotoItem photoItem = null;
-                    if (is_origanl){
+                    if (is_origanl) {
                         photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
-                        if (photoItem !=null){
+                        if (photoItem != null) {
                             startCrop(photoItem.getPhotoPath());
                         }
-                    }else {
+                    } else {
                         final List<File> list = new ArrayList<>();
                         List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
                         for (YYPhotoItem photo : photoList) {
@@ -146,23 +173,34 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
             }
         }
     }
+
     private void uploadImage(final List<File> list) {
         // 调用上传
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (thread!=null){
-            thread.interrupt();
+        for (File imagepath : list) {
+            picurl = imagepath.toString();
+            Glide.with(this)
+                    .load(imagepath)
+                    .centerCrop()
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.mipmap.pethead)
+                    .error(R.mipmap.pethead)
+                    .into(action_image);
         }
     }
 
-
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        switch (requestCode) {
+            case 100:
+                if (returnCode == 1) {
+                    this.setResult(Activity.RESULT_OK);
+                    finish();
+                }
+                ToastUtil.showToast(returnMsg);
 
+                break;
+        }
     }
 
     @Override
@@ -184,32 +222,6 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     public void onFinishResult() {
 
     }
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-//                    String result = (String) msg.obj;
-//                    Log.e("TAG_image","image="+result);
-//                    try {
-//                        JSONObject obj = new JSONObject(result);
-//                        String status = obj.optString("status");
-//                        if ("10001".equals(status)){
-//                            String imgurl = obj.getJSONObject("result").optString("imgurl");
-//                            initHead(imgurl);
-//                        }else {
-//                            ToastUtil.showToast(obj.optString("error"));
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-            }
-        }
-    };
-
-
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -218,8 +230,8 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        action_titletext.setText("(还可以输入"+(6-action_title.length())+"个字)");
-        action_contexttext.setText("(还可以输入"+(30-action_context.length())+"个字)");
+        action_titletext.setText("(还可以输入" + (8 - action_title.length()) + "个字)");
+        action_contexttext.setText("(还可以输入" + (120 - action_context.length()) + "个字)");
     }
 
     @Override

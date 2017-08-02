@@ -151,7 +151,7 @@ public class MyPetAddLocationActivity extends BaseThreeActivity implements Compo
         }
 
         String phonestring = phone.getText().toString().trim();
-        if (TextUtils.isEmpty(phonestring)){
+                                                                                                                   if (TextUtils.isEmpty(phonestring)){
             ToastUtil.showToast("手机号不能为空");
             return;
         }

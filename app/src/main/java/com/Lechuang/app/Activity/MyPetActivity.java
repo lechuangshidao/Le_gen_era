@@ -31,17 +31,21 @@ import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
 public class MyPetActivity extends SimpleTopbarActivity implements
-        XListView.IXListViewListener,AdapterView.OnItemClickListener {
+        XListView.IXListViewListener,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
     private static Class<?> rightFuncArray[] = {MyPetAddTopRightBtnFunc.class};
     private XListView mListView;
     private PetMessageAdapter adapter;
     private PetMessageInfo info ;
     private Handler mHandler;
+    protected AlertDialog mUpgradeNotifyDialog;
     private int start = 0;
     private static int refreshCnt = 0;
     public static final int REQUEST_MYPETADD = 10000;
+    public static final int REQUEST_MYPETPETMODIFY = 10001;
     private List<PetMessageInfo.PetMessageData> data;
+    private String user_id;
+    private String token;
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
 
@@ -62,18 +66,11 @@ public class MyPetActivity extends SimpleTopbarActivity implements
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
-//        geneItems();
+        user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+        token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         mListView = (XListView) findViewById(R.id.xListView);
         mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (activityIsActivity()){
-                    showUpgradeDialog();
-                }
-                return true;
-            }
-        });
+        mListView.setOnItemLongClickListener(this);
         initData();
         adapter = new PetMessageAdapter(this);
         mListView.setPullLoadEnable(false);//设置上拉刷新
@@ -81,11 +78,8 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         mListView.setXListViewListener(this); //设置监听事件，重写两个方法
         mHandler = new Handler();
     }
-
     private void initData() {
         createDialogshow();
-        String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
-        String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user_id);
         params.put("token", token);
@@ -133,6 +127,9 @@ public class MyPetActivity extends SimpleTopbarActivity implements
                 case REQUEST_MYPETADD:
                     initData();
                     break;
+                case REQUEST_MYPETPETMODIFY:
+                    initData();
+                    break;
             }
         }
     }
@@ -146,10 +143,17 @@ public class MyPetActivity extends SimpleTopbarActivity implements
                     data = info.getData();
                     adapter.setData(data);
                     mListView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
 
                 }else {
                     ToastUtil.showToast(returnMsg);
                 }
+                break;
+            case 101:
+                if (returnCode==1){
+                   initData();
+                }
+                ToastUtil.showToast(returnMsg);
                 break;
         }
     }
@@ -179,13 +183,21 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         if (data!=null&&data.size()>0){
             PetMessageInfo.PetMessageData petMessageData = data.get(i - 1);
             String id = petMessageData.getPet_id();
+            String pet_name = petMessageData.getPet_name();
+            String pet_type = petMessageData.getPet_type();
+            String pet_age = petMessageData.getPet_age();
+            String pet_img = petMessageData.getPet_img();
             Intent intent = new Intent(MyPetActivity.this, MyPetMessageActivity.class);
             intent.putExtra("id",id);
-            startActivity(intent);
+            intent.putExtra("pet_name",pet_name);
+            intent.putExtra("pet_type",pet_type);
+            intent.putExtra("pet_age",pet_age);
+            intent.putExtra("pet_img",pet_img);
+            startActivityForResult(intent,REQUEST_MYPETPETMODIFY);
         }
     }
-    protected AlertDialog mUpgradeNotifyDialog;
-    private void showUpgradeDialog() {
+
+    private void showUpgradeDialog(final int pos) {
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.mypetlist_dialog, null);
         serviceView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
@@ -199,10 +211,14 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         serviceView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //执行删除操作
-
                 //关闭dialog
                 mUpgradeNotifyDialog.dismiss();
+                //执行删除操作
+                String pet_id= data.get(pos-1).getPet_id();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("id", pet_id);
+                params.put("token", token);
+                okHttpPost(101, GlobalParam.DELPETMYPETINFO, params);
             }
         });
         try {
@@ -225,5 +241,13 @@ public class MyPetActivity extends SimpleTopbarActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (activityIsActivity()){
+            showUpgradeDialog(i);
+        }
+        return true;
     }
 }

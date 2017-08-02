@@ -15,8 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Lechuang.app.Bean.MyPetIntegralTaskInfo;
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.HelpUtils;
+import com.Lechuang.app.entity.GlobalParam;
+import com.alibaba.fastjson.JSON;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -26,9 +29,13 @@ import com.tencent.tauth.UiError;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
 public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
 
@@ -37,7 +44,9 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
     private int PADDING1 = 0;
     private LinearLayout mypettask_parent;
     private String[] textlist = {"添加宠物", "发起一次宠物活动", "分享给好友"};
-
+    private static final int REQUEST_MYPETACTION = 10000;
+    protected AlertDialog mUpgradeNotifyDialog;
+    private int actionIntegralnum = 0;
     @Override
     protected Object getTopbarTitle() {
         return R.string.integraltask;
@@ -56,19 +65,33 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
         PADDING20 = HelpUtils.dp2px(MyPetIntegralTaskActivty.this,20);
         PADDING10 = HelpUtils.dp2px(MyPetIntegralTaskActivty.this,10);
         PADDING1 = HelpUtils.dp2px(MyPetIntegralTaskActivty.this,1);
-        initListView();
+        initData();
     }
 
-    private void initListView() {
-        for (int i = 0, length = textlist.length; i < length; i++) {
+    private void initData() {
+        String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+        String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user_id);
+        params.put("token", token);
+        okHttpPost(100, GlobalParam.MYPETINTEGRALTASK, params);
+    }
+
+    private void initListView(List<MyPetIntegralTaskInfo.DataBean> data ) {
+        for (int i = 0, length = data.size(); i < length; i++) {
             final LayoutInflater inflater = LayoutInflater.from(this);
             LinearLayout pet_include = (LinearLayout) inflater.inflate(
                     R.layout.petaddtask_include, null);
             pet_include.setId(i);
             TextView text = (TextView) pet_include.findViewById(R.id.parent_add);
-            text.setText(textlist[i]);
+            text.setText(data.get(i).getTitle());
             TextView parent_addplan = (TextView) pet_include.findViewById(R.id.parent_addplan);
-            parent_addplan.setText("进度"+i+"/"+i);
+            if ("".equals(data.get(i).getStatus())){
+                parent_addplan.setText("进度0/1");
+            }else {
+                parent_addplan.setText("进度1/1");
+                actionIntegralnum++;
+            }
             pet_include.setOnClickListener(this);
 //                ImageView image = (ImageView) pet_include.findViewById(R.id.image);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -102,7 +125,7 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
                 startActivity(new Intent(MyPetIntegralTaskActivty.this,MyPetAddActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(MyPetIntegralTaskActivty.this,MyPetActionActivity.class));
+                startActivityForResult(new Intent(MyPetIntegralTaskActivty.this,MyPetActionActivity.class),REQUEST_MYPETACTION);
                 break;
             case 2:
                 if (activityIsActivity()){
@@ -112,7 +135,6 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
         }
     }
 
-    protected AlertDialog mUpgradeNotifyDialog;
     private void showUpgradeDialog() {
         LayoutInflater factor = (LayoutInflater) MyPetIntegralTaskActivty.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.mypetlist_sharedialog, null);
@@ -195,31 +217,39 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//  官方文档上面的是错误的
-//        if(requestCode == Constants.REQUEST_API) {
-//            if(resultCode == Constants.RESULT_LOGIN) {
-//                mTencent.handleLoginData(data, loginListener);
-//            }
-//  resultCode 是log出来的，官方文档里给的那个属性是没有的
+        if (resultCode ==Activity.RESULT_OK){
+            switch (requestCode){
+                case REQUEST_MYPETACTION:
+                    if (actionIntegralnum!=3){
+                        mypettask_parent.removeAllViews();
+                        initData();
+                    }
+                    break;
+                case Constants.REQUEST_LOGIN:
+                    Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
+                    Tencent.handleResultData(data, loginListener);
+                    UserInfo info = new UserInfo(this, mTencent.getQQToken());
+                    info.getUserInfo(loginListener);
+                    break;
 
-//        if (requestCode == Constants.REQUEST_LOGIN) {
-//            if (resultCode == -1) {
-//                Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
-//                Tencent.handleResultData(data, loginListener);
-//            }
-//        }
-        if (requestCode == Constants.REQUEST_LOGIN) {
-            if (resultCode == -1) {
-                Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
-                Tencent.handleResultData(data, loginListener);
-                UserInfo info = new UserInfo(this, mTencent.getQQToken());
-                info.getUserInfo(loginListener);
             }
         }
     }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if (returnCode==1) {
+                    MyPetIntegralTaskInfo info = JSON.parseObject(returnData, MyPetIntegralTaskInfo.class);
+                    List<MyPetIntegralTaskInfo.DataBean> data = info.getData();
+                    if (data!=null&&data.size()>0){
+                        initListView(data);
+                    }
+                }else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override

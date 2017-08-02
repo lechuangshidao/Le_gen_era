@@ -16,9 +16,13 @@ public class GlobalParam {
     //我的Fragment
     public final static String FRAGMENTWODEINFO =URL+"s=My/Message";
     //我的个人信息
-    public final static String MEINFO =URL+"s=/index/modify";
+    public final static String MEINFO =URL+"s=Register/userSave";
     //我的宠物信息
     public final static String MYPETINFO =URL+"s=index/myPet";
+    //修改宠物信息
+    public final static String PETMODIFYMYPETINFO =URL+"s=/index/petModify";
+    //删除宠物信息
+    public final static String DELPETMYPETINFO =URL+"s=/index/delPet";
     //添加宠物信息
     public final static String AAMYPETINFO =URL+"s=index/addPet";
     //添加宠物信息标签
@@ -33,4 +37,8 @@ public class GlobalParam {
     public final static String MYPETDELLOCATION =URL+"s=/index/delLocation";
     //单个地址详情
     public final static String MYPETADDLOCATIONSINLE =URL+"s=/index/Locations";
+    //单个地址详情
+    public final static String MYPETINTEGRALTASK =URL+"s=score/score";
+    //单个地址详情
+    public final static String MYPETACTOIN=URL+"s=Active/active";
 }
