@@ -33,9 +33,10 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     EditText editPassword;
     private TextView text_note_log;
     private String callphone;
-    private TextView edit_callphone;
     private TextView Text_next_log_note;
     private LoginInfo logininfo ;
+    private TextView text_callphone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +50,15 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     private void getInitView() {
         Text_next_log_note = (TextView) findViewById(R.id.Text_next_log_note);
         text_note_log = (TextView) findViewById(R.id.text_note_log);
-        edit_callphone = (TextView) findViewById(R.id.edit_callphone);
+        text_callphone = (TextView) findViewById(R.id.Text_callphone);
+
     }
 
     //初始化数据
     private void getInitData() {
         Intent intent = getIntent();
         callphone = intent.getStringExtra("callphone");
-        edit_callphone.setText(callphone);
+        text_callphone.setText(callphone);
         Call_Phone_Utils.setEditTextInhibitInputSpeChat(editPassword);//密码框禁止特殊字符
     }
 
@@ -71,15 +73,14 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 break;
             case R.id.Text_next_log_note:
                 editPassword.setText("123");
-                String userlogin = edit_callphone.getText().toString().trim();
+                String userlogin = text_callphone.getText().toString().trim();
                 String userpwd = editPassword.getText().toString().trim();
                 if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("type", "pwd");
                     params.put("userlogin", userlogin);
                     params.put("userpwd", userpwd);
+                    params.put("type", "pwd");
                     okHttpPost(100, GlobalParam.LOGIN, params);
-
                 } else {
                     Toast.makeText(CallPhone_Activity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     text_note_log.setEnabled(true);

@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,11 @@ import android.widget.Toast;
 import com.Lechuang.app.Activity.FuWuActivity;
 import com.Lechuang.app.Activity.Fujin_Activity;
 import com.Lechuang.app.Activity.Gift_Activity;
+import com.Lechuang.app.Bean.MapHospital;
 import com.Lechuang.app.R;
+import com.Lechuang.app.RongCloud.Rong_news;
+import com.Lechuang.app.entity.GlobalParam;
+import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -31,17 +33,23 @@ import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.xcd.com.mylibrary.base.fragment.BaseFragment;
+import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
-public class Fragment_main_shouye extends Fragment implements LocationSource, AMapLocationListener {
+public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener {
 
     @Bind(R.id.image_gift)
     ImageView imageGift;
@@ -59,6 +67,20 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     AMap aMap;
     boolean isFirstLoc = true;
     OnLocationChangedListener mListener;
+    public static StringBuffer buffer;
+    private double latitude;
+    private double longitude;
+    private String token;
+
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    protected void initView(LayoutInflater inflater, View view) {
+
+    }
 
     @Nullable
     @Override
@@ -87,6 +109,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         //定位
         InitPositioning();
         sHA1(getActivity());
+        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
     }
 
     private void InitPositioning() {
@@ -149,6 +172,11 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     }
 
     @Override
+    protected void onDestroyThread() {
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
@@ -198,8 +226,10 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
             if (aMapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
                 aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见官方定位类型表
-                aMapLocation.getLatitude();//获取纬度
-                aMapLocation.getLongitude();//获取经度
+                //获取纬度
+                latitude = aMapLocation.getLatitude();
+                //获取经度
+                longitude = aMapLocation.getLongitude();
                 aMapLocation.getAccuracy();//获取精度信息
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = new Date(aMapLocation.getTime());
@@ -222,7 +252,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                     //点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(aMapLocation);
                     //获取定位信息
-                    StringBuffer buffer = new StringBuffer();
+                    buffer = new StringBuffer();
                     buffer.append(aMapLocation.getCountry() + ""
                             + aMapLocation.getProvince() + ""
                             + aMapLocation.getCity() + ""
@@ -241,12 +271,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                 Toast.makeText(getActivity(), "定位失败", Toast.LENGTH_LONG).show();
             }
         }
-        //获取经纬度信息
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-            }
-        });
     }
     @Override
     public void onDestroyView() {
@@ -257,20 +281,63 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.image_gift:
+            case R.id.image_gift://礼物
                 Intent intent_gift=new Intent(getActivity(), Gift_Activity.class);
                 startActivity(intent_gift);
                 break;
-            case R.id.image_news:
+            case R.id.image_news://消息
+                Intent intent_news=new Intent(getActivity(),Rong_news.class);
+                startActivity(intent_news);
                 break;
-            case R.id.image_shouye_fujin:
+            case R.id.image_shouye_fujin://附近人
                 Intent intent_fujin=new Intent(getActivity(),Fujin_Activity.class);
                 startActivity(intent_fujin);
                 break;
-            case R.id.image_shouye_fuwu:
-                Intent intent_fuwu=new Intent(getActivity(),FuWuActivity.class);
-                startActivity(intent_fuwu);
+            case R.id.image_shouye_fuwu://附近服务
+                getMap();
                 break;
         }
+    }
+    @Override
+    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        switch (requestCode){
+            case 100:
+                if(1==returnCode){
+                    MapHospital mapHospital = JSON.parseObject(returnData, MapHospital.class);
+                    Intent intent_fuwu=new Intent(getActivity(),FuWuActivity.class);
+                    startActivity(intent_fuwu);
+                }else{
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onCancelResult() {
+
+    }
+
+    @Override
+    public void onErrorResult(int errorCode, IOException errorExcep) {
+
+    }
+
+    @Override
+    public void onParseErrorResult(int errorCode) {
+
+    }
+
+    @Override
+    public void onFinishResult() {
+
+    }
+    //获取附近医院
+    private void  getMap(){
+        Map<String,Object>params=new HashMap<>();
+        params.put("lng",longitude);
+        params.put("lat",latitude);
+        params.put("token",token);
+        okHttpPost(100, GlobalParam.PETHOSPITAL,params);
     }
 }

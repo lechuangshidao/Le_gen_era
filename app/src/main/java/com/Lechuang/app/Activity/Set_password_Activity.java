@@ -2,15 +2,19 @@ package com.Lechuang.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.Lechuang.app.Bean.SetUpPassword;
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -21,14 +25,16 @@ import www.xcd.com.mylibrary.utils.ToastUtil;
 
 public class Set_password_Activity extends SimpleTopbarActivity {
 
-    @Bind(R.id.edit_setpassword_callphone)
-    EditText editSetpasswordCallphone;
+    @Bind(R.id.text_setpassword_callphone)
+    TextView text_setpassword_callphone;
     @Bind(R.id.edit_set_password)
     EditText editSetPassword;
     @Bind(R.id.button_setpwd_wancheng)
     Button buttonSetpwdWancheng;
-    private String callphone;
-    private String code;
+    private String user_login;
+    private String token;
+    private String user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,25 +44,17 @@ public class Set_password_Activity extends SimpleTopbarActivity {
     }
     private void InitData() {
         Intent intent=getIntent();
-        callphone = intent.getStringExtra("callphone");
-        code = intent.getStringExtra("VERIFICATIONCODE");
-        editSetpasswordCallphone.setText(callphone);
+        user_login = intent.getStringExtra("userlogin");
+        text_setpassword_callphone.setText(user_login);
+        token = intent.getStringExtra("token");
+        user_id = intent.getStringExtra("user_id");
     }
 
     @OnClick({ R.id.button_setpwd_wancheng})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_setpwd_wancheng:
-                String password = editSetPassword.getText().toString().trim();
-                if (TextUtils.isEmpty(password)){
-                    ToastUtil.showToast("密码不能为空");
-                    return;
-                }
-                Intent intent_wancheng=new Intent(Set_password_Activity.this,Add_Information.class);
-                intent_wancheng.putExtra("callphone",callphone);
-                intent_wancheng.putExtra("VERIFICATIONCODE",code);
-                intent_wancheng.putExtra("password",password);
-                startActivity(intent_wancheng);
+                getSetUpPassword();
                 break;
         }
     }
@@ -68,7 +66,21 @@ public class Set_password_Activity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if(1==returnCode){
+                    SetUpPassword setUpPassword = JSON.parseObject(returnData, SetUpPassword.class);
+                    Intent intent_wancheng=new Intent(Set_password_Activity.this,Add_Information.class);
+                    intent_wancheng.putExtra("user_login",user_login);
+                    intent_wancheng.putExtra("user_id",user_id);
+                    intent_wancheng.putExtra("token",token);
+                    intent_wancheng.putExtra("user_pwd",editSetPassword.getText().toString());
+                    startActivity(intent_wancheng);
+                }else{
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override
@@ -89,5 +101,14 @@ public class Set_password_Activity extends SimpleTopbarActivity {
     @Override
     public void onFinishResult() {
 
+    }
+    //设置注册密码
+    public void getSetUpPassword(){
+    Map<String,Object>params=new HashMap<>();
+        params.put("user_id",user_id);
+        params.put("userpassword",editSetPassword.getText().toString());
+        params.put("phone",user_login);
+        params.put("token",token);
+        okHttpPost(100, GlobalParam.SETPASSWORD,params);
     }
 }

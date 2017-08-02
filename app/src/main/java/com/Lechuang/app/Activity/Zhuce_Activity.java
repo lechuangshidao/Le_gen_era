@@ -15,10 +15,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Lechuang.app.Bean.SmsRegistration;
 import com.Lechuang.app.R;
 import com.Lechuang.app.Utils.Call_Phone_Utils;
 import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -83,10 +85,8 @@ public class Zhuce_Activity extends SimpleTopbarActivity {
     private  void getPhoneVerificationCode(){
         //默认123
         Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("userlogin", userlogin);
-//        params.put("userpwd", userpwd);
-//        params.put("type", "pwd");
-        okHttpPost(100, GlobalParam.VERIFICATIONCODE, params);
+        params.put("phone",editCallphoneZhuce.getText().toString());
+        okHttpPost(100, GlobalParam.GETVERIFICATIONCODE, params);
     }
 
     @OnClick({ R.id.button_next_zhuce})
@@ -114,7 +114,7 @@ public class Zhuce_Activity extends SimpleTopbarActivity {
         }
     }
 
-    @Override
+    @Override//左边功能
     protected Class<?> getTopbarLeftFunc() {
         return CommonBackTopBtnFunc_or.class;
     }
@@ -123,16 +123,20 @@ public class Zhuce_Activity extends SimpleTopbarActivity {
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode){
             case 100:
-                if (requestCode==1){
+                if (1==returnCode){
                     //解析验证码成功跳转
+                    SmsRegistration smsRegistration = JSON.parseObject(returnData, SmsRegistration.class);
+                    String token = smsRegistration.getData().getToken();
+                    String user_id = smsRegistration.getData().getUser_id();
                     Intent intent = new Intent(Zhuce_Activity.this, Recommend_YanZhengMa_Activity.class);
                     intent.putExtra("callphone", editCallphoneZhuce.getText().toString());
-//                    intent.putExtra("user_id", user_id);
+                    intent.putExtra("token",token);
+                    intent.putExtra("user_id",user_id);
                     startActivity(intent);
                 }else {
                     ToastUtil.showToast(returnMsg);
-                }
-                break;
+               }
+               break;
         }
 
     }

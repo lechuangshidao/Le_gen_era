@@ -33,6 +33,9 @@ public class MyPetAddLocationActivity extends BaseThreeActivity implements Compo
 
     private static Class<?> rightFuncArray[] = {MyPetSaveTextTopBtnFunc.class};
     private Switch switch_button;
+    private String token;
+    private String user_id;
+
     private EditText name,phone,address;
     private TextView region;
     private int tpye = 0;
@@ -55,6 +58,8 @@ public class MyPetAddLocationActivity extends BaseThreeActivity implements Compo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypetaddlocation);
+        token = XCDSharePreference.getSharedPreferences("token");
+        user_id = XCDSharePreference.getSharedPreferences("user_id");
     }
 
     @Override

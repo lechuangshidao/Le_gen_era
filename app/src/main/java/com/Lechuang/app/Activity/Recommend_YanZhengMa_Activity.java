@@ -6,11 +6,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.Lechuang.app.Bean.VerificationCode;
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.CommonBackTopBtnFunc_or;
+import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -23,11 +29,13 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
 
     @Bind(R.id.button_next_tijiao)
     Button  button_next_tijiao;
-    @Bind(R.id.edit_callphone_note)
-    EditText editCallphoneNote;
+    @Bind(R.id.text_callphone_note_register)
+    TextView text_callphone_note_register;
     @Bind(R.id.edit_password_note)
     EditText editPasswordNote;
     private String callphone;
+    private String token;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +49,21 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
     private void getInitData() {
         Intent intent = getIntent();
         callphone = intent.getStringExtra("callphone");
-        editCallphoneNote.setText(callphone);
+        text_callphone_note_register.setText(callphone);
+        token = intent.getStringExtra("token");
+        user_id = intent.getStringExtra("user_id");
     }
-
-
     @OnClick({ R.id.button_next_tijiao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_next_tijiao:
                 //验证码不能为空
-                String edit_code = editPasswordNote.getText().toString().trim();
-                if (TextUtils.isEmpty(edit_code)){
-                    ToastUtil.showToast("验证码不能为空");
+                if (!TextUtils.isEmpty(editPasswordNote.getText().toString().trim())) {
+                    getVerificationCode();
+                } else {
+                    Toast.makeText(Recommend_YanZhengMa_Activity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                    Intent intent = new Intent(Recommend_YanZhengMa_Activity.this, Set_password_Activity.class);
-                    intent.putExtra("callphone",callphone);
-                    intent.putExtra("VERIFICATIONCODE",edit_code);
-                    startActivity(intent);
                 break;
         }
     }
@@ -70,7 +75,20 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if(1==returnCode){
+                    VerificationCode verificationCode = JSON.parseObject(returnData, VerificationCode.class);
+                    Intent intent = new Intent(Recommend_YanZhengMa_Activity.this, Set_password_Activity.class);
+                    intent.putExtra("userlogin",callphone);
+                    intent.putExtra("token",token);
+                    intent.putExtra("user_id",user_id);
+                    startActivity(intent);
+                }else{
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override
@@ -91,5 +109,12 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
     @Override
     public void onFinishResult() {
 
+    }
+    //验证码验证
+    private void getVerificationCode(){
+        Map<String,Object>params=new HashMap<>();
+        params.put("phone",callphone);
+        params.put("code","123456");
+        okHttpPost(100, GlobalParam.VERIFICATIONCODE,params);
     }
 }

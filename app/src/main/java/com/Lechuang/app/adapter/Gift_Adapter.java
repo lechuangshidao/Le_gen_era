@@ -2,6 +2,8 @@ package com.Lechuang.app.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,7 +11,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Lechuang.app.Bean.CreditsExchange;
+import com.Lechuang.app.Bean.ShoppingMall;
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
+import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import www.xcd.com.mylibrary.config.HttpConfig;
+import www.xcd.com.mylibrary.help.OkHttpHelper;
 
 /**
  * 项目名称：com.Lechuang.app.adapter
@@ -21,24 +35,26 @@ public class Gift_Adapter extends BaseAdapter{
     Context context;
     private TextView text_dialog_name;
     private TextView text_duihuan_item;
-
-    public Gift_Adapter(Context context) {
+    List<ShoppingMall.DataBean> data;
+    String token;
+    public Gift_Adapter(Context context, List<ShoppingMall.DataBean> data, String token) {
         this.context=context;
+        this.data=data;
+        this.token=token;
     }
-
     @Override
     public int getCount() {
-        return 20;
+        return data == null ? 0 : data.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return data.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -56,12 +72,9 @@ public class Gift_Adapter extends BaseAdapter{
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        text_duihuan_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCustomizeDialog();
-            }
-        });
+        holder.text_gift_name.setText(data.get(i).getShopname());
+        holder.gift_num.setText(data.get(i).getIntegral());
+        Glide.with(context).load(data.get(i).getShopimg()).into(holder.image_jifen_gift);
         return view;
     }
     class ViewHolder {
@@ -95,12 +108,35 @@ public class Gift_Adapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
+                getCreditsExchange();//积分兑换
             }
         });
         image_dialog_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
+            }
+        });
+    }
+    //积分兑换
+    private void getCreditsExchange() {
+        Map<String,Object>params=new HashMap<>();
+        params.put("token",token);
+        for (int i = 0; i <data.size(); i++) {
+            params.put("shipid",data.get(i).getId());
+            params.put("shopintegral",data.get(i).getIntegral());
+        }
+        OkHttpHelper.getInstance().postAsyncHttp(100, GlobalParam.CREDITSEXCHANGE,params,new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    //请求成功
+                    case HttpConfig.SUCCESSCODE:
+                       String message= (String) msg.obj;
+                        CreditsExchange creditsExchange = JSON.parseObject(message, CreditsExchange.class);
+                        String meg = creditsExchange.getMessage();
+                        break;
+                }
             }
         });
     }

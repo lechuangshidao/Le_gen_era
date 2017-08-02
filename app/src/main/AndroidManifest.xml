@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.Lechuang.app">
-
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="22" />
     <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 允许程序设置内置sd卡的写权限 -->
@@ -31,7 +32,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
+        >
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
@@ -55,7 +58,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".Activity.Zhuce_Activity"
             android:configChanges="keyboard|keyboardHidden|orientation"
@@ -242,31 +245,56 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".Activity.AboutWebViewActivity"
+        <activity
+            android:name=".Activity.AboutWebViewActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".Activity.SettingPasswordActivity"
+        <activity
+            android:name=".Activity.SettingPasswordActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".Activity.Set_password_Activity"
+        <activity
+            android:name=".Activity.Set_password_Activity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
-        <activity android:name=".Activity.Fujin_Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".Activity.Fujin_Activity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            ></activity>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        ------------------------------IM-------------------------------------
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.Lechuang.app"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
+
+        <activity android:name=".RongCloud.Rong_news"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.Lechuang.app"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>></activity>
     </application>
 
 </manifest>

@@ -47,6 +47,9 @@ public class Add_Information extends BaseDataActivity {
     @Bind(image_womanman)
     ImageView imagewomanman;
     private int sex = 1;
+    private String user_id;
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +62,9 @@ public class Add_Information extends BaseDataActivity {
     private void getInitData() {
         Call_Phone_Utils.setEditTextInhibitInputSpeChat(editAddName);//宠物昵称禁止为特殊字符
         Intent intent = getIntent();
-        callphone = intent.getStringExtra("callphone");
-        password = intent.getStringExtra("password");
-        code = intent.getStringExtra("VERIFICATIONCODE");
+        callphone = intent.getStringExtra("user_login");
+        user_id = intent.getStringExtra("user_id");
+        token = intent.getStringExtra("token");
     }
 
     @OnClick({R.id.Text_next_add, R.id.image_wu_gerentouxiang,R.id.edit_age_date,R.id.image_man, image_womanman})
@@ -91,11 +94,11 @@ public class Add_Information extends BaseDataActivity {
                 }
                 Intent intent = new Intent(Add_Information.this, Have_Or_Not_Pet.class);
                 intent.putExtra("callphone",callphone);
-                intent.putExtra("password",password);
-                intent.putExtra("VERIFICATIONCODE",code);
-                intent.putExtra("nickname",nickname);
-                intent.putExtra("birthday",birthday);
+                intent.putExtra("nickname",editAddName.getText().toString());
+                intent.putExtra("birthday",editAgeDate.getText().toString());
                 intent.putExtra("sex",sex);
+                intent.putExtra("user_id",user_id);
+                intent.putExtra("token",token);
                 startActivity(intent);
                 break;
             //个人头像
