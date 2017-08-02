@@ -80,13 +80,13 @@ public class MyPetLocationManageActivity extends SimpleTopbarActivity implements
     }
 
     private void initData() {
+        createDialogshow();
         user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
         token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user_id);
         params.put("token", token);
         okHttpPost(100, GlobalParam.MYPETLOCATIONMANAGE, params);
-        createDialogshow();
     }
 
     @Override
@@ -190,19 +190,19 @@ public class MyPetLocationManageActivity extends SimpleTopbarActivity implements
             Map<String, Object> params = new HashMap<String, Object>();
             switch (msg.what){
                 case 1://设置默认地址
+                    createDialogshow();
                     Log.e("TAG_默认","ID_"+address_id);
                     params.put("address_id", address_id);
                     params.put("token", token);
                     params.put("default", "1");
                     okHttpPost(101, GlobalParam.MYPETADDLOCATIONCOMPILE, params);
-                    createDialogshow();
                     break;
                 case 3://编辑功能
+                    createDialogshow();
                     Log.e("TAG_编辑","ID_"+address_id);
                     params.put("address_id", address_id);
                     params.put("token", token);
                     okHttpPost(102, GlobalParam.MYPETADDLOCATIONSINLE, params);
-                    createDialogshow();
                     break;
                 case 4://删除功能
                     Log.e("TAG_删除","ID_"+address_id);
@@ -272,11 +272,11 @@ public class MyPetLocationManageActivity extends SimpleTopbarActivity implements
             @Override
             public void onClick(View v) {
                 //执行删除操作
+                createDialogshow();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("address_id", address_id);
                 params.put("token", token);
                 okHttpPost(103, GlobalParam.MYPETDELLOCATION, params);
-                createDialogshow();
                 //关闭dialog
                 mUpgradeNotifyDialog.dismiss();
             }

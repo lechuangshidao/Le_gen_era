@@ -83,14 +83,13 @@ public class MyPetActivity extends SimpleTopbarActivity implements
     }
 
     private void initData() {
-
+        createDialogshow();
         String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
         String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user_id);
         params.put("token", token);
         okHttpPost(100, GlobalParam.MYPETINFO, params);
-        createDialogshow();
     }
 
 

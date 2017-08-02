@@ -174,6 +174,7 @@ public class MyPetAddLocationActivity extends BaseThreeActivity implements Compo
             ToastUtil.showToast("详细地址不能为空");
             return;
         }
+        createDialogshow();
         String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
         String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -185,7 +186,6 @@ public class MyPetAddLocationActivity extends BaseThreeActivity implements Compo
         params.put("x_address", addressstring);
         params.put("default", tpye);
         okHttpPost(100, GlobalParam.MYPETADDLOCATION, params);
-        createDialogshow();
     }
 
     @Override

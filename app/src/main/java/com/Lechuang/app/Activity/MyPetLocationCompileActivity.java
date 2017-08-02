@@ -188,11 +188,11 @@ public class MyPetLocationCompileActivity extends BaseThreeActivity implements V
                 address_select.setVisibility(View.GONE);
                 break;
             case R.id.dellocation:
+                createDialogshow();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("address_id", address_id);
                 params.put("token", token);
                 okHttpPost(102, GlobalParam.MYPETDELLOCATION, params);
-                createDialogshow();
                 break;
         }
     }
@@ -214,6 +214,7 @@ public class MyPetLocationCompileActivity extends BaseThreeActivity implements V
         if (TextUtils.isEmpty(x_address)){
             x_address = address_all.getHint().toString().trim();
         }
+        createDialogshow();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("address_id", address_id);
         params.put("token", token);
@@ -223,7 +224,6 @@ public class MyPetLocationCompileActivity extends BaseThreeActivity implements V
         params.put("x_address", x_address);
         params.put("default", type);
         okHttpPost(101, GlobalParam.MYPETADDLOCATIONCOMPILE, params);
-        createDialogshow();
     }
 
     @Override
