@@ -21,6 +21,8 @@ public class GlobalParam {
     public final static String MYPETINFO =URL+"s=index/myPet";
     //添加宠物信息
     public final static String AAMYPETINFO =URL+"s=index/addPet";
+    //添加宠物信息标签
+    public final static String AAMYPETINFOTAGS =URL+"s=index/tags";
     //地址管理
     public final static String MYPETLOCATIONMANAGE =URL+"s=index/Locations";
     //添加地址

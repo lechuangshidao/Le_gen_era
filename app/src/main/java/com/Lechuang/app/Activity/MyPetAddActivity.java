@@ -60,6 +60,8 @@ public class MyPetAddActivity extends BaseDataActivity {
     private Button button;
     private StringBuilder builder = new StringBuilder();
     private String imageFilepath;
+    private String user_id;
+    private String token;
     private void uploadImage(final List<File> listimage) {
         // 调用上传
         for (File imagepath : listimage) {
@@ -87,9 +89,11 @@ public class MyPetAddActivity extends BaseDataActivity {
         initView();
     }
 
-    private String[][] textinclude = {{"公", "母"}, {"发情期", "未成年", "绝育"}, {"黑色", "白色", "花色"}};
+    private String[][] textinclude = {{"公", "母"}, {"发情期", "未成年", "绝育"}, {"黑色", "白色", "其它"}};
     private List<Map<String,Boolean>> list = new ArrayList<>();
     public void initView() {
+        user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
+        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
         mypetadd_head = (ImageView) findViewById(R.id.mypetadd_head);
         mypetadd_head.setOnClickListener(this);
         age = (TextView) findViewById(R.id.mypetadd_age);
@@ -101,11 +105,14 @@ public class MyPetAddActivity extends BaseDataActivity {
         petadd_include = (LinearLayout) findViewById(R.id.petadd_include);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(this);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("token", token);
+//        okHttpPost(101, GlobalParam.AAMYPETINFOTAGS, params);
         initGridViewOne();
     }
 
+    private void initGridViewOne()  {
 
-    private void initGridViewOne() {
         for (int i = 0, length = textinclude.length; i < length; i++) {
             LinearLayout layout2 = new LinearLayout(this);
             layout2.setId((i+1)*10);
@@ -210,9 +217,8 @@ public class MyPetAddActivity extends BaseDataActivity {
                     ToastUtil.showToast("您还未选择宠物头像");
                     return;
                 }
+                createDialogshow();
                 Log.e("TAG_","imageFilepath="+imageFilepath);
-                String user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
-                String token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("user_id", user_id);
                 params.put("token", token);
@@ -222,7 +228,6 @@ public class MyPetAddActivity extends BaseDataActivity {
                 params.put("pet_tag", builder.toString());
                 params.put("pet_type", pet_type);
                 okHttpImgPost(100, GlobalParam.AAMYPETINFO, params);
-                createDialogshow();
                 break;
         }
     }

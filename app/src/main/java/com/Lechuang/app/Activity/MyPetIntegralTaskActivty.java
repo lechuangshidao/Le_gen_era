@@ -112,19 +112,6 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
         }
     }
 
-//    View.OnClickListener pChildClick = new View.OnClickListener() {
-//
-//        @Override
-//        public void onClick(View v) {
-//            Log.e("TAG_",v.getId()+"");
-//            switch (v.getId()){
-//
-//            }
-//        }
-//    };
-    /**
-     * 初始化版本更新对话框
-     */
     protected AlertDialog mUpgradeNotifyDialog;
     private void showUpgradeDialog() {
         LayoutInflater factor = (LayoutInflater) MyPetIntegralTaskActivty.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
