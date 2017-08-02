@@ -58,7 +58,7 @@ public class MyPetAddActivity extends BaseDataActivity {
     private Thread thread;
     private Context context;
     private Button button;
-    private StringBuilder builder = new StringBuilder();
+    private StringBuilder builder;
     private String imageFilepath;
     private String user_id;
     private String token;
@@ -90,7 +90,7 @@ public class MyPetAddActivity extends BaseDataActivity {
     }
 
     private String[][] textinclude = {{"公", "母"}, {"发情期", "未成年", "绝育"}, {"黑色", "白色", "其它"}};
-    private List<Map<String,Boolean>> list = new ArrayList<>();
+    private List<Map<String,Boolean>> list;
     public void initView() {
         user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
         token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
@@ -112,7 +112,8 @@ public class MyPetAddActivity extends BaseDataActivity {
     }
 
     private void initGridViewOne()  {
-
+        builder = new StringBuilder();
+        list = new ArrayList<>();
         for (int i = 0, length = textinclude.length; i < length; i++) {
             LinearLayout layout2 = new LinearLayout(this);
             layout2.setId((i+1)*10);
@@ -200,6 +201,10 @@ public class MyPetAddActivity extends BaseDataActivity {
                     ToastUtil.showToast("年龄不能为空");
                     return;
                 }
+                if (imageFilepath==null){
+                    ToastUtil.showToast("您还未选择宠物头像");
+                    return;
+                }
                 for (int j = 0,lengh = list.size(); j <lengh ; j++) {
                     Map<String,Boolean> map = list.get(j);
                     for (String key : map.keySet()) {
@@ -212,10 +217,6 @@ public class MyPetAddActivity extends BaseDataActivity {
                             }
                         }
                     }
-                }
-                if (imageFilepath==null){
-                    ToastUtil.showToast("您还未选择宠物头像");
-                    return;
                 }
                 createDialogshow();
                 Log.e("TAG_","imageFilepath="+imageFilepath);

@@ -1,7 +1,6 @@
 package com.Lechuang.app.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ public class PetMessageAdapter extends BaseAdapter {
     }
     public void setData(List<PetMessageInfo.PetMessageData> list){
         this.list = list;
-//        notifyDataSetChanged();
     }
     @Override
     public int getCount() {
@@ -51,7 +49,6 @@ public class PetMessageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        Log.e("TAG_","GETvIEW");
         ViewHodler hodler = null;
         if (convertView == null) {
             hodler = new ViewHodler();

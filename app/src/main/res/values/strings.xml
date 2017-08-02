@@ -9,6 +9,7 @@
     <string name="register">注册</string>
     <string name="dialog_name">您的礼品已兑换成功，我们会在48小时内为您安排发货</string>
     <string name="fujin_name">您好，看了你养了跟我同样的品种,可以互相聊聊心得吗？</string>
+    <string name="me">我</string>
     <string name="mypet">我的萌宠</string>
     <string name="meinfo">个人信息</string>
     <string name="mypetmessage">我的宠物</string>
@@ -18,6 +19,9 @@
     <string name="locationmanage">地址管理</string>
     <string name="chang_head">修改头像</string>
     <string name="pet_head">宠物头像</string>
+    <string name="pet_type">例如：哈士奇</string>
+    <string name="pet_name">例如：骨头</string>
+    <string name="pet_age">0000-00-00</string>
     <string name="ok">完成</string>
     <string name="interval">1</string>
     <string name="defaultInteval">1</string>

@@ -141,25 +141,40 @@ public class MeInfoActivity extends BaseDataActivity {
                 break;
             case R.id.button:
                 nickname = edit_name.getText().toString().trim();
+                String nicknameHint = edit_name.getHint().toString().trim();
                 if (TextUtils.isEmpty(nickname)){
-                    ToastUtil.showToast("昵称不能为空");
-                    return;
+                    if (TextUtils.isEmpty(nicknameHint)){
+                        ToastUtil.showToast("昵称不能为空");
+                        return;
+                    }else {
+                        nickname = nicknameHint;
+                    }
                 }
                 userbirthday = select_birthday.getText().toString().trim();
+                String userbirthdayHint = select_birthday.getHint().toString().trim();
                 if (TextUtils.isEmpty(userbirthday)){
-                    ToastUtil.showToast("生日不能为空");
+                    if (TextUtils.isEmpty(userbirthdayHint)){
+                        ToastUtil.showToast("生日不能为空");
+                        return;
+                    }else {
+                        userbirthday = userbirthdayHint;
+                    }
+                }
+                if (image_head==null){
+                    ToastUtil.showToast("头像不能为空");
                     return;
                 }
+                createDialogshow();
                 String user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
                 String token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
                 Map<String, Object> params = new HashMap<String, Object>();
-                params.put("id", user_id);
+                params.put("user_id", user_id);
                 params.put("token", token);
                 params.put("nickname", nickname);
+                params.put("userpicture", image_head);
                 params.put("userbirthday", userbirthday);
                 params.put("sex", type);//默认男性
-                okHttpPost(100, GlobalParam.MEINFO, params);
-                createDialogshow();
+                okHttpImgPost(100, GlobalParam.MEINFO, params);
                 break;
         }
     }
@@ -247,9 +262,19 @@ public class MeInfoActivity extends BaseDataActivity {
                 break;
         }
     }
-    private void uploadImage(final List<File> list) {
+    private void uploadImage(final List<File> listimage) {
         // 调用上传
-
+        for (File imagepath : listimage) {
+            image_head = imagepath.toString();
+            Glide.with(this)
+                    .load(imagepath)
+                    .centerCrop()
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.mipmap.pethead)
+                    .error(R.mipmap.pethead)
+                    .into(meinfo_head);
+        }
     }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {

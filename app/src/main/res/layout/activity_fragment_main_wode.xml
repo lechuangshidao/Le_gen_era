@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/image_wode_geren"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/height_80"
+                android:layout_height="@dimen/height_80"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/image_wode_geren" />
