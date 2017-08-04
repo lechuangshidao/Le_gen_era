@@ -3,6 +3,8 @@ package com.Lechuang.app.Bean;
 import java.io.Serializable;
 import java.util.List;
 
+import www.xcd.com.mylibrary.entity.BaseData;
+
 /**
  * Created by Android on 2017/7/20.
  */
@@ -11,7 +13,7 @@ public class PetMessageInfo implements Serializable {
     private String message;
     private String state;
     private List<PetMessageData> data;
-    public class PetMessageData{
+    public class PetMessageData extends BaseData {
         private String pet_name;
         private String pet_age;
         private String pet_tag;

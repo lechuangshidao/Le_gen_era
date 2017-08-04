@@ -31,6 +31,46 @@
                 android:textSize="@dimen/textsize_20"
                 android:textColor="@color/black_33"
                 android:gravity="center_vertical"
+                android:text="我的宠物"/>
+            <LinearLayout
+                android:id="@+id/action_petlinear"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingRight="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_1"
+                android:paddingTop="@dimen/margin_1"
+                android:background="@drawable/shape_y_stroke_black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/action_pet"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:textSize="@dimen/textsize_18"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:textColor="@color/black_33"
+                    android:background="@drawable/shape_n_solid_white"
+                    android:textColorHint="@color/black_99"
+                    android:gravity="center_vertical"
+                    android:hint="请选择发起活动宠物"/>
+                <ImageView
+                    android:id="@+id/action_petarrows"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:src="@mipmap/pet_next"
+                    android:gravity="center_vertical|right" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="@dimen/margin_10"
+                android:textSize="@dimen/textsize_20"
+                android:textColor="@color/black_33"
+                android:gravity="center_vertical"
                 android:text="活动标题"/>
             <LinearLayout
                 android:focusable="true"

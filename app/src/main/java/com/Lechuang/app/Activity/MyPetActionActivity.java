@@ -11,10 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Lechuang.app.Bean.PetMessageInfo;
 import com.Lechuang.app.R;
 import com.Lechuang.app.entity.GlobalParam;
+import com.Lechuang.app.view.SelectPopupWindow;
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yonyou.sns.im.entity.album.YYPhotoItem;
@@ -47,10 +51,15 @@ import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP
 public class MyPetActionActivity extends SimpleTopbarActivity implements TextWatcher {
 
     private EditText action_title, action_context;
-    private ImageView action_image;
+    private ImageView action_image, action_petarrows;
     private Button action_ok;
-    private TextView action_titletext, action_contexttext;
+    private TextView action_titletext, action_contexttext, action_pet;
     private String picurl;
+    private String user_id;
+    private String token;
+    private List<PetMessageInfo.PetMessageData> data;
+    private String pet_id;
+    private LinearLayout action_petlinear;
 
     @Override
     protected Object getTopbarTitle() {
@@ -61,7 +70,6 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypetaction);
-
     }
 
     @Override
@@ -83,9 +91,18 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         action_ok.setOnClickListener(this);
         action_titletext = (TextView) findViewById(R.id.action_titletext);
         action_contexttext = (TextView) findViewById(R.id.action_contexttext);
-
+        action_pet = (TextView) findViewById(R.id.action_pet);
+        action_pet.setOnClickListener(this);
+        user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+        token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
+        action_petarrows = (ImageView) findViewById(R.id.action_petarrows);
+        action_petlinear = (LinearLayout) findViewById(R.id.action_petlinear);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user_id);
+        params.put("token", token);
+        okHttpPost(101, GlobalParam.MYPETINFO, params);
     }
-
+    private SelectPopupWindow mPopupWindow = null;
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -94,7 +111,21 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
                 setTpye(AlbumPhotoActivity.TYPE_SINGLE);
                 getChoiceDialog().show();
                 break;
+            case R.id.action_pet:
+                if (data==null&&data.size()==0){
+                    ToastUtil.showToast("暂未获取到宠物信息");
+                }
+                if(mPopupWindow == null){
+                    mPopupWindow = new SelectPopupWindow((List<PetMessageInfo.PetMessageData>)data,this,selectCategory);
+                }
+                mPopupWindow.showAsDropDown(action_pet, -5, 10);
+//                showCreateMultiChatActionBar(action_petarrows);
+                break;
             case R.id.action_ok:
+                if (TextUtils.isEmpty(pet_id)) {
+                    ToastUtil.showToast("请选择参加活动的宠物");
+                    return;
+                }
                 String title = action_title.getText().toString().trim();
                 if (TextUtils.isEmpty(title)) {
                     ToastUtil.showToast("活动标题不能为空！");
@@ -108,8 +139,6 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
                 if (picurl == null) {
                     picurl = "";
                 }
-                String user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
-                String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
                 createDialogshow();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("user_id", user_id);
@@ -117,6 +146,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
                 params.put("title", title);
                 params.put("content", context_string);
                 params.put("picurl", picurl);
+                params.put("pet_id", pet_id);
                 okHttpPost(100, GlobalParam.MYPETACTOIN, params);
                 break;
         }
@@ -200,6 +230,14 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
                 ToastUtil.showToast(returnMsg);
 
                 break;
+
+            case 101:
+                if (returnCode == 1) {
+                    PetMessageInfo info = JSON.parseObject(returnData, PetMessageInfo.class);
+                    data = info.getData();
+
+                }
+                break;
         }
     }
 
@@ -238,4 +276,19 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
     public void afterTextChanged(Editable editable) {
 
     }
+
+
+
+    /**
+     * 选择完成回调接口
+     */
+    private SelectPopupWindow.SelectCategory selectCategory=new SelectPopupWindow.SelectCategory() {
+
+        @Override
+        public void selectCategory(int parentSelectposition) {
+            PetMessageInfo.PetMessageData petMessageData = data.get(parentSelectposition);
+            action_pet.setText(petMessageData.getPet_name());
+            pet_id = petMessageData.getPet_id();
+        }
+    };
 }

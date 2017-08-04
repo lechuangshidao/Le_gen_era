@@ -36,6 +36,7 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     private TextView edit_callphone;
     private TextView Text_next_log_note;
     private LoginInfo logininfo ;
+    private String userlogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +71,8 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 startActivity(intent_note);
                 break;
             case R.id.Text_next_log_note:
-                editPassword.setText("123");
-                String userlogin = edit_callphone.getText().toString().trim();
+                editPassword.setText("123456");
+                userlogin = edit_callphone.getText().toString().trim();
                 String userpwd = editPassword.getText().toString().trim();
                 if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {
                     Map<String, Object> params = new HashMap<String, Object>();
@@ -103,6 +104,7 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                     String user_id = logininfo.getData().getUser_id();
                     XCDSharePreference.getInstantiation(this).setSharedPreferences("user_id", user_id);
                     XCDSharePreference.getInstantiation(this).setSharedPreferences("token", token);
+                    XCDSharePreference.getInstantiation(this).setSharedPreferences("userlogin", userlogin);
                     Intent intent_main = new Intent(CallPhone_Activity.this, Home_Pager.class);
                     startActivity(intent_main);
                 }else {

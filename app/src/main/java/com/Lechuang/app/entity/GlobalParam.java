@@ -41,4 +41,6 @@ public class GlobalParam {
     public final static String MYPETINTEGRALTASK =URL+"s=score/score";
     //单个地址详情
     public final static String MYPETACTOIN=URL+"s=Active/active";
+    //修改密码
+    public final static String PWDMODIFY=URL+"s=/index/pwdModify";
 }

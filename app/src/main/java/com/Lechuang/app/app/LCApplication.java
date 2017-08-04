@@ -28,6 +28,10 @@ public class LCApplication extends BaseApplication{
             CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(appContext);
             strategy.setAppVersion(versionName);
             CrashReport.initCrashReport(appContext, "7c0ffed339", false,strategy);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
             //初始化第三方jar
             YYIMChat.getInstance().init(getApplicationContext());
             YYIMChat.getInstance().configLogger(Log.VERBOSE, true, true, false);
