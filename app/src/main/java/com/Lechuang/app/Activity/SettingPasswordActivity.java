@@ -3,31 +3,37 @@ package com.Lechuang.app.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.Gallery;
+import android.widget.TextView;
 
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.SettingPasswordSaveTopBtnFunc;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-import www.xcd.com.mylibrary.base.application.BaseApplication;
 import www.xcd.com.mylibrary.utils.ToastUtil;
+import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
 public class SettingPasswordActivity extends SimpleTopbarActivity {
 
     private static Class<?> accountrightFuncArray[] = {SettingPasswordSaveTopBtnFunc.class};
     private EditText old_password, news_password, affirmnews_password;
     protected AlertDialog mUpgradeNotifyDialog;
-
+    private String user_id;
+    private String token;
+    private String userlogin;
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
         return accountrightFuncArray;
@@ -47,6 +53,11 @@ public class SettingPasswordActivity extends SimpleTopbarActivity {
     }
 
     private void initView() {
+        user_id = XCDSharePreference.getInstantiation(this).getSharedPreferences("user_id");
+        token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
+        userlogin = XCDSharePreference.getInstantiation(this).getSharedPreferences("userlogin");
+        TextView login_account = (TextView) findViewById(R.id.login_account);
+        login_account.setText(userlogin);
         old_password = (EditText) findViewById(R.id.old_password);
         old_password.setOnFocusChangeListener(this);
         news_password = (EditText) findViewById(R.id.news_password);
@@ -55,41 +66,31 @@ public class SettingPasswordActivity extends SimpleTopbarActivity {
         affirmnews_password.setOnFocusChangeListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.ok:
-//                loginDialog = DialogUtil.getProgressDialog(AccountUpDataPasswordActivity.this);
-//                dialogshow();
-                createDialogshow();
-                String strold_password = old_password.getText().toString().trim();
-                String strnews_password = news_password.getText().toString().trim();
-                String straffirmnews_password = affirmnews_password.getText().toString().trim();
-
-                break;
-        }
-    }
     public void getSavePassword(){
-        ToastUtil.showToast("修改密码按钮");
-    }
-    @Override
-    protected void onDestroyDeatchView() {
-        super.onDestroyDeatchView();
-
-        handler.removeCallbacksAndMessages(null);
-    }
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    showUpgradeDialog();
-                    break;
-            }
+        String strold_password = old_password.getText().toString().trim();
+        if (TextUtils.isEmpty(strold_password)){
+            ToastUtil.showToast("密码不能为空!");
+            return;
         }
-    };
+        String strnews_password = news_password.getText().toString().trim();
+        if (TextUtils.isEmpty(strnews_password)){
+            ToastUtil.showToast("新密码不能为空!");
+            return;
+        }
+        String straffirmnews_password = affirmnews_password.getText().toString().trim();
+        if (!strnews_password.equals(straffirmnews_password)){
+            ToastUtil.showToast("两次密码不相同");
+            return;
+        }
+        createDialogshow();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userlogin", userlogin);
+        params.put("token", token);
+        params.put("userpwd", strold_password);
+        params.put("newpwd", strnews_password);
+        okHttpPost(100, GlobalParam.PWDMODIFY, params);
+    }
+
     private void showUpgradeDialog() {
         LayoutInflater factor = (LayoutInflater) SettingPasswordActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.settingpassword_dialog, null);
@@ -104,26 +105,31 @@ public class SettingPasswordActivity extends SimpleTopbarActivity {
         serviceView.findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(AccountUpDataPasswordActivity.this, LoginActivity.class);
-//                startActivityForResult(intent,5);
-                BaseApplication.getApp().exitApp();
+//                BaseApplication.getApp().exitApp();
+                Intent in = new Intent("com.Lechuang.app.action.LOGIN");
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
                 mUpgradeNotifyDialog.dismiss();
             }
         });
 
         try {
-            Activity activity = SettingPasswordActivity.this;
+            Activity activity = this;
             while (activity.getParent() != null) {
                 activity = activity.getParent();
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(SettingPasswordActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.DialogTheme);
             mUpgradeNotifyDialog = builder.create();
             mUpgradeNotifyDialog.show();
             mUpgradeNotifyDialog.setContentView(serviceView);
-            mUpgradeNotifyDialog.setCanceledOnTouchOutside(true);// 设置点击屏幕Dialog消失
-            FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
-            //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
-            serviceView.setLayoutParams(layout);
+            Window window = mUpgradeNotifyDialog.getWindow();
+            window.setGravity(Gravity.BOTTOM);
+            window.setWindowAnimations(R.style.dialog_animation);
+            window.getDecorView().setPadding(0, 0, 0 ,0);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(lp);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,7 +137,14 @@ public class SettingPasswordActivity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode){
+            case 100:
+                if (returnCode==1){
+                    showUpgradeDialog();
+                }
+                ToastUtil.showToast(returnMsg);
+                break;
+        }
     }
 
     @Override

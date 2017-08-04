@@ -517,6 +517,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						break;
 					//请求成功
 					case HttpConfig.SUCCESSCODE:
+						dialogDissmiss();
 						Bundle bundle = msg.getData();
 						int requestCode = bundle.getInt("requestCode");
 						int returnCode = bundle.getInt("returnCode");
@@ -524,7 +525,6 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						String returnData = bundle.getString("returnData");
 						Map<String, Object> paramsMaps = (Map) msg.obj;
 						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
-						dialogDissmiss();
 						break;
 				}
 			}
@@ -597,11 +597,13 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						IOException error = (IOException) msg.obj;
 						onErrorResult(HttpConfig.REQUESTERROR, error);
 						dialogDissmiss();
+						ToastUtil.showToast("请求错误");
 						break;
 					//解析错误
 					case HttpConfig.PARSEERROR:
 						onParseErrorResult(HttpConfig.PARSEERROR);
 						dialogDissmiss();
+						ToastUtil.showToast("解析错误");
 						break;
 					//网络错误
 					case HttpConfig.NETERROR:
