@@ -3,13 +3,14 @@ package com.Lechuang.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
 
-public class ViewPager_Activity extends AppCompatActivity implements View.OnClickListener {
+import www.xcd.com.mylibrary.base.activity.BaseActivity;
+
+public class ViewPager_Activity extends BaseActivity implements View.OnClickListener {
 
 
     private TextView m_text_page_zhuce;

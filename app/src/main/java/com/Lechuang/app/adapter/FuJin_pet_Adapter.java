@@ -7,7 +7,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Lechuang.app.Bean.PetInformation;
 import com.Lechuang.app.R;
+
+import java.util.List;
 
 /**
  * 项目名称：com.Lechuang.app.adapter
@@ -17,23 +20,25 @@ import com.Lechuang.app.R;
  */
 public class FuJin_pet_Adapter extends BaseAdapter{
     Context context;
-    public FuJin_pet_Adapter(Context context) {
+    List<PetInformation.DataBean> data;
+    public FuJin_pet_Adapter(Context context, List<PetInformation.DataBean> data) {
         this.context=context;
+        this.data=data;
     }
 
     @Override
     public int getCount() {
-        return 20;
+        return data == null ? 0 : data.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return i;
+        return data.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -49,6 +54,9 @@ public class FuJin_pet_Adapter extends BaseAdapter{
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        holder.text_fujin_pet_name.setText(data.get(i).getPet_name());//宠物信息名字
+        holder.text_fujin_pet_dingwei.setText(data.get(i).getKm());//宠物距离
+        //Glide.with(context).load(data.get(i).getPet_img()).into(holder.image_fujin_pet);//宠物图片
         return view;
     }class ViewHolder {
         ImageView image_fujin_pet;

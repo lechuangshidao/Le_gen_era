@@ -3,6 +3,7 @@ package com.Lechuang.app.Bean;
 import java.util.List;
 
 /**
+ * 积分商城
  * Created by Administrator on 2017/8/1.
  */
 
@@ -125,6 +126,20 @@ public class ShoppingMall {
 
         public void setHot(String hot) {
             this.hot = hot;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id='" + id + '\'' +
+                    ", shopimg='" + shopimg + '\'' +
+                    ", shopname='" + shopname + '\'' +
+                    ", integral='" + integral + '\'' +
+                    ", addtime='" + addtime + '\'' +
+                    ", state='" + state + '\'' +
+                    ", sort='" + sort + '\'' +
+                    ", hot='" + hot + '\'' +
+                    '}';
         }
     }
 }

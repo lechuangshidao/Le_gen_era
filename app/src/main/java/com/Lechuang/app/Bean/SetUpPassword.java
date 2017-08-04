@@ -1,6 +1,7 @@
 package com.Lechuang.app.Bean;
 
 /**
+ * 设置密码
  * Created by Administrator on 2017/8/1.
  */
 

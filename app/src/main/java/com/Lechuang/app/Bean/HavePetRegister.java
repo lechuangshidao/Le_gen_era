@@ -1,6 +1,7 @@
 package com.Lechuang.app.Bean;
 
 /**
+ * 有宠物注册
  * Created by Administrator on 2017/7/31.
  */
 

@@ -64,6 +64,7 @@ public class Have_Or_Not_Pet extends SimpleTopbarActivity {
                 startActivity(intent_you);
                 break;
             case R.id.image_wu:
+                createDialogshow();
                 getnoPetRegister();
                 break;
         }

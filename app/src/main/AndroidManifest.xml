@@ -67,13 +67,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name=".Activity.Login_Pet"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity
             android:name=".Activity.Add_Information"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:hardwareAccelerated="true"
@@ -294,7 +287,11 @@
                     android:host="com.Lechuang.app"
                     android:pathPrefix="/conversation/"
                     android:scheme="rong" />
-            </intent-filter>></activity>
+            </intent-filter>></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

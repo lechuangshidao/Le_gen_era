@@ -17,12 +17,12 @@ public class GlobalParam {
     public final static String NEWADDRESS = URL + "s=/index/addPet";
     //注册宠物
     public final static String REGISTERPet = URL + "s=/Register/userPetAdd";
-    //附近
+    //服务信息
     public final static String PETHOSPITAL = URL + "s=pethospital/getmeter";
     //积分商城
     public final static String SHOPPINGMALL = URL + "s=User/IntegralShop";
     //兑换积分
-    public final static String CREDITSEXCHANGE = IP + "/api/user/register";
+    public final static String CREDITSEXCHANGE = URL + "s=User/IntegralExchange";
     //验证码验证
     public final static String VERIFICATIONCODE = URL + "s=userreg/checkcode";
     //注册设置密码接口
@@ -30,7 +30,7 @@ public class GlobalParam {
     //用户注册
     public final static String USERREGISTRATION = URL + "s=userreg/savedata";
     //我的Fragment
-    public final static String FRAGMENTWODEINFO =URL+"s=My/Message";
+    public final static String FRAGMENTWODEINFO = URL + "s=My/Message";
     //我的个人信息
     public final static String MEINFO =URL+"s=Register/userSave";
     //我的宠物信息
@@ -40,17 +40,17 @@ public class GlobalParam {
     //删除宠物信息
     public final static String DELPETMYPETINFO =URL+"s=/index/delPet";
     //添加宠物信息
-    public final static String AAMYPETINFO =URL+"s=index/addPet";
+    public final static String AAMYPETINFO = URL + "s=index/addPet";
     //添加宠物信息标签
-    public final static String AAMYPETINFOTAGS =URL+"s=index/tags";
+    public final static String AAMYPETINFOTAGS = URL + "s=index/tags";
     //地址管理
-    public final static String MYPETLOCATIONMANAGE =URL+"s=index/Locations";
+    public final static String MYPETLOCATIONMANAGE = URL + "s=index/Locations";
     //添加地址
-    public final static String MYPETADDLOCATION =URL+"s=index/addLocation";
+    public final static String MYPETADDLOCATION = URL + "s=index/addLocation";
     //编辑地址
-    public final static String MYPETADDLOCATIONCOMPILE =URL+"s=/index/modLocation";
+    public final static String MYPETADDLOCATIONCOMPILE = URL + "s=/index/modLocation";
     //编辑地址
-    public final static String MYPETDELLOCATION =URL+"s=/index/delLocation";
+    public final static String MYPETDELLOCATION = URL + "s=/index/delLocation";
     //单个地址详情
     public final static String MYPETADDLOCATIONSINLE =URL+"s=/index/Locations";
     //单个地址详情
@@ -59,4 +59,12 @@ public class GlobalParam {
     public final static String MYPETACTOIN=URL+"s=Active/active";
     //修改密码
     public final static String PWDMODIFY=URL+"s=/index/pwdModify";
+    //附近人
+    public final static String PEOPLENEARBY=URL+"s=User/MyNear";
+    //宠物分类
+    public final static String PETCLASSIFICATION=URL+"s=User/PetType";
+    //宠物信息
+    public final static String PETINFORMATION=URL+"s=User/PetTypeF";
+    //宠物详情
+    public final static String PETDETAILS=URL+"s=User/PetInfo";
 }

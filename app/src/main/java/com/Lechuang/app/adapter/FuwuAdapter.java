@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Lechuang.app.Bean.MapHospital;
 import com.Lechuang.app.R;
 
 import java.util.List;
@@ -19,21 +20,20 @@ import java.util.List;
  */
 public class FuwuAdapter extends BaseAdapter {
     Context context;
-    List<String> list_date;
-
-    public FuwuAdapter(Context context, List<String> list_date) {
+    List<MapHospital.DataBean> data;
+    public FuwuAdapter(Context context, List<MapHospital.DataBean> data) {
         this.context = context;
-        this.list_date = list_date;
+        this.data=data;
     }
 
     @Override
     public int getCount() {
-        return list_date == null ? 0 : list_date.size();
+        return data == null ? 0 : data.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return list_date.get(i);
+        return data.get(i);
     }
 
     @Override
@@ -55,7 +55,10 @@ public class FuwuAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.text_item_name.setText(list_date.get(i));
+        holder.text_item_name.setText(data.get(i).getHosname());//医院名字
+        holder.text_item_juli.setText(data.get(i).getMeter());//医院距离
+        holder.text_item_time.setText("营业时间："+data.get(i).getBustime()+"米以内");//营业时间
+       // Glide.with(context).load(data.get(i).getHospicture()).into(holder.image_fuwu);//医院图片
         return view;
     }
     class ViewHolder {

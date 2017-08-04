@@ -24,8 +24,8 @@ public class Gift_Activity extends SimpleTopbarActivity {
 
     @Bind(R.id.grid_itme)
     GridView gridItme;
-    private String token;
     private List<ShoppingMall.DataBean> data;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +34,6 @@ public class Gift_Activity extends SimpleTopbarActivity {
         ButterKnife.bind(this);
         token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         getShoppingmall();
-        //条目适配器
-        Gift_Adapter gift_adapter=new Gift_Adapter(this,data,token);
-        gridItme.setAdapter(gift_adapter);
-
     }
 
     @Override
@@ -57,6 +53,9 @@ public class Gift_Activity extends SimpleTopbarActivity {
                 if(1==returnCode){
                     ShoppingMall shoppingMall = JSON.parseObject(returnData, ShoppingMall.class);
                     data = shoppingMall.getData();
+                    //条目适配器
+                    Gift_Adapter gift_adapter=new Gift_Adapter(this,data,token);
+                    gridItme.setAdapter(gift_adapter);
                 }else{
                     ToastUtil.showToast(returnMsg);
                 }
@@ -84,6 +83,7 @@ public class Gift_Activity extends SimpleTopbarActivity {
 
     }
     private void getShoppingmall(){
+        createDialogshow();
         Map<String,Object>params=new HashMap<>();
         params.put("token",token);
         okHttpPost(100, GlobalParam.SHOPPINGMALL,params);

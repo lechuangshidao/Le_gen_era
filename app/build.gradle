@@ -99,4 +99,6 @@ dependencies {
     compile project(':ZBLibrary')
     compile project(':IMKit')
     compile project(':IMLib')
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support:multidex:1.0.1'
 }

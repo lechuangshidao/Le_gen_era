@@ -127,6 +127,7 @@ public class Have_pet_Activity extends SimpleTopbarActivity {
                         , TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
                 break;
             case R.id.button:
+                createDialogshow();
                 getRegister();
                 break;
         }
@@ -148,7 +149,7 @@ public class Have_pet_Activity extends SimpleTopbarActivity {
         params.put("sex",sex);
         params.put("pet_name",mypetadd_name.getText().toString());
         params.put("pet_type",mypetadd_type.getText().toString());
-        params.put("pet_tag","");
+        params.put("pet_tag","可爱#活波#毁家#公");
         params.put("pet_age",mypetadd_age.getText().toString());
         params.put("pet_img","");
         okHttpPost(100, GlobalParam.USERREGISTRATION,params);

@@ -1,10 +1,18 @@
 package com.Lechuang.app.Bean;
 
 /**
+ * 积分兑换
  * Created by Administrator on 2017/8/1.
  */
 
 public class CreditsExchange {
+
+    /**
+     * message : 兑换成功！
+     * state : 1
+     * data :
+     */
+
     private String message;
     private String state;
     private String data;

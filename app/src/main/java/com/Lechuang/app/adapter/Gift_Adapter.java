@@ -16,13 +16,11 @@ import com.Lechuang.app.Bean.ShoppingMall;
 import com.Lechuang.app.R;
 import com.Lechuang.app.entity.GlobalParam;
 import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.help.OkHttpHelper;
 
 /**
@@ -66,15 +64,21 @@ public class Gift_Adapter extends BaseAdapter{
             holder.image_jifen_gift= (ImageView) view.findViewById(R.id.image_jifen_gift);
             holder.text_gift_name= (TextView) view.findViewById(R.id.text_gift_name);
             holder.gift_num= (TextView) view.findViewById(R.id.gift_num);
-            text_duihuan_item = holder.text_duihuan_item;
-            text_duihuan_item = (TextView) view.findViewById(R.id.text_duihuan_item);
+            holder.text_duihuan_item= (TextView) view.findViewById(R.id.text_duihuan_item);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
         holder.text_gift_name.setText(data.get(i).getShopname());
         holder.gift_num.setText(data.get(i).getIntegral());
-        Glide.with(context).load(data.get(i).getShopimg()).into(holder.image_jifen_gift);
+        holder.image_jifen_gift.setImageResource(R.mipmap.image_jifen_shop);
+        //Glide.with(context).load(data.get(i).getShopimg()).into(holder.image_jifen_gift);
+        holder.text_duihuan_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomizeDialog();
+            }
+        });
         return view;
     }
     class ViewHolder {
@@ -107,8 +111,8 @@ public class Gift_Adapter extends BaseAdapter{
         button_dialog_wancheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
                 getCreditsExchange();//积分兑换
+                alertDialog.dismiss();
             }
         });
         image_dialog_back.setOnClickListener(new View.OnClickListener() {
@@ -120,24 +124,24 @@ public class Gift_Adapter extends BaseAdapter{
     }
     //积分兑换
     private void getCreditsExchange() {
-        Map<String,Object>params=new HashMap<>();
+        Map<String,Object> params=new HashMap<>();
         params.put("token",token);
         for (int i = 0; i <data.size(); i++) {
-            params.put("shipid",data.get(i).getId());
+            params.put("shopid",data.get(i).getId());
             params.put("shopintegral",data.get(i).getIntegral());
         }
         OkHttpHelper.getInstance().postAsyncHttp(100, GlobalParam.CREDITSEXCHANGE,params,new Handler(){
             @Override
             public void handleMessage(Message msg) {
+                super.handleMessage(msg);
                 switch (msg.what){
-                    //请求成功
-                    case HttpConfig.SUCCESSCODE:
-                       String message= (String) msg.obj;
-                        CreditsExchange creditsExchange = JSON.parseObject(message, CreditsExchange.class);
-                        String meg = creditsExchange.getMessage();
+                    case 1:
+                        String creditsexchangecre= (String) msg.obj;
+                        CreditsExchange creditsExchange = JSON.parseObject(creditsexchangecre, CreditsExchange.class);
                         break;
                 }
             }
         });
+
     }
 }

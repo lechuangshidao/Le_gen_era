@@ -35,7 +35,9 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     private String callphone;
     private TextView Text_next_log_note;
     private LoginInfo logininfo ;
+    private TextView text_callphone;
     private String userlogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +49,9 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
 
     //初始化控件
     private void getInitView() {
+        text_callphone = (TextView) findViewById(R.id.Text_callphone);
         Text_next_log_note = (TextView) findViewById(R.id.Text_next_log_note);
         text_note_log = (TextView) findViewById(R.id.text_note_log);
-        text_callphone = (TextView) findViewById(R.id.Text_callphone);
 
     }
 
@@ -65,18 +67,19 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
     @OnClick({ R.id.text_note_log, R.id.Text_next_log_note})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.text_note_log:
+            case R.id.text_note_log://短信登录
                 Intent intent_note = new Intent(CallPhone_Activity.this, Note_Log_Activity.class);
                 intent_note.putExtra("note_phone", callphone);
                 startActivity(intent_note);
                 break;
-            case R.id.Text_next_log_note:
-                editPassword.setText("123");
-                String userlogin = text_callphone.getText().toString().trim();
+            case R.id.Text_next_log_note://密码登录
+                editPassword.setText("123123");
+                userlogin = text_callphone.getText().toString().trim();
                 String userpwd = editPassword.getText().toString().trim();
                 if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {
+                    createDialogshow();
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("userlogin", userlogin);
+                    params.put("userlogin", callphone);
                     params.put("userpwd", userpwd);
                     params.put("type", "pwd");
                     okHttpPost(100, GlobalParam.LOGIN, params);

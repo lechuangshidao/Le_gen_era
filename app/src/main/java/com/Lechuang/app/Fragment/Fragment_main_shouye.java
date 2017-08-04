@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +18,8 @@ import android.widget.Toast;
 import com.Lechuang.app.Activity.FuWuActivity;
 import com.Lechuang.app.Activity.Fujin_Activity;
 import com.Lechuang.app.Activity.Gift_Activity;
-import com.Lechuang.app.Bean.MapHospital;
 import com.Lechuang.app.R;
 import com.Lechuang.app.RongCloud.Rong_news;
-import com.Lechuang.app.entity.GlobalParam;
-import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -30,26 +29,25 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
-public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener {
+public class Fragment_main_shouye extends Fragment implements LocationSource, AMapLocationListener {
 
     @Bind(R.id.image_gift)
     ImageView imageGift;
@@ -71,16 +69,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
     private double latitude;
     private double longitude;
     private String token;
-
-    @Override
-    protected int getLayoutId() {
-        return 0;
-    }
-
-    @Override
-    protected void initView(LayoutInflater inflater, View view) {
-
-    }
+    private Marker marker;
 
     @Nullable
     @Override
@@ -110,13 +99,48 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         InitPositioning();
         sHA1(getActivity());
         token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
+        LatLng lng1 = new LatLng(40.103085, 116.294034);
+        //绘制marker
+        marker = aMap.addMarker(new MarkerOptions()
+                .position(lng1)
+                .title("服务医院")
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(),R.drawable.image_pet_fujin)))
+                .draggable(true));
+        aMap.addMarker(new MarkerOptions()
+                .position(new LatLng(40.104585, 116.296034))
+                .title("服务医院")
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
+                .draggable(true)
+        );
+        aMap.addMarker(new MarkerOptions()
+                .title("服务医院")
+                .position(new LatLng(40.113085, 116.295034))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
+                .draggable(true));
+        AMap.OnMarkerClickListener mark=new AMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String id = marker.getId();
+                String title = marker.getTitle();
+                ToastUtil.showToast("这是第"+id+title);
+                return true;
+            }
+        };
+        aMap.setOnMarkerClickListener(mark);
+       /* // 绘制曲线
+        aMap.addPolyline((new PolylineOptions())
+                .add(new LatLng(40.104883,116.294924 ),new LatLng(40.104683,116.294624))
+                .geodesic(true).color(Color.RED));*/
     }
 
     private void InitPositioning() {
         if (aMap == null) {
             aMap = mMapView.getMap();
             //设置显示定位按钮 并且可以点击
-            UiSettings settings =  aMap.getUiSettings();
+            UiSettings settings = aMap.getUiSettings();
             aMap.setLocationSource(this);//设置了定位的监听,这里要实现LocationSource接口
             // 是否显示定位按钮
             settings.setMyLocationButtonEnabled(false);
@@ -172,15 +196,10 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
     }
 
     @Override
-    protected void onDestroyThread() {
-
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
-        if (mMapView!=null){
+        if (mMapView != null) {
             mMapView.onSaveInstanceState(outState);
         }
     }
@@ -260,6 +279,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                             + aMapLocation.getDistrict() + ""
                             + aMapLocation.getStreet() + ""
                             + aMapLocation.getStreetNum());
+                    Log.i("result", "维度" + latitude + "精度" + longitude);
                     Toast.makeText(getActivity(), buffer.toString(), Toast.LENGTH_LONG).show();
                     isFirstLoc = false;
                 }
@@ -272,6 +292,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
             }
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -282,62 +303,23 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_gift://礼物
-                Intent intent_gift=new Intent(getActivity(), Gift_Activity.class);
+                Intent intent_gift = new Intent(getActivity(), Gift_Activity.class);
                 startActivity(intent_gift);
                 break;
             case R.id.image_news://消息
-                Intent intent_news=new Intent(getActivity(),Rong_news.class);
+                Intent intent_news = new Intent(getActivity(), Rong_news.class);
                 startActivity(intent_news);
                 break;
             case R.id.image_shouye_fujin://附近人
-                Intent intent_fujin=new Intent(getActivity(),Fujin_Activity.class);
+                Intent intent_fujin = new Intent(getActivity(), Fujin_Activity.class);
                 startActivity(intent_fujin);
                 break;
             case R.id.image_shouye_fuwu://附近服务
-                getMap();
+                Intent intent_fuwu = new Intent(getActivity(), FuWuActivity.class);
+                intent_fuwu.putExtra("lng", longitude);
+                intent_fuwu.putExtra("lat", latitude);
+                startActivity(intent_fuwu);
                 break;
         }
-    }
-    @Override
-    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        switch (requestCode){
-            case 100:
-                if(1==returnCode){
-                    MapHospital mapHospital = JSON.parseObject(returnData, MapHospital.class);
-                    Intent intent_fuwu=new Intent(getActivity(),FuWuActivity.class);
-                    startActivity(intent_fuwu);
-                }else{
-                    ToastUtil.showToast(returnMsg);
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onCancelResult() {
-
-    }
-
-    @Override
-    public void onErrorResult(int errorCode, IOException errorExcep) {
-
-    }
-
-    @Override
-    public void onParseErrorResult(int errorCode) {
-
-    }
-
-    @Override
-    public void onFinishResult() {
-
-    }
-    //获取附近医院
-    private void  getMap(){
-        Map<String,Object>params=new HashMap<>();
-        params.put("lng",longitude);
-        params.put("lat",latitude);
-        params.put("token",token);
-        okHttpPost(100, GlobalParam.PETHOSPITAL,params);
     }
 }
