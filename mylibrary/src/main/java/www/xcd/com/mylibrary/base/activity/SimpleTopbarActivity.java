@@ -126,12 +126,23 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 		// 设置title
 		viewTitle.setText(text);
 	}
-
+	/**
+	 * 是否显顶部标题
+	 *
+	 */
+	public boolean isTopbarVisibility() {
+		return true;
+	}
 
 	@Override
 	protected void afterSetContentView() {
 		super.afterSetContentView();
-
+		RelativeLayout topbat_parent = (RelativeLayout) findViewById(R.id.topbat_parent);
+		if (isTopbarVisibility()){
+			topbat_parent.setVisibility(View.VISIBLE);
+		}else {
+			topbat_parent.setVisibility(View.GONE);
+		}
 		viewTitle = (TextView) findViewById(R.id.topbar_title);
 		leftFuncZone = (LinearLayout) findViewById(R.id.left_func);
 		rightFuncZone = (LinearLayout) findViewById(R.id.right_func);

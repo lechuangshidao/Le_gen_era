@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.Lechuang.app.Fragment.Fragment_main_gouwuche;
@@ -15,14 +14,17 @@ import com.Lechuang.app.Fragment.Fragment_main_wode;
 import com.Lechuang.app.R;
 import com.xyz.tabitem.BottmTabItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
-public class Home_Pager extends AppCompatActivity {
+public class Home_Pager extends SimpleTopbarActivity {
     private List<Fragment>list_f=new ArrayList<>();
     private List<BottmTabItem>list_b=new ArrayList<>();
     @Bind(R.id.main_buttom_shouye)
@@ -40,6 +42,11 @@ public class Home_Pager extends AppCompatActivity {
     private Fragment_main_gouwuche fragment_main_gouwuche;
     private Fragment_main_wode fragment_main_wode;
     private FragmentManager manager;
+
+    @Override
+    public boolean isTopbarVisibility() {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +134,30 @@ public class Home_Pager extends AppCompatActivity {
                 mainButtomWode.setSelectState(true);
                 break;
         }
+    }
+
+    @Override
+    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
+    }
+
+    @Override
+    public void onCancelResult() {
+
+    }
+
+    @Override
+    public void onErrorResult(int errorCode, IOException errorExcep) {
+
+    }
+
+    @Override
+    public void onParseErrorResult(int errorCode) {
+
+    }
+
+    @Override
+    public void onFinishResult() {
+
     }
 }
