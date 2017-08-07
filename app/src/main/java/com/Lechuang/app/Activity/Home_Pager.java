@@ -23,6 +23,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.base.application.BaseApplication;
+import www.xcd.com.mylibrary.utils.ToastUtil;
 
 public class Home_Pager extends SimpleTopbarActivity {
     private List<Fragment>list_f=new ArrayList<>();
@@ -42,7 +44,10 @@ public class Home_Pager extends SimpleTopbarActivity {
     private Fragment_main_gouwuche fragment_main_gouwuche;
     private Fragment_main_wode fragment_main_wode;
     private FragmentManager manager;
-
+    /**
+     * 第一次返回按钮时间
+     */
+    private long firstTime;
     @Override
     public boolean isTopbarVisibility() {
         return false;
@@ -135,7 +140,17 @@ public class Home_Pager extends SimpleTopbarActivity {
                 break;
         }
     }
+    @Override
+    public void onBackPressed() {
 
+        if (System.currentTimeMillis() - firstTime < 3000) {
+            BaseApplication.getApp().exitApp();
+        } else {
+            firstTime = System.currentTimeMillis();
+            // 再按一次返回桌面
+            ToastUtil.showToast(getString(R.string.main_press_again_back));
+        }
+    }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
 

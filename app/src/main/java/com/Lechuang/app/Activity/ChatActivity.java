@@ -147,67 +147,6 @@ public class ChatActivity extends BaseDataActivity{
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Log.e("TAG_","requestCode="+requestCode+";resultCode="+resultCode);
-//        if (resultCode == Activity.RESULT_OK) {
-//            switch (requestCode) {
-//                case REQUEST_CODE_HEAD_ALBUM:
-//                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL,true);
-//                    YYPhotoItem photoItem = null;
-//                    if (is_origanl){
-//                        photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
-//                        if (photoItem !=null){
-//                            startCrop(photoItem.getPhotoPath());
-//                        }
-//                    }else {
-//                        final List<File> list = new ArrayList<>();
-//                        List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
-//                        for (YYPhotoItem photo : photoList) {
-//                            // 存储图片到图片目录
-//                            list.add(new File(photo.getPhotoPath()));
-//                        }
-//                        uploadImage(list);
-//                    }
-//
-//                    break;
-//                case REQUEST_CODE_HEAD_CAMERA:
-//                    startCrop(photoPath);
-//                    break;
-//                case REQUEST_CODE_HEAD_CROP:
-//                    try {
-//                        Bundle extras = data.getExtras();
-//                        if (extras != null) {
-//                            Bitmap cropPhoto = extras.getParcelable("data");
-//                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                            // (0 - 100)压缩文件
-//                            cropPhoto.compress(Bitmap.CompressFormat.JPEG, 75, stream);
-//
-//                            File cropFile = new File(YYStorageUtil.getImagePath(ChatActivity.this), UUID.randomUUID().toString() + ".jpg");
-//                            final List<File> list = new ArrayList<>();
-//                            list.add(cropFile);
-//                            FileUtils.compressBmpToFile(cropPhoto, cropFile);
-//                            uploadImage(list);
-//
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }else {
-//            // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-//            if (requestCode == PERMISSIONS_GRANTED && resultCode == PERMISSIONS_DENIED) {
-////            finish();
-//            }else {
-//                getChoiceDialog().show();
-//            }
-//        }
-//    }
-
     public void uploadImage(final List<File> list) {
         // 调用上传
 

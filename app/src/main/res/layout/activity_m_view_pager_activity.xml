@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@mipmap/viewpager" />
-
-
     <TextView
         android:id="@+id/m_text_page_login"
         android:layout_width="110dp"

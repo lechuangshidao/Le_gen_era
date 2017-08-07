@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
@@ -17,7 +20,6 @@ public class ViewPager_Activity extends BaseActivity implements View.OnClickList
 
     private TextView m_text_page_zhuce;
     private TextView m_text_page_login;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,17 @@ public class ViewPager_Activity extends BaseActivity implements View.OnClickList
         m_text_page_login = (TextView) findViewById(R.id.m_text_page_login);
         m_text_page_login.setOnClickListener(this);
         m_text_page_zhuce.setOnClickListener(this);
+        AnimationSet set = new AnimationSet(true);
+        TranslateAnimation translate = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, (float) 0.5, Animation.RELATIVE_TO_SELF, 0);
+        translate.setDuration(1500);
+        set.addAnimation(translate);
+        set.setFillAfter(true);
+        m_text_page_zhuce.offsetTopAndBottom(-m_text_page_zhuce.getHeight() / 2);
+        m_text_page_zhuce.startAnimation(set);
+        m_text_page_login.offsetTopAndBottom(-m_text_page_login.getHeight() / 2);
+        m_text_page_login.startAnimation(set);
     }
 
     @Override
