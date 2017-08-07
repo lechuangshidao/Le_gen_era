@@ -8,10 +8,12 @@ import android.widget.TextView;
 
 import com.Lechuang.app.R;
 
+import www.xcd.com.mylibrary.activity.PermissionsActivity;
 import www.xcd.com.mylibrary.base.activity.BaseActivity;
 
-public class ViewPager_Activity extends BaseActivity implements View.OnClickListener {
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_GRANTED;
 
+public class ViewPager_Activity extends BaseActivity implements View.OnClickListener {
 
     private TextView m_text_page_zhuce;
     private TextView m_text_page_login;
@@ -21,6 +23,7 @@ public class ViewPager_Activity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_m_view_pager_activity);
         getInitView();
+        PermissionsActivity.startActivityForResult(this, PERMISSIONS_GRANTED, PERMISSIONS);
     }
 
     //初始化控件

@@ -2,7 +2,6 @@ package com.Lechuang.app.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,35 +13,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
-import com.Lechuang.app.base.BaseDataActivity;
 import com.Lechuang.app.entity.GlobalParam;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.yonyou.sns.im.entity.album.YYPhotoItem;
-import com.yonyou.sns.im.util.common.FileUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
+import www.xcd.com.mylibrary.activity.PermissionsActivity;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
-import www.xcd.com.mylibrary.utils.YYStorageUtil;
 import zuo.biao.library.ui.DatePickerWindow;
 import zuo.biao.library.util.TimeUtil;
 
-import static www.xcd.com.mylibrary.activity.AlbumPhotoActivity.IS_ORIGANL;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CAMERA;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP;
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_GRANTED;
 
-public class MeInfoActivity extends BaseDataActivity {
+public class MeInfoActivity extends ChatActivity {
 
     private static final int REQUEST_TO_DATE_PICKER = 33;
     private TextView select_birthday,sex_man,sex_woman;
@@ -135,9 +124,7 @@ public class MeInfoActivity extends BaseDataActivity {
                 switchSex(type);
                 break;
             case R.id.meinfo_head:
-                //上传头像
-                setTpye(AlbumPhotoActivity.TYPE_SINGLE);
-                getChoiceDialog().show();
+                PermissionsActivity.startActivityForResult(this, PERMISSIONS_GRANTED, PERMISSIONS);
                 break;
             case R.id.button:
                 nickname = edit_name.getText().toString().trim();
@@ -195,77 +182,14 @@ public class MeInfoActivity extends BaseDataActivity {
             image_woman.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        switch (requestCode){
-            case REQUEST_TO_DATE_PICKER:
-                if (data != null) {
-                    ArrayList<Integer> list = data.getIntegerArrayListExtra(DatePickerWindow.RESULT_DATE_DETAIL_LIST);
-                    if (list != null && list.size() >= 3) {
-
-                        selectedDate = new int[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            selectedDate[i] = list.get(i);
-                        }
-                        select_birthday.setText(selectedDate[0]+"-"+(selectedDate[1]+1)+"-"+selectedDate[2]);
-                    }
-                }
-                break;
-            case REQUEST_CODE_HEAD_ALBUM:
-                boolean is_origanl = data.getBooleanExtra(IS_ORIGANL,true);
-                YYPhotoItem photoItem = null;
-                if (is_origanl){
-                    photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
-                    if (photoItem !=null){
-                        startCrop(photoItem.getPhotoPath());
-                    }
-                }else {
-                    final List<File> list = new ArrayList<>();
-                    List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
-                    for (YYPhotoItem photo : photoList) {
-                        // 存储图片到图片目录
-                        list.add(new File(photo.getPhotoPath()));
-                    }
-                    uploadImage(list);
-                }
-
-                break;
-            case REQUEST_CODE_HEAD_CAMERA:
-                startCrop(photoPath);
-                break;
-            case REQUEST_CODE_HEAD_CROP:
-                try {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        Bitmap cropPhoto = extras.getParcelable("data");
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        // (0 - 100)压缩文件
-                        cropPhoto.compress(Bitmap.CompressFormat.JPEG, 75, stream);
-
-                        File cropFile = new File(YYStorageUtil.getImagePath(MeInfoActivity.this), UUID.randomUUID().toString() + ".jpg");
-                        final List<File> list = new ArrayList<>();
-                        list.add(cropFile);
-                        FileUtils.compressBmpToFile(cropPhoto, cropFile);
-                        uploadImage(list);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-    private void uploadImage(final List<File> listimage) {
+    public void uploadImage(List<File> list) {
+        super.uploadImage(list);
         // 调用上传
-        for (File imagepath : listimage) {
+        for (File imagepath : list) {
             image_head = imagepath.toString();
+            Log.e("TAG_","image_head="+image_head);
             Glide.with(this)
                     .load(imagepath)
                     .centerCrop()
@@ -276,6 +200,7 @@ public class MeInfoActivity extends BaseDataActivity {
                     .into(meinfo_head);
         }
     }
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode){

@@ -1,5 +1,6 @@
 package www.xcd.com.mylibrary.base.activity;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,7 +21,12 @@ import www.xcd.com.mylibrary.utils.AppManager;
 public abstract class BaseActivity  extends FragmentActivity {
 
     private boolean isActive = true;
-
+    public static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS
+            ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ,Manifest.permission.READ_EXTERNAL_STORAGE
+            ,Manifest.permission.CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -31,7 +37,6 @@ public abstract class BaseActivity  extends FragmentActivity {
         }
         super.onCreate(savedInstanceState);
 		AppManager.getInstance().addActivity(this);
-
     }
 
 

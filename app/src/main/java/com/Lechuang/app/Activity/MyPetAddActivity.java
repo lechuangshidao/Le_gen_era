@@ -2,8 +2,6 @@ package com.Lechuang.app.Activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,36 +16,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Lechuang.app.R;
-import com.Lechuang.app.Utils.HelpUtils;
-import com.Lechuang.app.base.BaseDataActivity;
 import com.Lechuang.app.entity.GlobalParam;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.yonyou.sns.im.entity.album.YYPhotoItem;
-import com.yonyou.sns.im.util.common.FileUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
+import www.xcd.com.mylibrary.activity.PermissionsActivity;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
-import www.xcd.com.mylibrary.utils.YYStorageUtil;
 import zuo.biao.library.ui.DatePickerWindow;
 import zuo.biao.library.util.TimeUtil;
 
-import static www.xcd.com.mylibrary.activity.AlbumPhotoActivity.IS_ORIGANL;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CAMERA;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP;
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_GRANTED;
 
-public class MyPetAddActivity extends BaseDataActivity {
+public class MyPetAddActivity extends ChatActivity {
 
     private static final int REQUEST_TO_DATE_PICKER = 35;
     private int[] selectedDate = new int[]{1971, 0, 1};
@@ -62,7 +50,7 @@ public class MyPetAddActivity extends BaseDataActivity {
     private String imageFilepath;
     private String user_id;
     private String token;
-    private void uploadImage(final List<File> listimage) {
+    public void uploadImage(final List<File> listimage) {
         // 调用上传
         for (File imagepath : listimage) {
            imageFilepath = imagepath.toString();
@@ -181,9 +169,7 @@ public class MyPetAddActivity extends BaseDataActivity {
                         , TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
                 break;
             case R.id.mypetadd_head:
-                //上传头像
-                setTpye(AlbumPhotoActivity.TYPE_SINGLE);
-                getChoiceDialog().show();
+                PermissionsActivity.startActivityForResult(this, PERMISSIONS_GRANTED, PERMISSIONS);
                 break;
             case R.id.button:
                 String pet_type = type.getText().toString().toString();
@@ -232,76 +218,7 @@ public class MyPetAddActivity extends BaseDataActivity {
                 break;
         }
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_TO_DATE_PICKER:
-                    if (data != null) {
-                        ArrayList<Integer> list = data.getIntegerArrayListExtra(DatePickerWindow.RESULT_DATE_DETAIL_LIST);
-                        if (list != null && list.size() >= 3) {
 
-                            selectedDate = new int[list.size()];
-                            for (int i = 0; i < list.size(); i++) {
-                                selectedDate[i] = list.get(i);
-                            }
-                            String time =selectedDate[0]+"-"+(selectedDate[1]+1)+"-"+selectedDate[2];
-                            String timeDifference = HelpUtils.getTimeDifference(time);
-                            if (timeDifference.indexOf("-1") != -1) {
-                                ToastUtil.showToast("请选择正确出生日期");
-                            } else {
-                                age.setText(timeDifference);
-                            }
-                        }
-                    }
-                    break;
-                case REQUEST_CODE_HEAD_ALBUM:
-                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL,true);
-                    YYPhotoItem photoItem = null;
-                    if (is_origanl){
-                        photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
-                        if (photoItem !=null){
-                            startCrop(photoItem.getPhotoPath());
-                        }
-                    }else {
-                        final List<File> list = new ArrayList<>();
-                        List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
-                        for (YYPhotoItem photo : photoList) {
-                            // 存储图片到图片目录
-                            list.add(new File(photo.getPhotoPath()));
-                        }
-                        uploadImage(list);
-                    }
-
-                    break;
-                case REQUEST_CODE_HEAD_CAMERA:
-                    startCrop(photoPath);
-                    break;
-                case REQUEST_CODE_HEAD_CROP:
-                    try {
-                        Bundle extras = data.getExtras();
-                        if (extras != null) {
-                            Bitmap cropPhoto = extras.getParcelable("data");
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            // (0 - 100)压缩文件
-                            cropPhoto.compress(Bitmap.CompressFormat.JPEG, 75, stream);
-
-                            File cropFile = new File(YYStorageUtil.getImagePath(context), UUID.randomUUID().toString() + ".jpg");
-                            final List<File> list = new ArrayList<>();
-                            list.add(cropFile);
-                            FileUtils.compressBmpToFile(cropPhoto, cropFile);
-                            uploadImage(list);
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
     View.OnClickListener pChildClick = new View.OnClickListener() {
 
         @Override

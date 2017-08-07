@@ -1,8 +1,6 @@
 package com.Lechuang.app.Activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -21,34 +19,24 @@ import com.Lechuang.app.view.SelectPopupWindow;
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.yonyou.sns.im.entity.album.YYPhotoItem;
-import com.yonyou.sns.im.util.common.FileUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.activity.PermissionsActivity;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
-import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
-import static www.xcd.com.mylibrary.activity.AlbumPhotoActivity.IS_ORIGANL;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CAMERA;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP;
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_GRANTED;
 
 /**
  * Created by Android on 2017/7/24.
  */
 
-public class MyPetActionActivity extends SimpleTopbarActivity implements TextWatcher {
+public class MyPetActionActivity extends ChatActivity implements TextWatcher {
 
     private EditText action_title, action_context;
     private ImageView action_image, action_petarrows;
@@ -78,7 +66,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         initView();
     }
 
-    private void initView() {
+    public void initView() {
         action_title = (EditText) findViewById(R.id.action_title);
         action_title.setOnFocusChangeListener(this);
         action_title.addTextChangedListener(this);
@@ -108,8 +96,7 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         super.onClick(v);
         switch (v.getId()) {
             case R.id.action_image:
-                setTpye(AlbumPhotoActivity.TYPE_SINGLE);
-                getChoiceDialog().show();
+                PermissionsActivity.startActivityForResult(this, PERMISSIONS_GRANTED, PERMISSIONS);
                 break;
             case R.id.action_pet:
                 if (data==null&&data.size()==0){
@@ -152,59 +139,8 @@ public class MyPetActionActivity extends SimpleTopbarActivity implements TextWat
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_CODE_HEAD_ALBUM:
-                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL, true);
-                    YYPhotoItem photoItem = null;
-                    if (is_origanl) {
-                        photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
-                        if (photoItem != null) {
-                            startCrop(photoItem.getPhotoPath());
-                        }
-                    } else {
-                        final List<File> list = new ArrayList<>();
-                        List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
-                        for (YYPhotoItem photo : photoList) {
-                            // 存储图片到图片目录
-                            list.add(new File(photo.getPhotoPath()));
-                        }
-                        uploadImage(list);
-                    }
 
-                    break;
-                case REQUEST_CODE_HEAD_CAMERA:
-                    startCrop(photoPath);
-                    break;
-                case REQUEST_CODE_HEAD_CROP:
-                    try {
-                        Bundle extras = data.getExtras();
-                        if (extras != null) {
-                            Bitmap cropPhoto = extras.getParcelable("data");
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            // (0 - 100)压缩文件
-                            cropPhoto.compress(Bitmap.CompressFormat.JPEG, 75, stream);
-
-                            File cropFile = new File(YYStorageUtil.getImagePath(MyPetActionActivity.this), UUID.randomUUID().toString() + ".jpg");
-                            final List<File> list = new ArrayList<>();
-                            list.add(cropFile);
-                            FileUtils.compressBmpToFile(cropPhoto, cropFile);
-                            uploadImage(list);
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    private void uploadImage(final List<File> list) {
+    public void uploadImage(final List<File> list) {
         // 调用上传
         for (File imagepath : list) {
             picurl = imagepath.toString();

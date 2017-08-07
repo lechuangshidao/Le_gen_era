@@ -2,30 +2,24 @@ package www.xcd.com.mylibrary.base.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.UUID;
 
 import www.xcd.com.mylibrary.R;
-import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
 import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.func.BaseTopFunc;
 import www.xcd.com.mylibrary.func.CommonBackTopBtnFunc;
@@ -34,11 +28,7 @@ import www.xcd.com.mylibrary.http.HttpInterface;
 import www.xcd.com.mylibrary.utils.DialogUtil;
 import www.xcd.com.mylibrary.utils.NetUtil;
 import www.xcd.com.mylibrary.utils.ToastUtil;
-import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CAMERA;
-import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP;
 import static www.xcd.com.mylibrary.utils.ToastUtil.showToast;
 
 /**
@@ -173,64 +163,14 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 		addViewToRightFunctionZone();
 	}
 
-	/**
-	 * AlbumPhotoActivity.TYPE_SINGLE为单选
-	 * ""多选
-	 */
-	private String tpye;
 
-	public String getTpye() {
-		return tpye;
-	}
-
-	public void setTpye(String tpye) {
-		this.tpye = tpye;
-	}
 
 	@Override
 	public void onClick(View v) {
-		int i = v.getId();
-		 if (i == R.id.account_head_choice_cancel) {// 关闭对话框
-			closeChoiceDialog();
-
-		} else if (i == R.id.account_head_choice_album) {// 关闭对话框
-			closeChoiceDialog();
-			// album
-			Intent albumIntent = new Intent(SimpleTopbarActivity.this, AlbumPhotoActivity.class);
-			 if (getTpye().equals(AlbumPhotoActivity.TYPE_SINGLE)){
-				 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, AlbumPhotoActivity.TYPE_SINGLE);
-			 }else {
-				 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, "");
-			 }
-			// start
-			SimpleTopbarActivity.this.startActivityForResult(albumIntent, REQUEST_CODE_HEAD_ALBUM);
-
-		} else if (i == R.id.account_head_choice_camera) {
-			try {
-				// 关闭对话框
-				closeChoiceDialog();
-				// 调用系统相机
-				Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				// 生成photoPath
-				File photoFile = new File(YYStorageUtil.getImagePath(SimpleTopbarActivity.this), UUID.randomUUID().toString() + ".jpg");
-				photoPath = photoFile.getPath();
-				// uri
-				Uri photoUri = Uri.fromFile(new File(photoPath));
-				cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-				cameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-				// start
-				SimpleTopbarActivity.this.startActivityForResult(cameraIntent, REQUEST_CODE_HEAD_CAMERA);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		} else {
 			BaseTopFunc topFunc = funcMap.get(v.getId());
 			if (topFunc != null) {
 				topFunc.onclick(v);
 			}
-
-		}
 	}
 	/**
 	 * 在中间放置自定义的控件
@@ -429,70 +369,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 			loginDialog.show();
 		}
 	}
-	/**
-	 * 菜单View
-	 *
-	 * @param
-	 * @return
-	 */
-	/** 头像Image */
-	public ImageView imageHead;
-	/** 头像修改菜单 */
-	public View viewChoice;
-	/** 头像修改dialog */
-	public Dialog dlgChoice;
 
-	/** 照片地址 */
-	public String photoPath;
-	public View getChoiceView() {
-		if (viewChoice == null) {
-			// 初始化选择菜单
-			viewChoice = LayoutInflater.from(SimpleTopbarActivity.this).inflate(R.layout.view_head_choice, null);
-			viewChoice.findViewById(R.id.account_head_choice_album).setOnClickListener(this);
-			viewChoice.findViewById(R.id.account_head_choice_camera).setOnClickListener(this);
-			viewChoice.findViewById(R.id.account_head_choice_cancel).setOnClickListener(this);
-		}
-		return viewChoice;
-	}
-	/**
-	 * 修改头像对话框
-	 *
-	 * @return
-	 */
-	public Dialog getChoiceDialog() {
-		if (dlgChoice == null) {
-			dlgChoice = new Dialog(SimpleTopbarActivity.this, R.style.DialogStyle);
-			dlgChoice.setContentView(getChoiceView());
-			return dlgChoice;
-		}
-		return dlgChoice;
-	}
-	/**
-	 * 关闭对话框
-	 */
-	public void closeChoiceDialog() {
-		if (dlgChoice != null && dlgChoice.isShowing()) {
-			dlgChoice.cancel();
-		}
-	}
-	public void startCrop(String imagePath) {
-		try {
-			Uri uri = Uri.fromFile(new File(imagePath));
-			Intent intent = new Intent("com.android.camera.action.CROP");
-			intent.setDataAndType(uri, IMAGE_UNSPECIFIED);
-			intent.putExtra("crop", "true");
-			// aspectX aspectY 是宽高的比例
-			intent.putExtra("aspectX", 1);
-			intent.putExtra("aspectY", 1);
-			// outputX outputY 是裁剪图片宽高
-			intent.putExtra("outputX", 160);
-			intent.putExtra("outputY", 160);
-			intent.putExtra("return-data", true);
-			SimpleTopbarActivity.this.startActivityForResult(intent, REQUEST_CODE_HEAD_CROP);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	/**
 	 * POST网络请求
 	 *
