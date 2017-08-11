@@ -188,6 +188,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         };
         aMap.setOnMarkerClickListener(mark);
         setUpMap();
+        ToastUtil.showToast("123123");
     }
 
     private void InitPositioning() {
