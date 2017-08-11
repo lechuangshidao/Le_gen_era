@@ -56,4 +56,13 @@
         android:layout_below="@id/image_shouye_fujin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/image_shouye_seek"
+        android:src="@mipmap/image_shouye_seek"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_25"
+        android:layout_below="@id/image_shouye_fuwu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

@@ -11,8 +11,27 @@
         android:background="#F5F5F5"
         android:layout_width="match_parent"
         android:layout_height="2dp"></View>
+    <EditText
+        android:id="@+id/edit_location"
+        android:hint="搜索"
+        android:textColor="@color/black_33"
+        android:background="@drawable/location_shape"
+        android:paddingLeft="130dp"
+        android:paddingTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:drawablePadding="10dp"
+        android:layout_marginRight="10dp"
+        android:drawableLeft="@mipmap/image_fujin_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ListView
         android:id="@+id/my_Closest_Itme"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:id="@+id/my_Pet_Seek"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.Lechuang.app.Fragment.Fragment_main_gouwuche;
@@ -12,6 +13,7 @@ import com.Lechuang.app.Fragment.Fragment_main_pet;
 import com.Lechuang.app.Fragment.Fragment_main_shouye;
 import com.Lechuang.app.Fragment.Fragment_main_wode;
 import com.Lechuang.app.R;
+import com.Lechuang.app.view.NoScrollViewPager;
 import com.xyz.tabitem.BottmTabItem;
 
 import java.io.IOException;
@@ -37,8 +39,8 @@ public class Home_Pager extends SimpleTopbarActivity {
     BottmTabItem mainButtomGouwuche;
     @Bind(R.id.main_buttom_wode)
     BottmTabItem mainButtomWode;
-    @Bind(R.id.viewpager)
-    ViewPager viewpager;
+    /*@Bind(R.id.viewpager)
+    NoScrollViewPager viewpager;*/
     private Fragment_main_shouye fragment_main_shouye;
     private Fragment_main_pet fragment_main_pet;
     private Fragment_main_gouwuche fragment_main_gouwuche;
@@ -48,6 +50,8 @@ public class Home_Pager extends SimpleTopbarActivity {
      * 第一次返回按钮时间
      */
     private long firstTime;
+    private NoScrollViewPager viewpager;
+
     @Override
     public boolean isTopbarVisibility() {
         return false;
@@ -57,6 +61,7 @@ public class Home_Pager extends SimpleTopbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_pager);
+        viewpager =  (NoScrollViewPager) findViewById(R.id.viewpager);
         ButterKnife.bind(this);
         getInitData();//初始化数据
     }
@@ -92,6 +97,12 @@ public class Home_Pager extends SimpleTopbarActivity {
             }
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+        viewpager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
             }
         });
         //碎片适配器

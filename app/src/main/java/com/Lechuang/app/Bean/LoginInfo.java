@@ -34,4 +34,13 @@ public class LoginInfo implements Serializable {
     public void setData(LoginData data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "LoginInfo{" +
+                "message='" + message + '\'' +
+                ", state='" + state + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <LinearLayout
+            android:id="@+id/area_layout"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+            <TextView
+                android:id="@+id/area_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/area_str"
+                android:textColor="@color/tab_text_color" />
+            <ImageView
+                android:id="@+id/area_img"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="4dp"
+                android:background="@mipmap/down" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:background="@color/child_item_diveder" />
+
+        <LinearLayout
+            android:id="@+id/wage_layout"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+            <TextView
+                android:id="@+id/wage_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/wage_str"
+                android:textColor="@color/tab_text_color" />
+            <ImageView
+                android:id="@+id/wage_img"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="4dp"
+                android:background="@mipmap/down" />
+        </LinearLayout>
+    </LinearLayout>
+    <view
+        android:background="@color/tab_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"></view>
+</LinearLayout>

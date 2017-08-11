@@ -17,4 +17,18 @@
     <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
     <color name="bgColor_overlay">#60000000</color>
     <color name="province_line_border">#C7C7C7</color>
+    <color name="popup_main_background">#b0000000</color>
+    <color name="black">#000000</color>
+    <color name="choose_eara_item_press_color">#f4f4f4</color>
+    <color name="white">#ffffff</color>
+    <color name="no_color">#00000000</color>
+
+
+    <color name="group_item_bg">#F3F3F3</color>
+    <color name="group_item_pressed_bg">#E5E5E5</color>
+    <color name="child_item_bg">#E5E5E5</color>
+    <color name="child_item_diveder">#D6D6D5</color>
+    <color name="list_item_text_pressed_bg">#FF822E</color>
+    <color name="tab_text_color">#787878</color>
+    <color name="tab_text_pressed_color">#CD0000</color>
 </resources>

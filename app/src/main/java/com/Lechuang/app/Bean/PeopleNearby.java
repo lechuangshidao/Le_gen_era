@@ -43,6 +43,15 @@ public class PeopleNearby {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "PeopleNearby{" +
+                "message='" + message + '\'' +
+                ", state=" + state +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         /**
          * petid : 69

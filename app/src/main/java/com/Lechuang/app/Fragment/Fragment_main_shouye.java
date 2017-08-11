@@ -1,25 +1,45 @@
 package com.Lechuang.app.Fragment;
 
+
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Lechuang.app.Activity.FuWuActivity;
 import com.Lechuang.app.Activity.Fujin_Activity;
 import com.Lechuang.app.Activity.Gift_Activity;
+import com.Lechuang.app.Bean.HomePager;
+import com.Lechuang.app.Bean.MapLocation;
+import com.Lechuang.app.Bean.PetClassification;
 import com.Lechuang.app.R;
 import com.Lechuang.app.RongCloud.Rong_news;
+import com.Lechuang.app.adapter.ChildAdapter;
+import com.Lechuang.app.adapter.GroupAdapter;
+import com.Lechuang.app.adapter.SunAdapter;
+import com.Lechuang.app.entity.GlobalParam;
+import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -35,20 +55,24 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
-public class Fragment_main_shouye extends Fragment implements LocationSource, AMapLocationListener {
-
+public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener {
     @Bind(R.id.image_gift)
     ImageView imageGift;
     @Bind(R.id.image_news)
@@ -61,6 +85,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     MapView mMapView = null;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
+    View showPupWindow = null;
     //初始化地图控制器对象
     AMap aMap;
     boolean isFirstLoc = true;
@@ -68,8 +93,41 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     public static StringBuffer buffer;
     private double latitude;
     private double longitude;
-    private String token;
     private Marker marker;
+    private String token;
+    private ImageView image_shouye_seek;
+    TranslateAnimation animation;// 出现的动画效果
+    // 屏幕的宽高
+    public static int screen_width = 0;
+    public static int screen_height = 0;
+    PopupWindow mPopupWindow = null;
+    private boolean[] tabStateArr = new boolean[2];// 标记tab的选中状态，方便设置
+    private ListView listView_three;
+    private SunAdapter sunadapter;
+    private List<PetClassification.DataBean> data;
+    private List<PetClassification.DataBean.PetoneBean> petone;
+    private TextView areaText;
+    private ImageView areaImg;
+    private TextView wage_textView;
+    private ImageView wage_img;
+    private LinearLayout area_layout;
+    private LinearLayout wage_layout;
+    private Dialog dialog;
+    private View inflate;
+    private ListView groupListView;
+    private ListView childListView;
+    private GroupAdapter groupAdapter;
+    private ChildAdapter childAdapter;
+
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    protected void initView(LayoutInflater inflater, View view) {
+
+    }
 
     @Nullable
     @Override
@@ -90,6 +148,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         super.onActivityCreated(savedInstanceState);
         //获取地图控件引用
         mMapView = (MapView) view.findViewById(R.id.map);
+        image_shouye_seek = (ImageView) view.findViewById(R.id.image_shouye_seek);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mMapView.onCreate(savedInstanceState);
         if (mMapView == null) {
@@ -98,14 +157,12 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         //定位
         InitPositioning();
         sHA1(getActivity());
-        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
-        LatLng lng1 = new LatLng(40.103085, 116.294034);
         //绘制marker
         marker = aMap.addMarker(new MarkerOptions()
-                .position(lng1)
+                .position(new LatLng(40.103085, 116.294034))
                 .title("服务医院")
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(),R.drawable.image_pet_fujin)))
+                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
                 .draggable(true));
         aMap.addMarker(new MarkerOptions()
                 .position(new LatLng(40.104585, 116.296034))
@@ -120,20 +177,17 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.image_pet_fujin)))
                 .draggable(true));
-        AMap.OnMarkerClickListener mark=new AMap.OnMarkerClickListener() {
+        AMap.OnMarkerClickListener mark = new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 String id = marker.getId();
                 String title = marker.getTitle();
-                ToastUtil.showToast("这是第"+id+title);
+                ToastUtil.showToast("这是第" + id + title);
                 return true;
             }
         };
         aMap.setOnMarkerClickListener(mark);
-       /* // 绘制曲线
-        aMap.addPolyline((new PolylineOptions())
-                .add(new LatLng(40.104883,116.294924 ),new LatLng(40.104683,116.294624))
-                .geodesic(true).color(Color.RED));*/
+        setUpMap();
     }
 
     private void InitPositioning() {
@@ -145,7 +199,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
             // 是否显示定位按钮
             settings.setMyLocationButtonEnabled(false);
             aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
-            settings.setScrollGesturesEnabled(false);
+            settings.setScrollGesturesEnabled(true);
             settings.setZoomControlsEnabled(false);
         }
         //初始化定位
@@ -170,8 +224,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
         mLocationClient.startLocation();
-        // 自定义系统定位小蓝点
-        MyLocationStyle myLocationStyle = new MyLocationStyle();
     }
 
     @Override
@@ -179,6 +231,22 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
+    }
+
+    /**
+     * 设置一些amap的属性
+     */
+    private void setUpMap() {
+        // 自定义系统定位小蓝点
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+                .fromResource(R.mipmap.image_pet));// 设置小蓝点的图标
+        myLocationStyle.strokeColor(Color.BLUE);// 设置圆形的边框颜色         32
+        myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));// 设置圆形的填充颜色
+        myLocationStyle.strokeWidth(1.0f);// 设置圆形的边框粗细
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.setLocationSource(this);// 设置定位资源。如果不设置此定位资源则定位按钮不可点击。并且实现activate激活定位,停止定位的回调方法
+        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
     }
 
     @Override
@@ -196,6 +264,11 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     }
 
     @Override
+    protected void onDestroyThread() {
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
@@ -205,6 +278,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
     }
 
     //查找sHA1
+    @Nullable
     public static String sHA1(Context context) {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(
@@ -279,9 +353,10 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                             + aMapLocation.getDistrict() + ""
                             + aMapLocation.getStreet() + ""
                             + aMapLocation.getStreetNum());
-                    Log.i("result", "维度" + latitude + "精度" + longitude);
+                    ToastUtil.showToast("精度"+longitude+"维度"+latitude);
                     Toast.makeText(getActivity(), buffer.toString(), Toast.LENGTH_LONG).show();
                     isFirstLoc = false;
+                    getHomePager();//首页地图展示和定位信息。
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -299,7 +374,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu})
+    @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu, R.id.image_shouye_seek})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_gift://礼物
@@ -320,6 +395,257 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
                 intent_fuwu.putExtra("lat", latitude);
                 startActivity(intent_fuwu);
                 break;
+            case R.id.image_shouye_seek://搜索
+                //show();
+                final AlertDialog.Builder customizeDialog =
+                        new AlertDialog.Builder(getActivity(),R.style.my_dialog);
+                View inflate = View.inflate(getActivity(), R.layout.layout_camera_control, null);
+                customizeDialog.setView(inflate);
+                final TextView image_dialog_back = (TextView) inflate.findViewById(R.id.area_textView);
+                ImageView text_dialog_name = (ImageView) inflate.findViewById(R.id.area_img);
+                TextView wage_textView = (TextView) inflate.findViewById(R.id.wage_textView);
+                ImageView wage_img = (ImageView) inflate.findViewById(R.id.wage_img);
+                final LinearLayout area_layout = (LinearLayout) inflate.findViewById(R.id.area_layout);
+                final LinearLayout wage_layout = (LinearLayout) inflate.findViewById(R.id.wage_layout);
+                final AlertDialog alertDialog;
+                alertDialog = customizeDialog.create();
+                Window dialogWindow = dialog.getWindow();
+                dialogWindow.setGravity(Gravity.TOP);
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                lp.y = 20;
+                dialogWindow.setAttributes(lp);
+                alertDialog.show();
+       /* //全部宠物
+        wage_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //附近宠物
+        area_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
+                break;
         }
+    }
+
+    private void show() {
+        final AlertDialog.Builder customizeDialog =
+                new AlertDialog.Builder(getActivity(),R.style.my_dialog);
+        View inflate = View.inflate(getActivity(), R.layout.layout_camera_control, null);
+        customizeDialog.setView(inflate);
+        final TextView image_dialog_back = (TextView) inflate.findViewById(R.id.area_textView);
+        ImageView text_dialog_name = (ImageView) inflate.findViewById(R.id.area_img);
+        TextView wage_textView = (TextView) inflate.findViewById(R.id.wage_textView);
+        ImageView wage_img = (ImageView) inflate.findViewById(R.id.wage_img);
+        final LinearLayout area_layout = (LinearLayout) inflate.findViewById(R.id.area_layout);
+        final LinearLayout wage_layout = (LinearLayout) inflate.findViewById(R.id.wage_layout);
+        final AlertDialog alertDialog;
+        alertDialog = customizeDialog.create();
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setGravity(Gravity.TOP);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 20;
+        dialogWindow.setAttributes(lp);
+        alertDialog.show();
+       /* //全部宠物
+        wage_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //附近宠物
+        area_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
+    }
+
+    @Override
+    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        switch (requestCode) {
+            case 100://首页定位信息展示
+                if (1 == returnCode) {
+                    HomePager homePager = JSON.parseObject(returnData, HomePager.class);
+                    List<HomePager.DataBean> data = homePager.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        String pet_img = data.get(i).getPet_img();
+                        String lon = data.get(i).getLon();
+                        String lat = data.get(i).getLat();
+                        double dlon = Double.parseDouble(lon);
+                        double dlat = Double.parseDouble(lat);
+                        aMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(dlat, dlon))
+                                //.icon()
+                                .draggable(true));
+                    }
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 200://地图定位
+                if (1 == returnCode) {
+                    MapLocation mapLocation = JSON.parseObject(returnData, MapLocation.class);
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 300://宠物分类
+                if (1 == returnCode) {
+                    PetClassification petClassification = JSON.parseObject(returnData, PetClassification.class);
+                    data = petClassification.getData();
+                    // showPupupWindow();
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onCancelResult() {
+
+    }
+
+    @Override
+    public void onErrorResult(int errorCode, IOException errorExcep) {
+
+    }
+
+    @Override
+    public void onParseErrorResult(int errorCode) {
+
+    }
+
+    @Override
+    public void onFinishResult() {
+
+    }
+
+    //获取首页展示信息||地图定位
+    private void getHomePager() {
+        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
+        String mylng = String.valueOf(longitude);
+        String mylat = String.valueOf(latitude);
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
+        params.put("mylng", mylng);
+        params.put("mylat", mylat);
+        okHttpPost(100, GlobalParam.HOMEVIEWPAGER, params);
+        okHttpPost(200, GlobalParam.MAPLOCATION, params);
+    }
+
+    /**
+     * 设置tab的状态
+     *
+     * @param img      // ImageView对象
+     * @param textView // TextView对象
+     * @param state    // 状态
+     */
+    private void setTabState(ImageView img, TextView textView, boolean state) {
+        if (state) {// 选中状态
+            img.setBackgroundResource(R.mipmap.up);
+            textView.setTextColor(getResources().getColor(
+                    R.color.tab_text_pressed_color));
+        } else {
+            img.setBackgroundResource(R.mipmap.down);
+            textView.setTextColor(getResources().getColor(
+                    R.color.tab_text_color));
+        }
+    }
+
+    /**
+     * 初始化 PopupWindow
+     *
+     * @param view
+     */
+    public void initPopuWindow(View view) {
+        /* 第一个参数弹出显示view 后两个是窗口大小 */
+        mPopupWindow = new PopupWindow(view, screen_width, screen_height);
+        /* 设置背景显示 */
+        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.mypop_bg));
+        /* 设置触摸外面时消失 */
+        // mPopupWindow.setOutsideTouchable(true);
+
+        mPopupWindow.update();
+        mPopupWindow.setTouchable(true);
+        /* 设置点击menu以外其他地方以及返回键退出 */
+        mPopupWindow.setFocusable(true);
+
+        /**
+         * 1.解决再次点击MENU键无反应问题 2.sub_view是PopupWindow的子View
+         */
+        view.setFocusableInTouchMode(true);
+    }
+
+    /**
+     * 展示区域选择的对话框
+     */
+    private void showPupupWindow() {
+        if (mPopupWindow == null) {
+            showPupWindow = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.bottom_layout, null);
+            initPopuWindow(showPupWindow);
+            groupListView = (ListView) showPupWindow
+                    .findViewById(R.id.listView_one);
+            childListView = (ListView) showPupWindow
+                    .findViewById(R.id.listView_two);
+            listView_three = (ListView) showPupWindow.findViewById(R.id.listView_thre);
+            groupAdapter = new GroupAdapter(getActivity(), data);
+            groupListView.setAdapter(groupAdapter);
+        }
+        //一级列表
+        groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                petone = data.get(position).getPetone();
+                groupAdapter.setSelectedPosition(position);
+                if (childAdapter == null) {
+                    childAdapter = new ChildAdapter(getActivity(), petone);
+                    childListView.setAdapter(childAdapter);
+                }
+                childAdapter.notifyDataSetChanged();
+                groupAdapter.notifyDataSetChanged();
+            }
+        });
+        //二级列表
+        childListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    final int position, long id) {
+                List<PetClassification.DataBean.PetoneBean.PettwoBean> pettwo = petone.get(position).getPettwo();
+                if (sunadapter == null) {
+                    sunadapter = new SunAdapter(getActivity(), pettwo);
+                    listView_three.setAdapter(sunadapter);
+                }
+                childAdapter.notifyDataSetChanged();
+            }
+        });
+        //三级列表
+        listView_three.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
+        showPupWindow.setAnimation(animation);
+        showPupWindow.startAnimation(animation);
+        mPopupWindow.showAsDropDown(area_layout, -5, 10);
+        mPopupWindow.showAsDropDown(wage_layout, -5, 10);
+    }
+
+    //宠物分类
+    private void getPetClassIfication() {
+        String token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
+        okHttpPost(300, GlobalParam.PETCLASSIFICATION, params);
     }
 }

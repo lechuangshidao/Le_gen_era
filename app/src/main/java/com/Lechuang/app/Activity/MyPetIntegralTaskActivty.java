@@ -114,12 +114,12 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
                     mUpgradeNotifyDialog.dismiss();
                 }
                 break;
-            case R.id.wexin:
+            case R.id.wexin://微信
                 qqLogin();
                 break;
-            case R.id.wexinfriends:
+            case R.id.wexinfriends://微信朋友圈
                 break;
-            case R.id.qqfriends:
+            case R.id.qqfriends://QQ
                 break;
             case 0:
                 startActivity(new Intent(MyPetIntegralTaskActivty.this,MyPetAddActivity.class));
@@ -173,6 +173,7 @@ public class MyPetIntegralTaskActivty extends SimpleTopbarActivity {
     private String APP_ID = "222222";
     private IUiListener loginListener;
     private String SCOPE = "all";
+
     public void qqLogin() {
         initQqLogin();
         mTencent.login(this, SCOPE, loginListener);

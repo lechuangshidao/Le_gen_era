@@ -7,14 +7,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".Activity.Home_Pager">
-    <include
-        layout="@layout/view_simple_topbar"/>
-    <android.support.v4.view.ViewPager
+    <include layout="@layout/view_simple_topbar"></include>
+    <com.Lechuang.app.view.NoScrollViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1" ></com.Lechuang.app.view.NoScrollViewPager>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
