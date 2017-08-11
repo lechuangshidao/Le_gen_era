@@ -397,43 +397,10 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                 startActivity(intent_fuwu);
                 break;
             case R.id.image_shouye_seek://搜索
-                //show();
-                final AlertDialog.Builder customizeDialog =
-                        new AlertDialog.Builder(getActivity(),R.style.my_dialog);
-                View inflate = View.inflate(getActivity(), R.layout.layout_camera_control, null);
-                customizeDialog.setView(inflate);
-                final TextView image_dialog_back = (TextView) inflate.findViewById(R.id.area_textView);
-                ImageView text_dialog_name = (ImageView) inflate.findViewById(R.id.area_img);
-                TextView wage_textView = (TextView) inflate.findViewById(R.id.wage_textView);
-                ImageView wage_img = (ImageView) inflate.findViewById(R.id.wage_img);
-                final LinearLayout area_layout = (LinearLayout) inflate.findViewById(R.id.area_layout);
-                final LinearLayout wage_layout = (LinearLayout) inflate.findViewById(R.id.wage_layout);
-                final AlertDialog alertDialog;
-                alertDialog = customizeDialog.create();
-                Window dialogWindow = dialog.getWindow();
-                dialogWindow.setGravity(Gravity.TOP);
-                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-                lp.y = 20;
-                dialogWindow.setAttributes(lp);
-                alertDialog.show();
-       /* //全部宠物
-        wage_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        //附近宠物
-        area_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
+                show();
                 break;
         }
     }
-
     private void show() {
         final AlertDialog.Builder customizeDialog =
                 new AlertDialog.Builder(getActivity(),R.style.my_dialog);
