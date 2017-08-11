@@ -9,13 +9,18 @@
         android:background="#FFFFFF"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
-        <ImageView
+        android:layout_height="46dp">
+        <LinearLayout
             android:id="@+id/image_news"
-            android:layout_margin="20dp"
-            android:src="@mipmap/image_news"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_width="60dp"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/image_news"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
         <TextView
             android:text="首页"
             android:textColor="#000000"
@@ -25,12 +30,18 @@
             android:layout_width="0dp"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/image_gift"
+        android:layout_width="60dp"
+        android:gravity="center"
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/image_gift"
-            android:layout_margin="20dp"
             android:src="@mipmap/image_gift"
             android:layout_width="20dp"
             android:layout_height="20dp" />
+    </LinearLayout>
+
     </LinearLayout>
 
     <com.amap.api.maps2d.MapView

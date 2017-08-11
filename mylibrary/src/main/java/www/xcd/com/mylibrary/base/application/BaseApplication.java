@@ -18,37 +18,40 @@ import www.xcd.com.mylibrary.utils.AppManager;
  */
 public class BaseApplication extends Application {
     private static BaseApplication mBaseApplication;
-    public static BaseApplication getApp()
-    {
+
+    public static BaseApplication getApp() {
         return mBaseApplication;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
 //        SDKInitializer.initialize(getApplicationContext());
         initView();
-        String versionName = null;
-        try {
-            versionName = getVersionName();
-//            Context appContext = getApplicationContext();
-//            CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(appContext);
-//            strategy.setAppVersion(versionName);
-//            CrashReport.initCrashReport(appContext, "1e75ac81e8", false,strategy);
-//            //初始化第三方jar
-//            YYIMChat.getInstance().init(getApplicationContext());
-//            YYIMChat.getInstance().configLogger(Log.VERBOSE, true, true, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String versionName = null;
+//        try {
+////            versionName = getVersionName();
+////            Context appContext = getApplicationContext();
+////            CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(appContext);
+////            strategy.setAppVersion(versionName);
+////            CrashReport.initCrashReport(appContext, "1e75ac81e8", false,strategy);
+////            //初始化第三方jar
+////            YYIMChat.getInstance().init(getApplicationContext());
+////            YYIMChat.getInstance().configLogger(Log.VERBOSE, true, true, false);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
-    private String getVersionName() throws Exception{
+
+    private String getVersionName() throws Exception {
         // 获取packagemanager的实例  
-        PackageManager packageManager = getPackageManager();  
+        PackageManager packageManager = getPackageManager();
         // getPackageName()是你当前类的包名，0代表是获取版本信息  
-        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(),0);  
-        String version = packInfo.versionName;  
-        return version;  
+        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+        String version = packInfo.versionName;
+        return version;
     }
+
     private void initView() {
         mBaseApplication = this;
     }
@@ -78,6 +81,7 @@ public class BaseApplication extends Application {
                 break;
         }
     }
+
     /**
      * 退出应用程序
      */

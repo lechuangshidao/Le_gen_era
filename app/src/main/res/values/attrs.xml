@@ -11,6 +11,131 @@
         <attr name="textColorCenter" format="color"/>
         <attr name="dividerColor" format="color"/>
     </declare-styleable>
+    <string-array name="function_options">
+        <item>获取Token</item>
+        <item>连接融云服务器</item>
+        <item>发送文本消息</item>
+        <item>发送图片消息</item>
+        <item>发送语音消息</item>
+        <item>发送文件消息</item>
+        <item>发送自定义消息</item>
+        <item>插入消息(只在本地存储,不发送)</item>
+        <item>获取本地未读消息数</item>
+        <item>读取本地存储的历史消息</item>
+        <item>读取远程服务器的消息</item>
+        <item>获取位置共享信息</item>
+        <item>获取会话(Conversation)信息</item>
+        <item>删除会话(Conversation)信息</item>
+        <item>清空消息</item>
+        <item>断开连接, 继续接收Push消息</item>
+        <item>断开连接, 不再接收Push消息</item>
+    </string-array>
+    <declare-styleable name="SwipeListView">
+        <attr name="swipeOpenOnLongPress" format="boolean" />
+        <attr name="swipeAnimationTime" format="integer" />
+        <attr name="swipeOffsetLeft" format="dimension" />
+        <attr name="swipeOffsetRight" format="dimension" />
+        <attr name="swipeCloseAllItemsWhenMoveList" format="boolean" />
+        <attr name="swipeFrontView" format="reference" />
+        <attr name="swipeBackView" format="reference" />
+        <attr name="swipeMode" format="enum">
+            <enum name="none" value="0" />
+            <enum name="both" value="1" />
+            <enum name="right" value="2" />
+            <enum name="left" value="3" />
+        </attr>
+        <attr name="swipeActionLeft" format="enum">
+            <enum name="reveal" value="0" />
+            <enum name="dismiss" value="1" />
+        </attr>
+        <attr name="swipeActionRight" format="enum">
+            <enum name="reveal" value="0" />
+            <enum name="dismiss" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <!-- SlidingLayer -->
+    <declare-styleable name="SlidingLayer">
+        <attr name="shadow_drawable" format="boolean" />
+        <attr name="shadow_width" format="dimension" />
+        <attr name="close_on_tapEnabled" format="boolean" />
+        <attr name="stickTo" format="enum">
+            <enum name="right" value="-1" />
+            <enum name="left" value="-2" />
+            <enum name="middle" value="-3" />
+        </attr>
+    </declare-styleable>
+
+    <!-- Style of the circle indicator. -->
+    <attr name="CirclePageIndicatorStyle" format="reference" />
+    <!-- ViewPager Indicator -->
+    <declare-styleable name="CirclePageIndicator">
+
+        <!-- Whether or not the indicators should be centered. -->
+        <attr name="centered" format="boolean" />
+        <!-- Color of the filled circle that represents the current page. -->
+        <attr name="fillColor" format="color" />
+        <!-- Color of the filled circles that represents pages. -->
+        <attr name="pageColor" format="color" />
+        <!-- Orientation of the indicator. -->
+        <attr name="android:orientation" />
+        <!-- Radius of the circles. This is also the spacing between circles. -->
+        <attr name="radius" format="dimension" />
+        <!-- Whether or not the selected indicator snaps to the circles. -->
+        <attr name="snap" format="boolean" />
+        <!-- Color of the open circles. -->
+        <attr name="strokeColor" format="color" />
+        <!-- Width of the stroke used to draw the circles. -->
+        <attr name="strokeWidth" format="dimension" />
+        <!-- View background -->
+        <attr name="custombackground" format="color" />
+    </declare-styleable>
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="Emojicon">
+        <attr name="isDynamic" format="boolean" />
+    </declare-styleable>
+
+    <!-- Defines the custom XML attributes supported for a HorizontalListView -->
+    <declare-styleable name="HorizontalListView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
+    <declare-styleable name="SolidCircleView">
+        <attr name="solidCirclePadding" format="dimension" />
+        <attr name="solidCircleRadius" format="dimension" />
+        <attr name="solidCircleBoderColor" format="color" />
+        <attr name="solidCircleSolidColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="GifView">
+        <attr name="gif" format="reference" />
+        <attr name="paused" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="CustomTheme">
+        <attr name="gifViewStyle" format="reference" />
+    </declare-styleable>
+
+    <attr name="titleText" format="string" />
+    <attr name="titleTextColor" format="color" />
+    <attr name="titleTextSize" format="dimension" />
+    <declare-styleable name="EmojiFrameLayout">
+        <attr name="titleText" />
+        <attr name="titleTextColor" />
+        <attr name="titleTextSize" />
+    </declare-styleable>
 
     <declare-styleable name="bubble">
         <attr name="shadowColor" format="color" />

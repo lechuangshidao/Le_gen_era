@@ -73,7 +73,7 @@ public class CallPhone_Activity extends SimpleTopbarActivity{
                 startActivity(intent_note);
                 break;
             case R.id.Text_next_log_note://密码登录
-                editPassword.setText("1234");
+                editPassword.setText("123");
                 userlogin = text_callphone.getText().toString().trim();
                 String userpwd = editPassword.getText().toString().trim();
                 if (!TextUtils.isEmpty(userlogin) && !TextUtils.isEmpty(userpwd)) {

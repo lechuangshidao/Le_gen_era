@@ -254,4 +254,5 @@ public class HelpUtils {
         String newString = all.substring(0,postion) + all.substring(postion + length, Length);
         return newString;//返回已经删除好的字符串
     }
+
 }

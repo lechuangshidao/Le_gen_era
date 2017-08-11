@@ -2,4 +2,9 @@
 <resources>
     <!-- 此值为true pickerview_textsize才会有效果-->
     <bool name="pickerview_customTextSize">false</bool>
+
+    <bool name="default_circle_indicator_centered">true</bool>
+    <bool name="default_circle_indicator_snap">false</bool>
+
+    <integer name="default_circle_indicator_orientation">0</integer>
 </resources>

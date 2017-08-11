@@ -17,6 +17,16 @@
     <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
     <color name="bgColor_overlay">#60000000</color>
     <color name="province_line_border">#C7C7C7</color>
+    <!-- emoji -->
+    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
+    <color name="default_circle_indicator_fill_color">#ff298ecb</color>
+    <color name="default_circle_indicator_page_color">#ff777777</color>
+    <color name="emoji_background_tab_pressed">#6633B5E5</color>
+    <color name="emoji_indicator_color">#ecebeb</color>
+    <color name="emoji_indicator_blue_color">#d8d8d8</color>
+    <color name="emoji_divider_color">#88909597</color>
+    <color name="emoji_background_tab">#fbfbfb</color>
+    <color name="emoji_advanced_gray">#d8d8d8</color>
     <color name="popup_main_background">#b0000000</color>
     <color name="black">#000000</color>
     <color name="choose_eara_item_press_color">#f4f4f4</color>

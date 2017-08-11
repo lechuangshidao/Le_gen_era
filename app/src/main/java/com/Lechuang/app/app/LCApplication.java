@@ -9,6 +9,7 @@ import android.util.Log;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yonyou.sns.im.core.YYIMChat;
 
+import io.rong.imkit.RongIM;
 import www.xcd.com.mylibrary.base.application.BaseApplication;
 
 /**
@@ -19,7 +20,15 @@ public class LCApplication extends BaseApplication{
     @Override
     public void onCreate() {
         super.onCreate();
-        MultiDex.install(this);
+        try {
+            /**
+             * 初始化融云
+             */
+            RongIM.init(this);
+            MultiDex.install(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        PlatformConfig.setWeixin("wx967daebe835fbeac","5bb696d9ccd75a38c8a0bfe0675559b3");//微信
 //        PlatformConfig.setSinaWeibo("3921700954","04b48b094faeb16683c32669824ebdad","");//新浪微博
 //        PlatformConfig.setQQZone("100424468","c7394704798a158208a74ab60104f0ba");//

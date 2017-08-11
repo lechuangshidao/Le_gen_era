@@ -86,9 +86,9 @@
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <!--<uses-permission android:name="android.permission.SEND_SMS" />-->
+    <!--<uses-permission android:name="android.permission.RECEIVE_SMS" />-->
+    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
 
     <application
         android:name=".app.LCApplication"

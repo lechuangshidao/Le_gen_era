@@ -3,11 +3,13 @@
     <!--友盟-->
     <string name="umeng_key">596c328099f0c743ab0006a5/</string>
     <!--高的地图key-->
-    <string name="map_key">69997af3c282216afe12ff3ab3e5ac1d</string>100424468
+    <string name="map_key">69997af3c282216afe12ff3ab3e5ac1d</string>
     <!--qq-->
     <string name="qqappid">100424468</string>
     <string name="qqapp_key">c7394704798a158208a74ab60104f0ba</string>
     <!--wexin-->
     <string name="wexinapiid">wx967daebe835fbeac</string>
     <string name="wexinapp_key">5bb696d9ccd75a38c8a0bfe0675559b3</string>
+    <!--融云-->
+    <string name="rongyun_key">d6bCQsXiupB/4OyGkh+TOrI6ZiT8q7s0UEaMPWY0lMxmHdi1v/AAJxOma4aYXyaivfPIJjNHdE+FMH9kV/Jrxg==</string>
 </resources>

@@ -1,5 +1,16 @@
 <resources>
+    <style name="Widget" />
+    <style name="Widget.Message">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
 
+    <style name="Widget.MessageTile">
+        <item name="android:background">@drawable/tile</item>
+        <item name="android:shadowColor">#7F000000</item>
+        <item name="android:shadowDy">-3.5</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 欢迎页背景引用刚才写好的 -->
         <item name="android:windowBackground">@drawable/splash</item>

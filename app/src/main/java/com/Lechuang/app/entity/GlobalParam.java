@@ -4,6 +4,7 @@ package com.Lechuang.app.entity;
  * Created by dell on 2015-11-23.
  */
 public class GlobalParam {
+    public final static boolean dubug = true;
     //绑定头URL   http://69.165.64.194/chongai/index.php?
     public final static String IP = "http://123.206.68.159";
     public final static String URL = IP + "/chongai/index.php?";
