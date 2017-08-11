@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.Lechuang.app.Activity.FuWuActivity;
@@ -67,11 +66,11 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
-public class Fragment_main_shouye extends Fragment implements LocationSource, AMapLocationListener {
-
+public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener {
     @Bind(R.id.image_gift)
     LinearLayout imageGift;
     @Bind(R.id.image_news)
@@ -147,6 +146,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         super.onActivityCreated(savedInstanceState);
         //获取地图控件引用
         mMapView = (MapView) view.findViewById(R.id.map);
+        image_shouye_seek = (ImageView) view.findViewById(R.id.image_shouye_seek);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mMapView.onCreate(savedInstanceState);
         if (mMapView == null) {
@@ -155,8 +155,6 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         //定位
         InitPositioning();
         sHA1(getActivity());
-        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
-        LatLng lng1 = new LatLng(40.103085, 116.294034);
         //绘制marker
         marker = aMap.addMarker(new MarkerOptions()
                 .position(lng1)
@@ -356,7 +354,7 @@ public class Fragment_main_shouye extends Fragment implements LocationSource, AM
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu})
+    @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu, R.id.image_shouye_seek})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_gift://礼物
