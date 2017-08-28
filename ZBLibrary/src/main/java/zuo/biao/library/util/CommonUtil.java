@@ -14,13 +14,6 @@ limitations under the License.*/
 
 package zuo.biao.library.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-import zuo.biao.library.R;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -36,6 +29,14 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import zuo.biao.library.R;
 
 /**通用操作类
  * @author Lemon
@@ -233,7 +234,7 @@ public class CommonUtil {
 	/**展示加载进度条,无标题
 	 * @param dialogMessage
 	 */
-	public void showProgressDialog(Activity context, String dialogMessage){
+	public static void showProgressDialog(Activity context, String dialogMessage){
 		showProgressDialog(context, null, dialogMessage);
 	}
 	/**展示加载进度条

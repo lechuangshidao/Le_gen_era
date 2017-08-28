@@ -96,5 +96,15 @@ public class PetInformation {
         public void setKm(String km) {
             this.km = km;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "petid='" + petid + '\'' +
+                    ", pet_name='" + pet_name + '\'' +
+                    ", pet_img='" + pet_img + '\'' +
+                    ", km='" + km + '\'' +
+                    '}';
+        }
     }
 }

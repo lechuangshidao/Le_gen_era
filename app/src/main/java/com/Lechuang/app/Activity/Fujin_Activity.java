@@ -87,7 +87,7 @@ public class Fujin_Activity extends SimpleTopbarActivity {
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
-            case 100:
+            case 100://附近人展示
                 if (1 == returnCode) {
                     PeopleNearby peopleNearby = JSON.parseObject(returnData, PeopleNearby.class);
                     data = peopleNearby.getData();
@@ -105,12 +105,12 @@ public class Fujin_Activity extends SimpleTopbarActivity {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
-            case 200:
-                if (1 == requestCode) {
+            case 200://附近人搜索
+                if (1 == returnCode) {
                     PetSeek petSeek = JSON.parseObject(returnData, PetSeek.class);
                     pet_data = petSeek.getData();
                     PetSeek_Adapter seekAdapter=new PetSeek_Adapter(this,pet_data);
-                    my_pet_seek.setAdapter(seekAdapter);
+                    myClosestItme.setAdapter(seekAdapter);
                     edit_location.addTextChangedListener(textWatcher);
                 }else{
                     ToastUtil.showToast(returnMsg);
@@ -233,11 +233,7 @@ public class Fujin_Activity extends SimpleTopbarActivity {
         @Override
         public void afterTextChanged(Editable s) {
             if(s.length()==0){
-                myClosestItme.setVisibility(View.VISIBLE);
-                my_pet_seek.setVisibility(View.GONE);
-            }else{
-                my_pet_seek.setVisibility(View.GONE);
-                myClosestItme.setVisibility(View.VISIBLE);
+                myClosestItme.setAdapter(fujin_adapter);
             }
         }
     };

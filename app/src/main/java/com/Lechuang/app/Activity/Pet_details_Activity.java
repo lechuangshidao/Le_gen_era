@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.Lechuang.app.Bean.PetDetails;
 import com.Lechuang.app.R;
+import com.Lechuang.app.Utils.GlideCircleTransform;
 import com.Lechuang.app.entity.GlobalParam;
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
@@ -42,7 +43,7 @@ public class Pet_details_Activity extends SimpleTopbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_details_);
         ButterKnife.bind(this);
-
+        getPetDetails();
     }
 
     @Override
@@ -57,23 +58,23 @@ public class Pet_details_Activity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-            switch (requestCode){
-                case 100:
-                    if(1==returnCode){
-                        PetDetails petDetails = JSON.parseObject(returnData, PetDetails.class);
-                        List<PetDetails.DataBean> data = petDetails.getData();
-                        for (int i = 0; i <data.size(); i++) {
-                            Glide.with(this).load(data.get(i).getPet_img()).into(imagePetDetails);//宠物详情图片
-                            textPetDetailsName.setText(data.get(i).getPet_name());//宠物详情名字
-                            textPetDetailsLabel.setText(data.get(i).getPet_tag());//宠物详情标签
-                            textPetDetailsDate.setText(data.get(i).getPet_age());//宠物详情出生日期
-                            textPetDetailsBloodLineage.setText(data.get(i).getType_name());//宠物详情品种
-                        }
-                    }else{
-                        ToastUtil.showToast(returnMsg);
+        switch (requestCode) {
+            case 100:
+                if (1 == returnCode) {
+                    PetDetails petDetails = JSON.parseObject(returnData, PetDetails.class);
+                    List<PetDetails.DataBean> data = petDetails.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        Glide.with(this).load(GlobalParam.IP + data.get(i).getPet_img()).transform(new GlideCircleTransform(this)).into(imagePetDetails);//宠物详情图片
+                        textPetDetailsName.setText(data.get(i).getPet_name());//宠物详情名字
+                        textPetDetailsLabel.setText(data.get(i).getPet_tag());//宠物详情标签x
+                        textPetDetailsDate.setText(data.get(i).getPet_age());//宠物详情出生日期
+                        textPetDetailsBloodLineage.setText(data.get(i).getType_name());//宠物详情品种
                     }
-                    break;
-            }
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
 
     @Override
@@ -103,12 +104,12 @@ public class Pet_details_Activity extends SimpleTopbarActivity {
 
     //获取宠物详情信息
     private void getPetDetails() {
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         String petid = intent.getStringExtra("petid");
         String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<>();
-        params.put("token",token);
-        params.put("petid",petid);
-        okHttpPost(100, GlobalParam.PETDETAILS,params);
+        params.put("token", token);
+        params.put("petid", petid);
+        okHttpPost(100, GlobalParam.PETDETAILS, params);
     }
 }

@@ -75,5 +75,11 @@ public class GlobalParam {
     //宠物搜索
     public final static String PETSEEK = URL + "s=index/search";
     //展示首页医院信息
-    public final static String HOMEHPAGERHOSPITAL="s=Homepage/Hospital";
+    public final static String HOMEHPAGERHOSPITAL=URL+"s=Homepage/Hospital";
+    //点击marker展示信息
+    public final static String PETINFO=URL+"s=Homepetinfo/Findpet";
+    //搜索框搜索附近宠物
+    public final static String SEEKPET=URL+"s=Homepage/Findtexts";
+    //首页宠物和医院的展示
+    public final static String PETHOSPITALSHOW=URL+"s=Homepage/Message";
 }
