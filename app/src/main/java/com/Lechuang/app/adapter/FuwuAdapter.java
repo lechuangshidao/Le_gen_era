@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.Lechuang.app.Bean.MapHospital;
 import com.Lechuang.app.R;
+import com.Lechuang.app.entity.GlobalParam;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class FuwuAdapter extends BaseAdapter {
         holder.text_item_name.setText(data.get(i).getHosname());//医院名字
         holder.text_item_juli.setText(data.get(i).getMeter());//医院距离
         holder.text_item_time.setText("营业时间："+data.get(i).getBustime()+"米以内");//营业时间
-       // Glide.with(context).load(data.get(i).getHospicture()).into(holder.image_fuwu);//医院图片
+       Glide.with(context).load(GlobalParam.IP+data.get(i).getHospicture()).into(holder.image_fuwu);//医院图片
         return view;
     }
     class ViewHolder {

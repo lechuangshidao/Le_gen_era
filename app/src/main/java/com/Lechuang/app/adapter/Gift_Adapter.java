@@ -16,6 +16,7 @@ import com.Lechuang.app.Bean.ShoppingMall;
 import com.Lechuang.app.R;
 import com.Lechuang.app.entity.GlobalParam;
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,8 +74,8 @@ public class Gift_Adapter extends BaseAdapter {
         }
         holder.text_gift_name.setText(data.get(i).getShopname());
         holder.gift_num.setText(data.get(i).getIntegral());
-        holder.image_jifen_gift.setImageResource(R.mipmap.image_jifen_shop);
-        //Glide.with(context).load(data.get(i).getShopimg()).into(holder.image_jifen_gift);
+       // holder.image_jifen_gift.setImageResource(R.mipmap.image_jifen_shop);
+        Glide.with(context).load(GlobalParam.IP+data.get(i).getShopimg()).into(holder.image_jifen_gift);
         holder.text_duihuan_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

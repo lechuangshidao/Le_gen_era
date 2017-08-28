@@ -1,44 +1,51 @@
 package com.Lechuang.app.Fragment;
 
-
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.Lechuang.app.Activity.FuJin_pet_Activity;
 import com.Lechuang.app.Activity.FuWuActivity;
 import com.Lechuang.app.Activity.Fujin_Activity;
-import com.Lechuang.app.Activity.Gift_Activity;
-import com.Lechuang.app.Bean.HomePager;
 import com.Lechuang.app.Bean.MapLocation;
 import com.Lechuang.app.Bean.PetClassification;
+import com.Lechuang.app.Bean.PetHospital;
+import com.Lechuang.app.Bean.PetInfo;
+import com.Lechuang.app.Bean.PetSeek;
 import com.Lechuang.app.R;
-import com.Lechuang.app.RongCloud.Rong_news;
 import com.Lechuang.app.adapter.ChildAdapter;
 import com.Lechuang.app.adapter.GroupAdapter;
 import com.Lechuang.app.adapter.SunAdapter;
 import com.Lechuang.app.entity.GlobalParam;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_shouye;
+import com.Lechuang.app.func.CommonBackTopBtnFunc_shouye_right;
 import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -48,6 +55,7 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.Projection;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
@@ -56,37 +64,22 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
-public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener {
-    @Bind(R.id.image_gift)
-    ImageView imageGift;
-    @Bind(R.id.image_news)
-    ImageView imageNews;
-    @Bind(R.id.image_shouye_fujin)
-    ImageView imageShouyeFujin;
-    @Bind(R.id.image_shouye_fuwu)
-    ImageView imageShouyeFuwu;
+public class Fragment_main_shouye extends BaseFragment implements LocationSource, AMapLocationListener, View.OnClickListener, AMap.OnMarkerClickListener {
     private View view;
     MapView mMapView = null;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
-    View showPupWindow = null;
-    //初始化地图控制器对象
     AMap aMap;
     boolean isFirstLoc = true;
     OnLocationChangedListener mListener;
@@ -95,102 +88,140 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
     private double longitude;
     private Marker marker;
     private String token;
-    private ImageView image_shouye_seek;
     TranslateAnimation animation;// 出现的动画效果
-    // 屏幕的宽高
-    public static int screen_width = 0;
-    public static int screen_height = 0;
     PopupWindow mPopupWindow = null;
-    private boolean[] tabStateArr = new boolean[2];// 标记tab的选中状态，方便设置
-    private ListView listView_three;
     private SunAdapter sunadapter;
-    private List<PetClassification.DataBean> data;
     private List<PetClassification.DataBean.PetoneBean> petone;
-    private TextView areaText;
-    private ImageView areaImg;
-    private TextView wage_textView;
-    private ImageView wage_img;
     private LinearLayout area_layout;
     private LinearLayout wage_layout;
-    private Dialog dialog;
-    private View inflate;
-    private ListView groupListView;
-    private ListView childListView;
     private GroupAdapter groupAdapter;
     private ChildAdapter childAdapter;
+    private TextView text_communication;
+    private String user_id;
+    private TextView text_pet_name_info;
+    private TextView text_pet_age;
+    private String mylng;
+    private String mylat;
+    private ListView groupListView;
+    private ListView childListView;
+    private ListView listView_three;
+    private View inflate_pop;
+    private List<PetClassification.DataBean.PetoneBean.PettwoBean> pettwo;
+    private TextView text_pet_tag;
+    private PetInfo.DataBean data_info;
+    private LinearLayout linear_per;
+    private LinearLayout linear_hospital;
+    private TextView text_pet_hospiatl_name;
+    private ImageView img_pet_hospiat;
+    private EditText edit_location;
+    private TextView button_cancle;
+    private TextView tv_cancel;
+    private TextView tv_content;
+    /**
+     * Topbar功能列表
+     */
+    private static Class<?> rightFuncArray[] = {CommonBackTopBtnFunc_shouye_right.class};
+    private ImageView image_shouye_seek;
+    private ImageView image_shouye_fujin;
+    private ImageView image_shouye_fuwu;
+    private List<PetHospital.DataBeanXX.PetBean.DataBean> dataPet;
+    private List<PetHospital.DataBeanXX.HospitalBean.DataBeanX> dataHospatil;
+    private List<PetClassification.DataBean> data;
+    private String id;
+    private String lat;
+    private String lon;
+    private String nickname;
+    private String pet_name;
+    private String pet_age;
+    private String pet_tag;
+    private String userlogin;
+    private String userpicture;
+    private String tel;
+    private String h_name;
+    private String lat_hospital;
+    private String lon_hospital;
+    private String h_img;
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_fragment_main_shouye;
     }
 
+    /*
+    * 初始化控件
+    * */
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.activity_fragment_main_shouye, null);
-        }
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
             parent.removeView(view);
         }
-        ButterKnife.bind(this, view);
-        return view;
+        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
+        user_id = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("user_id");
+        mMapView = (MapView) view.findViewById(R.id.map);// 获取mapView实例
+        image_shouye_seek = (ImageView) view.findViewById(R.id.image_shouye_seek);
+        image_shouye_fujin = (ImageView) view.findViewById(R.id.image_shouye_fujin);
+        image_shouye_fuwu = (ImageView) view.findViewById(R.id.image_shouye_fuwu);
+        image_shouye_seek.setOnClickListener(this);
+        image_shouye_fujin.setOnClickListener(this);
+        image_shouye_fuwu.setOnClickListener(this);
     }
 
+    /*
+    * 地图
+    * */
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //获取地图控件引用
-        mMapView = (MapView) view.findViewById(R.id.map);
-        image_shouye_seek = (ImageView) view.findViewById(R.id.image_shouye_seek);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
+
         mMapView.onCreate(savedInstanceState);
         if (mMapView == null) {
             aMap = mMapView.getMap();
         }
-        //定位
-        InitPositioning();
-        sHA1(getActivity());
-        //绘制marker
-        marker = aMap.addMarker(new MarkerOptions()
-                .position(new LatLng(40.103085, 116.294034))
-                .title("服务医院")
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
-                .draggable(true));
-        aMap.addMarker(new MarkerOptions()
-                .position(new LatLng(40.104585, 116.296034))
-                .title("服务医院")
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
-                .draggable(true)
-        );
-        aMap.addMarker(new MarkerOptions()
-                .title("服务医院")
-                .position(new LatLng(40.113085, 116.295034))
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.drawable.image_pet_fujin)))
-                .draggable(true));
-        AMap.OnMarkerClickListener mark = new AMap.OnMarkerClickListener() {
+        InitPositioning();//定位
+        setUpMap();//设置一些amap的属性
+        //点击覆盖物显示气泡
+        aMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
+            /**
+             * 监听自定义infowindow窗口的infocontents事件回调
+             */
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                String id = marker.getId();
-                String title = marker.getTitle();
-                ToastUtil.showToast("这是第" + id + title);
-                return true;
+            public View getInfoWindow(Marker marker) {
+                View infoWindow = getLayoutInflater(savedInstanceState).inflate(R.layout.custom_info_window, null);
+                render(marker, infoWindow);
+                return infoWindow;
             }
-        };
-        aMap.setOnMarkerClickListener(mark);
-        setUpMap();
-        ToastUtil.showToast("123123");
+
+            /**
+             * 监听自定义infowindow窗口的infowindow事件回调
+             */
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
     }
 
+    //标题
+    @Override
+    protected Object getTopbarTitle() {
+        return "首页";
+    }
+
+    //左边功能
+    @Override
+    protected Class<?> getTopbarLeftFunc() {
+        return CommonBackTopBtnFunc_shouye.class;
+    }
+
+    //右边
+    @Override
+    protected Class<?>[] getTopbarRightFuncArray() {
+        return rightFuncArray;
+    }
+
+    //定位
     private void InitPositioning() {
         if (aMap == null) {
             aMap = mMapView.getMap();
@@ -278,32 +309,6 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         }
     }
 
-    //查找sHA1
-    @Nullable
-    public static String sHA1(Context context) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), PackageManager.GET_SIGNATURES);
-            byte[] cert = info.signatures[0].toByteArray();
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            byte[] publicKey = md.digest(cert);
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < publicKey.length; i++) {
-                String appendString = Integer.toHexString(0xFF & publicKey[i])
-                        .toUpperCase(Locale.US);
-                if (appendString.length() == 1)
-                    hexString.append("0");
-                hexString.append(appendString);
-            }
-            return hexString.toString();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
@@ -314,6 +319,9 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         mListener = null;
     }
 
+    /*
+    * 地图定位信息事件
+    * */
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
@@ -354,10 +362,10 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                             + aMapLocation.getDistrict() + ""
                             + aMapLocation.getStreet() + ""
                             + aMapLocation.getStreetNum());
-                    ToastUtil.showToast("精度"+longitude+"维度"+latitude);
+                    Log.i("data", "维度" + latitude + "精度" + longitude);
                     Toast.makeText(getActivity(), buffer.toString(), Toast.LENGTH_LONG).show();
                     isFirstLoc = false;
-                    getHomePager();//首页地图展示和定位信息。
+                    getHomePager();//首页地图展示宠物的信息、医院信息、定位信息。
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -375,17 +383,10 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.image_gift, R.id.image_news, R.id.image_shouye_fujin, R.id.image_shouye_fuwu, R.id.image_shouye_seek})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.image_gift://礼物
-                Intent intent_gift = new Intent(getActivity(), Gift_Activity.class);
-                startActivity(intent_gift);
-                break;
-            case R.id.image_news://消息
-                Intent intent_news = new Intent(getActivity(), Rong_news.class);
-                startActivity(intent_news);
-                break;
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
             case R.id.image_shouye_fujin://附近人
                 Intent intent_fujin = new Intent(getActivity(), Fujin_Activity.class);
                 startActivity(intent_fujin);
@@ -401,26 +402,36 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                 break;
         }
     }
+
+    //点击搜索弹框
     private void show() {
-        final AlertDialog.Builder customizeDialog =
-                new AlertDialog.Builder(getActivity(),R.style.my_dialog);
-        View inflate = View.inflate(getActivity(), R.layout.layout_camera_control, null);
-        customizeDialog.setView(inflate);
+        LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View inflate = factor.inflate(R.layout.layout_camera_control, null);
+        edit_location = (EditText) inflate.findViewById(R.id.edit_location);
         final TextView image_dialog_back = (TextView) inflate.findViewById(R.id.area_textView);
         ImageView text_dialog_name = (ImageView) inflate.findViewById(R.id.area_img);
         TextView wage_textView = (TextView) inflate.findViewById(R.id.wage_textView);
         ImageView wage_img = (ImageView) inflate.findViewById(R.id.wage_img);
-        final LinearLayout area_layout = (LinearLayout) inflate.findViewById(R.id.area_layout);
-        final LinearLayout wage_layout = (LinearLayout) inflate.findViewById(R.id.wage_layout);
-        final AlertDialog alertDialog;
+        area_layout = (LinearLayout) inflate.findViewById(R.id.area_layout);
+        wage_layout = (LinearLayout) inflate.findViewById(R.id.wage_layout);
+        button_cancle = (TextView) inflate.findViewById(R.id.button_cancle);
+        final AlertDialog.Builder customizeDialog = new AlertDialog.Builder(getActivity(), R.style.DialogTheme);
+        AlertDialog alertDialog;
         alertDialog = customizeDialog.create();
-        Window dialogWindow = dialog.getWindow();
-        dialogWindow.setGravity(Gravity.TOP);
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.y = 20;
-        dialogWindow.setAttributes(lp);
         alertDialog.show();
-       /* //全部宠物
+        alertDialog.setContentView(inflate);
+        Window window = alertDialog.getWindow();
+        window.setGravity(Gravity.TOP);
+        window.setWindowAnimations(R.style.dialog_animation);
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
+        // 设置点击外围解散
+        alertDialog.setCanceledOnTouchOutside(true);
+        int[] location = new int[2];
+        //全部宠物
         wage_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -431,9 +442,27 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         area_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showPupupWindow();
             }
-        });*/
+        });
+        //取消按钮
+        button_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edit_location.setText("");
+            }
+        });
+        edit_location.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //这里注意要作判断处理，ActionDown、ActionUp都会回调到这里，不作处理的话就会调用两次
+                if (KeyEvent.KEYCODE_ENTER == keyCode && KeyEvent.ACTION_DOWN == event.getAction()) {
+                    getSeekPet();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -441,17 +470,46 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         switch (requestCode) {
             case 100://首页定位信息展示
                 if (1 == returnCode) {
-                    HomePager homePager = JSON.parseObject(returnData, HomePager.class);
-                    List<HomePager.DataBean> data = homePager.getData();
-                    for (int i = 0; i < data.size(); i++) {
-                        String pet_img = data.get(i).getPet_img();
-                        String lon = data.get(i).getLon();
-                        String lat = data.get(i).getLat();
+                    PetHospital homePager = JSON.parseObject(returnData, PetHospital.class);
+                    dataPet = homePager.getData().getPet().getData();
+                    dataHospatil = homePager.getData().getHospital().getData();
+                    //宠物
+                    for (int i = 0; i < dataPet.size(); i++) {
+                        String pet_img = dataPet.get(i).getPet_img();
+                        id = dataPet.get(i).getId();
+                        lat = dataPet.get(i).getLat();
+                        lon = dataPet.get(i).getLon();
+                        nickname = dataPet.get(i).getNickname();
+                        pet_name = dataPet.get(i).getPet_name();
+                        pet_age = dataPet.get(i).getPet_age();
+                        pet_tag = dataPet.get(i).getPet_tag();
+                        userlogin = dataPet.get(i).getUserlogin();
+                        userpicture = dataPet.get(i).getUserpicture();
                         double dlon = Double.parseDouble(lon);
                         double dlat = Double.parseDouble(lat);
+                        //首页展示宠物
                         aMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(dlat, dlon))
-                                //.icon()
+                                .anchor(0.5f,0.5f)
+                                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                        .decodeResource(getResources(), R.mipmap.image_myclosest)))
+                                .title("附近宠物")
+                                .draggable(true));
+                        aMap.setOnMarkerClickListener(this);
+                    }
+                    //宠物医院
+                    for (int i = 0; i < dataHospatil.size(); i++) {
+                        h_img = (String) dataHospatil.get(i).getH_img();
+                        lat_hospital = dataHospatil.get(i).getLatitude();
+                        lon_hospital = dataHospatil.get(i).getLongitude();
+                        double dlon = Double.parseDouble(lat_hospital);
+                        double dlat = Double.parseDouble(lon_hospital);
+                        //首页展示宠物医院
+                        aMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(dlon, dlat))
+                                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                        .decodeResource(getResources(), R.mipmap.image_pet_hospital)))
+                                .title("服务医院")
                                 .draggable(true));
                     }
                 } else {
@@ -469,9 +527,56 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                 if (1 == returnCode) {
                     PetClassification petClassification = JSON.parseObject(returnData, PetClassification.class);
                     data = petClassification.getData();
-                    // showPupupWindow();
+                    groupAdapter = new GroupAdapter(getActivity(), data);
+                    groupListView.setAdapter(groupAdapter);
+                    //一级列表
+                    groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            petone = data.get(position).getPetone();
+                            groupAdapter.setSelectedPosition(position);
+                            if (childAdapter == null) {
+                                childAdapter = new ChildAdapter(getActivity(), petone);
+                                childListView.setAdapter(childAdapter);
+                            }
+                            childAdapter.notifyDataSetChanged();
+                            groupAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    //二级列表
+                    childListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                final int position, long id) {
+                            pettwo = petone.get(position).getPettwo();
+                            if (sunadapter == null) {
+                                sunadapter = new SunAdapter(getActivity(), pettwo);
+                                listView_three.setAdapter(sunadapter);
+                            }
+                            childAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    //三级列表
+                    listView_three.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String id_pet = pettwo.get(position).getId();
+                            String type_name = pettwo.get(position).getType_name();
+                            Intent intent = new Intent(getActivity(), FuJin_pet_Activity.class);
+                            intent.putExtra("type_name", type_name);
+                            intent.putExtra("id_pet", id_pet);
+                            startActivity(intent);
+                        }
+                    });
                 } else {
                     ToastUtil.showToast(returnMsg);
+
+                }
+                break;
+            case 400:
+                if (1 == returnCode) {
+                    PetSeek petSeek = JSON.parseObject(returnData, PetSeek.class);
+
                 }
                 break;
         }
@@ -479,35 +584,18 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
 
     @Override
     public void onCancelResult() {
-
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
     }
 
     @Override
     public void onFinishResult() {
-
-    }
-
-    //获取首页展示信息||地图定位
-    private void getHomePager() {
-        token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
-        String mylng = String.valueOf(longitude);
-        String mylat = String.valueOf(latitude);
-        Map<String, Object> params = new HashMap<>();
-        params.put("token", token);
-        params.put("mylng", mylng);
-        params.put("mylat", mylat);
-        okHttpPost(100, GlobalParam.HOMEVIEWPAGER, params);
-        okHttpPost(200, GlobalParam.MAPLOCATION, params);
     }
 
     /**
@@ -529,91 +617,178 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
         }
     }
 
-    /**
-     * 初始化 PopupWindow
-     *
-     * @param view
-     */
-    public void initPopuWindow(View view) {
-        /* 第一个参数弹出显示view 后两个是窗口大小 */
-        mPopupWindow = new PopupWindow(view, screen_width, screen_height);
-        /* 设置背景显示 */
-        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.mypop_bg));
-        /* 设置触摸外面时消失 */
-        // mPopupWindow.setOutsideTouchable(true);
-
-        mPopupWindow.update();
-        mPopupWindow.setTouchable(true);
-        /* 设置点击menu以外其他地方以及返回键退出 */
-        mPopupWindow.setFocusable(true);
-
-        /**
-         * 1.解决再次点击MENU键无反应问题 2.sub_view是PopupWindow的子View
-         */
-        view.setFocusableInTouchMode(true);
+    //展示区域选择的对话框
+    private void showPupupWindow() {
+        getPetClassIfication();
+        if (mPopupWindow == null) {
+            inflate_pop = getActivity().getLayoutInflater().inflate(R.layout.bottom_layout, null);
+            groupListView = (ListView) inflate_pop.findViewById(R.id.listView_one);
+            childListView = (ListView) inflate_pop.findViewById(R.id.listView_two);
+            listView_three = (ListView) inflate_pop.findViewById(R.id.listView_thre);
+            // TODO: 2016/5/17 创建PopupWindow对象，指定宽度和高度
+            PopupWindow window = new PopupWindow(inflate_pop, 1000, 1000);
+            // TODO: 2016/5/17 设置背景颜色
+            window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
+            inflate_pop.setAnimation(animation);
+            inflate_pop.startAnimation(animation);
+            // TODO: 2016/5/17 设置可以获取焦点
+            window.setFocusable(true);
+            // TODO: 2016/5/17 设置可以触摸弹出框以外的区域
+            window.setOutsideTouchable(true);
+            // TODO：更新popupwindow的状态
+            window.update();
+            /**
+             * 1.解决再次点击MENU键无反应问题 2.sub_view是PopupWindow的子View
+             */
+            view.setFocusableInTouchMode(true);
+            // TODO: 2016/5/17 以下拉的方式显示，并且可以设置显示的位置
+            window.showAsDropDown(area_layout, -5, 10);
+        }
     }
 
-    /**
-     * 展示区域选择的对话框
-     */
-    private void showPupupWindow() {
-        if (mPopupWindow == null) {
-            showPupWindow = LayoutInflater.from(getActivity()).inflate(
-                    R.layout.bottom_layout, null);
-            initPopuWindow(showPupWindow);
-            groupListView = (ListView) showPupWindow
-                    .findViewById(R.id.listView_one);
-            childListView = (ListView) showPupWindow
-                    .findViewById(R.id.listView_two);
-            listView_three = (ListView) showPupWindow.findViewById(R.id.listView_thre);
-            groupAdapter = new GroupAdapter(getActivity(), data);
-            groupListView.setAdapter(groupAdapter);
+    //自定义infowinfow窗口
+    public void render(Marker marker, View view) {
+        linear_per = (LinearLayout) view.findViewById(R.id.linear_pet);
+        linear_hospital = (LinearLayout) view.findViewById(R.id.linear_hospital);
+        text_pet_tag = (TextView) view.findViewById(R.id.text_pet_tag);
+        text_pet_name_info = (TextView) view.findViewById(R.id.text_pet_name_info);
+        text_pet_age = (TextView) view.findViewById(R.id.text_pet_age);
+        text_communication = (TextView) view.findViewById(R.id.text_communication);
+        text_pet_hospiatl_name = (TextView) view.findViewById(R.id.text_pet_hospiatl_name);
+        img_pet_hospiat = (ImageView) view.findViewById(R.id.img_pet_hospiatl);
+        //宠物信息
+        for (int i = 0; i < dataPet.size(); i++) {
+            text_pet_name_info.setText(dataPet.get(i).getPet_age());//宠物姓名
+            text_pet_age.setText(dataPet.get(i).getPet_age());//宠物年龄
+            text_pet_tag.setText(dataPet.get(i).getPet_tag());//宠物标签
         }
-        //一级列表
-        groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //医院信息
+        for (int i = 0; i < dataHospatil.size(); i++) {
+            text_pet_hospiatl_name.setText(dataHospatil.get(i).getH_name());//医院名称
+            tel = dataHospatil.get(i).getTel();//医院电话
+        }
+        if (marker.getTitle().equals("服务医院")) {
+            linear_hospital.setVisibility(View.VISIBLE);
+            text_communication.setVisibility(View.GONE);
+            linear_per.setVisibility(View.GONE);
+        }
+        if (marker.getTitle().equals("附近宠物")) {
+            text_communication.setVisibility(View.VISIBLE);
+            linear_per.setVisibility(View.VISIBLE);
+            linear_hospital.setVisibility(View.GONE);
+        }
+        //沟通请求
+        text_communication.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                petone = data.get(position).getPetone();
-                groupAdapter.setSelectedPosition(position);
-                if (childAdapter == null) {
-                    childAdapter = new ChildAdapter(getActivity(), petone);
-                    childListView.setAdapter(childAdapter);
-                }
-                childAdapter.notifyDataSetChanged();
-                groupAdapter.notifyDataSetChanged();
+            public void onClick(View v) {
+                ToastUtil.showToast("这个可以点击");
             }
         });
-        //二级列表
-        childListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //服务医院跳转电话
+        img_pet_hospiat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    final int position, long id) {
-                List<PetClassification.DataBean.PetoneBean.PettwoBean> pettwo = petone.get(position).getPettwo();
-                if (sunadapter == null) {
-                    sunadapter = new SunAdapter(getActivity(), pettwo);
-                    listView_three.setAdapter(sunadapter);
-                }
-                childAdapter.notifyDataSetChanged();
+            public void onClick(View v) {
+                showNormalDialog();
+                tv_content.setText("呼叫:" + tel);
             }
         });
-        //三级列表
-        listView_three.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
-        showPupWindow.setAnimation(animation);
-        showPupWindow.startAnimation(animation);
-        mPopupWindow.showAsDropDown(area_layout, -5, 10);
-        mPopupWindow.showAsDropDown(wage_layout, -5, 10);
+    }
+
+    //获取展示首页信息和定位信息
+    private void getHomePager() {
+        mylng = String.valueOf(longitude);
+        mylat = String.valueOf(latitude);
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
+        params.put("mylng", mylng);
+        params.put("mylat", mylat);
+        okHttpPost(100, GlobalParam.PETHOSPITALSHOW, params);
+        okHttpPost(200, GlobalParam.MAPLOCATION, params);
     }
 
     //宠物分类
     private void getPetClassIfication() {
-        String token = XCDSharePreference.getInstantiation(getActivity()).getSharedPreferences("token");
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         okHttpPost(300, GlobalParam.PETCLASSIFICATION, params);
+    }
+
+    //搜索框
+    private void getSeekPet() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
+        params.put("mylat", mylat);
+        params.put("mylng", mylng);
+        params.put("text", edit_location.getText().toString());
+        okHttpPost(400, GlobalParam.SEEKPET, params);
+    }
+
+    private void showNormalDialog() {
+        final AlertDialog.Builder showDialog = new AlertDialog.Builder(getActivity());
+        View inflate = View.inflate(getActivity(), R.layout.dialog_item, null);
+        showDialog.setView(inflate);
+        TextView tv_sure = (TextView) inflate.findViewById(R.id.tv_sure);
+        tv_cancel = (TextView) inflate.findViewById(R.id.tv_cancel);
+        tv_content = (TextView) inflate.findViewById(R.id.tv_content);
+        tv_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tn = new Intent("android.intent.action.DIAL", Uri.parse("tel:" + tel));
+                getActivity().startActivity(tn);
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        showDialog.create().show();
+    }
+
+    /**
+     * marker点击时跳动一下
+     */
+    public void jumpPoint(final Marker marker) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        Projection proj = aMap.getProjection();
+        final LatLng markerLatlng = marker.getPosition();
+        Point markerPoint = proj.toScreenLocation(markerLatlng);
+        markerPoint.offset(0, -100);
+        final LatLng startLatLng = proj.fromScreenLocation(markerPoint);
+        final long duration = 1500;
+
+        final Interpolator interpolator = new BounceInterpolator();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * markerLatlng.longitude + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * markerLatlng.latitude + (1 - t)
+                        * startLatLng.latitude;
+                marker.setPosition(new LatLng(lat, lng));
+                if (t < 1.0) {
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
+
+    @Override//marker点击事件
+    public boolean onMarkerClick(final Marker marker) {
+        if (aMap != null) {
+            jumpPoint(marker);
+        }
+        marker.showInfoWindow();
+        if (marker.getTitle().equals("服务医院")) {
+            ToastUtil.showToast("这是" + marker.getTitle());
+        } else if (marker.getTitle().equals("附近宠物")) {
+            ToastUtil.showToast("这是" +marker.getTitle());
+        }
+        return true;
     }
 }

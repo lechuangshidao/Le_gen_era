@@ -2,8 +2,6 @@ package com.Lechuang.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.Lechuang.app.Bean.PetInformation;
@@ -17,38 +15,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
 
 public class FuJin_pet_Activity extends SimpleTopbarActivity {
 
-    @Bind(R.id.grid_item_pet)
-    GridView gridItemPet;
     private List<PetInformation.DataBean> data;
     private String petid;
+    private String type_name;
+    private GridView gridItemPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fu__jin_pet_);
-        ButterKnife.bind(this);
+        gridItemPet = (GridView) findViewById(R.id.grid_item_pet);
         getPetInformation();//获取宠物信息
-        gridItemPet.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent_details=new Intent(FuJin_pet_Activity.this,Pet_details_Activity.class);
-                startActivity(intent_details);
-            }
-        });
     }
 
     //标题
     @Override
     protected Object getTopbarTitle() {
-        return "哈士奇";
+        return type_name;
     }
 
     //左边功能
@@ -67,16 +56,6 @@ public class FuJin_pet_Activity extends SimpleTopbarActivity {
                     //列表适配器
                     FuJin_pet_Adapter adapter=new FuJin_pet_Adapter(this, data);
                     gridItemPet.setAdapter(adapter);
-                    //点击跳到宠物详情
-                    gridItemPet.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            petid = data.get(position).getPetid();
-                            Intent intent=new Intent(FuJin_pet_Activity.this, Pet_details_Activity.class);
-                            intent.putExtra("petid",petid);
-                            startActivity(intent);
-                        }
-                    });
                 }else{
                     ToastUtil.showToast(returnMsg);
                 }
@@ -105,12 +84,15 @@ public class FuJin_pet_Activity extends SimpleTopbarActivity {
     }
     //获取宠物信息
     private void getPetInformation(){
+        Intent intent = getIntent();
+        String id_pet = intent.getStringExtra("id_pet");
+        type_name = intent.getStringExtra("type_name");
         String token = XCDSharePreference.getInstantiation(this).getSharedPreferences("token");
         Map<String,Object>params=new HashMap<>();
         params.put("token",token);
         params.put("mylat","40.110039");
         params.put("mylng","116.300632");
-        params.put("typeid","11");
+        params.put("typeid",id_pet);
         okHttpPost(100, GlobalParam.PETINFORMATION,params);
     }
 }

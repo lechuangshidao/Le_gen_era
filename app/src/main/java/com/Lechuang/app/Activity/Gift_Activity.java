@@ -88,5 +88,4 @@ public class Gift_Activity extends SimpleTopbarActivity {
         params.put("token",token);
         okHttpPost(100, GlobalParam.SHOPPINGMALL,params);
     }
-
 }
