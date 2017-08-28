@@ -53,9 +53,9 @@ public class PetSeek_Adapter extends BaseAdapter{
         } else {
             holder= (ViewHolder) convertView.getTag();
         }
-        holder.text_pet_name.setText(pet_data.get(position).getPet_name());//附近宠物姓名
-        holder.text_closest_juli.setText(pet_data.get(position).getDistance());//附近宠物距离
-        holder.text_pet_var.setText(pet_data.get(position).getPet_type());//附近宠物品种
+//        holder.text_pet_name.setText(pet_data.get(position).getPet_name());//附近宠物姓名
+//        holder.text_closest_juli.setText(pet_data.get(position).getDistance());//附近宠物距离
+//        holder.text_pet_var.setText(pet_data.get(position).getPet_type());//附近宠物品种
         //Glide.with(context).load(data.get(i).getPet_img()).into(holder.image_myclosest);
         return convertView;
 

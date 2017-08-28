@@ -33,7 +33,6 @@
     <color name="white">#ffffff</color>
     <color name="no_color">#00000000</color>
 
-
     <color name="group_item_bg">#F3F3F3</color>
     <color name="group_item_pressed_bg">#E5E5E5</color>
     <color name="child_item_bg">#E5E5E5</color>
@@ -41,4 +40,21 @@
     <color name="list_item_text_pressed_bg">#FF822E</color>
     <color name="tab_text_color">#787878</color>
     <color name="tab_text_pressed_color">#CD0000</color>
+    <!-- global -->
+    <color name="global_backgroud">#ffededed</color>
+    <color name="global_border">#ffcccbcc</color>
+    <!-- chat -->
+    <color name="chat_item_date">#929292</color>
+    <color name="chat_item_username">#6e7578</color>
+    <color name="chat_item_extrainfo">#00b26d</color>
+    <color name="record_contaner_bg">#88000000</color>
+    <color name="chat_pubaccount_title">#404040</color>
+    <color name="chat_pubaccount_digst">#989898</color>
+    <!-- ListView -->
+    <color name="list_name">#ff000000</color>
+    <color name="list_content">#ff858e99</color>
+    <color name="list_time">#ff929292</color>
+    <color name="list_divider">#eae5e5</color>
+    <color name="contract_module_divide">#c2c0c0</color>
+    <color name="chat_message_count">#8AD2EE</color>
 </resources>

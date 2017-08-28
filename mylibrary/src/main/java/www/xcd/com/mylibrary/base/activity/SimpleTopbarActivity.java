@@ -379,6 +379,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 	public void okHttpPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
 		if (NetUtil.getNetWorking(SimpleTopbarActivity.this) == false) {
 			showToast("请检查网络。。。");
+			dialogDissmiss();
 			return;
 		}
 		OkHttpHelper.getInstance().postAsyncHttp(requestCode, url, paramsMaps,new Handler() {
@@ -413,6 +414,9 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 						String returnData = bundle.getString("returnData");
 						Map<String, Object> paramsMaps = (Map) msg.obj;
 						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						break;
+					default:
+						dialogDissmiss();
 						break;
 				}
 			}
@@ -474,6 +478,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 	public void okHttpImgPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
 		if (NetUtil.getNetWorking(SimpleTopbarActivity.this) == false) {
 			showToast("请检查网络。。。");
+			dialogDissmiss();
 			return;
 		}
 		OkHttpHelper.getInstance().postAsyncPicHttp(requestCode, url, paramsMaps, new Handler() {

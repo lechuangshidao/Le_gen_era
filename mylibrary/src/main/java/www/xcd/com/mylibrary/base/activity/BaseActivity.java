@@ -22,13 +22,18 @@ public abstract class BaseActivity  extends FragmentActivity {
 
     private boolean isActive = true;
     public static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS
+            Manifest.permission.READ_CONTACTS
+            ,Manifest.permission.WRITE_CONTACTS
             ,Manifest.permission.WRITE_EXTERNAL_STORAGE
             ,Manifest.permission.READ_EXTERNAL_STORAGE
             ,Manifest.permission.ACCESS_COARSE_LOCATION
-            ,Manifest.permission.CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION
+            ,Manifest.permission.CAMERA
+            ,Manifest.permission.ACCESS_COARSE_LOCATION
             ,Manifest.permission.RECORD_AUDIO
             ,Manifest.permission.READ_PHONE_STATE
+            ,Manifest.permission.SEND_SMS
+            ,Manifest.permission.RECEIVE_SMS
+            ,Manifest.permission.READ_SMS
 
     };
     @Override

@@ -32,6 +32,8 @@ public class GlobalParam {
     public final static String USERREGISTRATION = URL + "s=userreg/savedata";
     //我的Fragment
     public final static String FRAGMENTWODEINFO = URL + "s=My/Message";
+    //修改图片
+    public final static String UPIMAGE = URL + "s=upload/ImgUpd";
     //我的个人信息
     public final static String MEINFO = URL + "s=Register/userSave";
     //我的宠物信息
@@ -75,7 +77,9 @@ public class GlobalParam {
     //宠物搜索
     public final static String PETSEEK = URL + "s=index/search";
     //展示首页医院信息
-    public final static String HOMEHPAGERHOSPITAL=URL+"s=Homepage/Hospital";
+    public final static String HOMEHPAGERHOSPITAL="s=Homepage/Hospital";
+    //融云Token
+    public final static String RONGYUNKOKEN= URL+"s=Rongyun/GetToken";
     //点击marker展示信息
     public final static String PETINFO=URL+"s=Homepetinfo/Findpet";
     //搜索框搜索附近宠物

@@ -3,6 +3,7 @@ package com.Lechuang.app.Activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.Lechuang.app.base.BaseDataActivity;
+import com.yonyou.sns.im.entity.album.YYPhotoItem;
+import com.yonyou.sns.im.util.common.FileUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +30,9 @@ import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
 import www.xcd.com.mylibrary.utils.YYStorageUtil;
 
+import static www.xcd.com.mylibrary.activity.AlbumPhotoActivity.IS_ORIGANL;
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_DENIED;
+import static www.xcd.com.mylibrary.activity.PermissionsActivity.PERMISSIONS_GRANTED;
 import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_ALBUM;
 import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CAMERA;
 import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP;
@@ -33,19 +41,28 @@ import static www.xcd.com.mylibrary.func.IFuncRequestCode.REQUEST_CODE_HEAD_CROP
  * Created by Android on 2017/6/26.
  */
 
-public class ChatActivity extends BaseDataActivity{
+public class ChatActivity extends BaseDataActivity {
 
     public static final String IMAGE_UNSPECIFIED = "image/*";
-    /** 头像Image */
+    /**
+     * 头像Image
+     */
     public ImageView imageHead;
-    /** 头像修改菜单 */
+    /**
+     * 头像修改菜单
+     */
     public View viewChoice;
-    /** 头像修改dialog */
+    /**
+     * 头像修改dialog
+     */
     public Dialog dlgChoice;
 
-    /** 照片地址 */
+    /**
+     * 照片地址
+     */
     public String photoPath;
     public File photoFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +79,9 @@ public class ChatActivity extends BaseDataActivity{
             closeChoiceDialog();
             // album
             Intent albumIntent = new Intent(ChatActivity.this, AlbumPhotoActivity.class);
-            if (getTpye().equals(AlbumPhotoActivity.TYPE_SINGLE)){
+            if (getTpye().equals(AlbumPhotoActivity.TYPE_SINGLE)) {
                 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, AlbumPhotoActivity.TYPE_SINGLE);
-            }else {
+            } else {
                 albumIntent.putExtra(AlbumPhotoActivity.EXTRA_TYPE, "");
             }
             // start
@@ -75,14 +92,14 @@ public class ChatActivity extends BaseDataActivity{
                 // 关闭对话框
                 closeChoiceDialog();
                 // 生成photoPath
-               photoFile = new File(YYStorageUtil.getImagePath(ChatActivity.this), UUID.randomUUID().toString() + ".jpg");
+                photoFile = new File(YYStorageUtil.getImagePath(ChatActivity.this), UUID.randomUUID().toString() + ".jpg");
                 photoPath = photoFile.getPath();
 
                 //判断是否是AndroidN以及更高的版本
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {//判断是否有相机应用
-                        Log.e("TAG_","照片photoFile="+photoFile+"");
+                        Log.e("TAG_", "照片photoFile=" + photoFile + "");
                         if (photoFile != null) {
                             //FileProvider 是一个特殊的 ContentProvider 的子类，
                             //它使用 content:// Uri 代替了 file:/// Uri. ，更便利而且安全的为另一个app分享文件
@@ -109,6 +126,7 @@ public class ChatActivity extends BaseDataActivity{
 
         }
     }
+
     /**
      * 菜单View
      *
@@ -125,6 +143,7 @@ public class ChatActivity extends BaseDataActivity{
         }
         return viewChoice;
     }
+
     /**
      * 修改头像对话框
      *
@@ -138,6 +157,7 @@ public class ChatActivity extends BaseDataActivity{
         }
         return dlgChoice;
     }
+
     /**
      * 关闭对话框
      */
@@ -147,10 +167,72 @@ public class ChatActivity extends BaseDataActivity{
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("TAG_", "requestCode=" + requestCode + ";resultCode=" + resultCode);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_HEAD_ALBUM:
+                    boolean is_origanl = data.getBooleanExtra(IS_ORIGANL, true);
+                    YYPhotoItem photoItem = null;
+                    if (is_origanl) {
+                        photoItem = (YYPhotoItem) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTO);
+                        if (photoItem != null) {
+                            startCrop(photoItem.getPhotoPath());
+                        }
+                    } else {
+                        final List<File> list = new ArrayList<>();
+                        List<YYPhotoItem> photoList = (List<YYPhotoItem>) data.getSerializableExtra(AlbumPhotoActivity.BUNDLE_RETURN_PHOTOS);
+                        for (YYPhotoItem photo : photoList) {
+                            // 存储图片到图片目录
+                            list.add(new File(photo.getPhotoPath()));
+                        }
+                        uploadImage(list);
+                    }
+
+                    break;
+                case REQUEST_CODE_HEAD_CAMERA:
+                    startCrop(photoPath);
+                    break;
+                case REQUEST_CODE_HEAD_CROP:
+                    try {
+                        Bundle extras = data.getExtras();
+                        if (extras != null) {
+                            Bitmap cropPhoto = extras.getParcelable("data");
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            // (0 - 100)压缩文件
+                            cropPhoto.compress(Bitmap.CompressFormat.JPEG, 75, stream);
+
+                            File cropFile = new File(YYStorageUtil.getImagePath(ChatActivity.this), UUID.randomUUID().toString() + ".jpg");
+                            final List<File> list = new ArrayList<>();
+                            list.add(cropFile);
+                            FileUtils.compressBmpToFile(cropPhoto, cropFile);
+                            uploadImage(list);
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+            if (requestCode == PERMISSIONS_GRANTED && resultCode == PERMISSIONS_DENIED) {
+                finish();
+            } else {
+                getChoiceDialog().show();
+            }
+        }
+    }
+
     public void uploadImage(final List<File> list) {
         // 调用上传
 
     }
+
     /**
      * AlbumPhotoActivity.TYPE_SINGLE为单选
      * ""多选

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.Lechuang.app.Bean.PetMessageInfo;
 import com.Lechuang.app.R;
+import com.Lechuang.app.Utils.GlideCircleTransform;
+import com.Lechuang.app.entity.GlobalParam;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -76,9 +78,10 @@ public class PetMessageAdapter extends BaseAdapter {
         hodler.pet_label.setText("宠物标签："+((label==null)?("未知"+position):label));
         String imgurl = result.getPet_img();
         Glide.with(context.getApplicationContext())
-                .load(imgurl)
+                .load(GlobalParam.IP+imgurl)
                 .centerCrop()
                 .crossFade()
+                .transform(new GlideCircleTransform(context))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.pethead)
                 .error(R.mipmap.pethead)

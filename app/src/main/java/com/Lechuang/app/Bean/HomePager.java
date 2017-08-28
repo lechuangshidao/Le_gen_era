@@ -57,6 +57,7 @@ public class HomePager {
         private String lon;
         private String lat;
 
+
         public String getId() {
             return id;
         }

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    tools:context=".Activity.Have_pet_Activity">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include layout="@layout/view_simple_topbar"></include>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:layout_marginTop="14dp"
+            android:text="返回"
+            android:textColor="#FFBD11"
+            android:textSize="16sp" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/image_add_gerentouxiang"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/image_wu_gerentouxiang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text_add_pet_name"
+        android:text="宠物头像"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/linear_callphone_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_add_gerentouxiang"
+        android:orientation="horizontal"
+        android:paddingLeft="20sp">
+
+        <TextView
+            android:id="@+id/text_pet_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宠物名称"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_pet_name_add"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="例如：骨头"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+    <View
+        android:background="#E6E6E6"
+        android:layout_marginLeft="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <LinearLayout
+        android:id="@+id/linear_callphone_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_add_gerentouxiang"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:id="@+id/text_pet_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宠物年龄"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_pet_age_add"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="一周"
+            android:textSize="20sp" />
+        <ImageView
+            android:src="@mipmap/pet_next"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="#E6E6E6"
+        android:layout_marginLeft="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <TextView
+        android:text="萌宠标签:"
+        android:layout_margin="20dp"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_gong"
+            android:text="公"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_mu"
+            android:text="母"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_xiaoxing"
+            android:text="小型"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_muxing"
+            android:text="中型"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_daxing"
+            android:text="大型"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_faqing"
+            android:text="发情型"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_weifaqing"
+            android:text="未发情"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_jueyu"
+            android:text="绝育"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/text_add_pet_wancheng"
+        android:layout_marginTop="20dp"
+        android:text="完成"
+        android:gravity="center"
+        android:background="@drawable/shape_circle_orange_5"
+        android:layout_width="320dp"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20"
+        android:layout_height="45dp" />
+</LinearLayout>

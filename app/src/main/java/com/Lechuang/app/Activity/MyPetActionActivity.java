@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Lechuang.app.Bean.PetMessageInfo;
+import com.Lechuang.app.Bean.UpImageBean;
 import com.Lechuang.app.R;
+import com.Lechuang.app.Utils.GlideCircleTransform;
 import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.view.SelectPopupWindow;
 import com.alibaba.fastjson.JSON;
@@ -48,7 +50,6 @@ public class MyPetActionActivity extends ChatActivity implements TextWatcher {
     private List<PetMessageInfo.PetMessageData> data;
     private String pet_id;
     private LinearLayout action_petlinear;
-
     @Override
     protected Object getTopbarTitle() {
         return R.string.startaction;
@@ -90,7 +91,9 @@ public class MyPetActionActivity extends ChatActivity implements TextWatcher {
         params.put("token", token);
         okHttpPost(101, GlobalParam.MYPETINFO, params);
     }
+
     private SelectPopupWindow mPopupWindow = null;
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -99,11 +102,11 @@ public class MyPetActionActivity extends ChatActivity implements TextWatcher {
                 PermissionsActivity.startActivityForResult(this, PERMISSIONS_GRANTED, PERMISSIONS);
                 break;
             case R.id.action_pet:
-                if (data==null&&data.size()==0){
+                if (data == null && data.size() == 0) {
                     ToastUtil.showToast("暂未获取到宠物信息");
                 }
-                if(mPopupWindow == null){
-                    mPopupWindow = new SelectPopupWindow((List<PetMessageInfo.PetMessageData>)data,this,selectCategory);
+                if (mPopupWindow == null) {
+                    mPopupWindow = new SelectPopupWindow((List<PetMessageInfo.PetMessageData>) data, this, selectCategory);
                 }
                 mPopupWindow.showAsDropDown(action_pet, -5, 10);
 //                showCreateMultiChatActionBar(action_petarrows);
@@ -144,37 +147,48 @@ public class MyPetActionActivity extends ChatActivity implements TextWatcher {
         // 调用上传
         for (File imagepath : list) {
             picurl = imagepath.toString();
-            Glide.with(this)
-                    .load(imagepath)
-                    .centerCrop()
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.mipmap.pethead)
-                    .error(R.mipmap.pethead)
-                    .into(action_image);
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("file", imagepath);
+            params.put("type", "user");
+            params.put("user_id", user_id);
+            okHttpImgPost(102, GlobalParam.UPIMAGE, params);
         }
     }
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        switch (requestCode) {
-            case 100:
-                if (returnCode == 1) {
+        if (returnCode == 1) {
+            switch (requestCode) {
+                case 100:
                     this.setResult(Activity.RESULT_OK);
                     finish();
-                }
-                ToastUtil.showToast(returnMsg);
+                    break;
+                case 101:
 
-                break;
-
-            case 101:
-                if (returnCode == 1) {
                     PetMessageInfo info = JSON.parseObject(returnData, PetMessageInfo.class);
                     data = info.getData();
 
-                }
-                break;
+                    break;
+                case 102:
+                    UpImageBean imageBean = zuo.biao.library.util.JSON.parseObject(returnData,UpImageBean.class);
+                    picurl = imageBean.getData().getPicurl();
+                    Glide.with(this)
+                            .load(GlobalParam.IP+picurl)
+                            .centerCrop()
+                            .crossFade()
+                            .transform(new GlideCircleTransform(this))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.mipmap.photoadd)
+                            .error(R.mipmap.photoadd)
+                            .into(action_image);
+                    break;
+
+            }
+
+        }else {
+            ToastUtil.showToast(returnMsg);
         }
+
     }
 
     @Override
@@ -214,11 +228,10 @@ public class MyPetActionActivity extends ChatActivity implements TextWatcher {
     }
 
 
-
     /**
      * 选择完成回调接口
      */
-    private SelectPopupWindow.SelectCategory selectCategory=new SelectPopupWindow.SelectCategory() {
+    private SelectPopupWindow.SelectCategory selectCategory = new SelectPopupWindow.SelectCategory() {
 
         @Override
         public void selectCategory(int parentSelectposition) {

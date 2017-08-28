@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Android on 2017/7/28.
  */
 
-public class FragmentMeInfo implements Serializable {
+public class RongYunUserInfo implements Serializable {
 
     private String message;
     private String state;

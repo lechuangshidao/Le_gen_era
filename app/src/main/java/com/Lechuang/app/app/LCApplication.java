@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.Lechuang.app.receive.RongReceiveMessageListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yonyou.sns.im.core.YYIMChat;
 
@@ -16,7 +17,8 @@ import www.xcd.com.mylibrary.base.application.BaseApplication;
  * Created by Android on 2017/7/17.
  */
 
-public class LCApplication extends BaseApplication{
+public class LCApplication extends BaseApplication {
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,6 +28,7 @@ public class LCApplication extends BaseApplication{
              */
             RongIM.init(this);
             MultiDex.install(this);
+            RongIM.setOnReceiveMessageListener(new RongReceiveMessageListener());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,4 +62,5 @@ public class LCApplication extends BaseApplication{
         String version = packInfo.versionName;
         return version;
     }
+
 }

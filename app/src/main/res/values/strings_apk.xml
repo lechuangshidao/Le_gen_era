@@ -10,6 +10,4 @@
     <!--wexin-->
     <string name="wexinapiid">wx967daebe835fbeac</string>
     <string name="wexinapp_key">5bb696d9ccd75a38c8a0bfe0675559b3</string>
-    <!--融云-->
-    <string name="rongyun_key">d6bCQsXiupB/4OyGkh+TOrI6ZiT8q7s0UEaMPWY0lMxmHdi1v/AAJxOma4aYXyaivfPIJjNHdE+FMH9kV/Jrxg==</string>
 </resources>

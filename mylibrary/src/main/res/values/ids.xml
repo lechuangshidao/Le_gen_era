@@ -32,4 +32,7 @@
     <item name="album_photo_left" type="id"/>
     <item name="topbar_camera_edit_confirm" type="id"/>
     <item name="topbar_camera_edit_cancel" type="id"/>
+
+    <item name="topbar_left_shouye" type="id"></item>
+    <item name="topbar_right_shouye" type="id"></item>
 </resources>

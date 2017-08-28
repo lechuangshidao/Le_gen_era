@@ -3,6 +3,7 @@ package com.Lechuang.app.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.Lechuang.app.Activity.MyPetIntegralTaskActivty;
 import com.Lechuang.app.Activity.MyPetLocationManageActivity;
 import com.Lechuang.app.Bean.FragmentMeInfo;
 import com.Lechuang.app.R;
+import com.Lechuang.app.Utils.GlideCircleTransform;
 import com.Lechuang.app.adapter.MeGridViewAdapter;
 import com.Lechuang.app.entity.GlobalParam;
 import com.Lechuang.app.func.MyPetSettingTopBtnFunc;
@@ -49,6 +51,11 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
         return accountrightFuncArray;
+    }
+
+    @Override
+    protected void onDestroyThread() {
+
     }
 
     @Override
@@ -89,10 +96,6 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
         okHttpPost(100, GlobalParam.FRAGMENTWODEINFO, params);
     }
 
-    @Override
-    protected void onDestroyThread() {
-//        handler.removeCallbacksAndMessages(null);
-    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -142,12 +145,13 @@ public class Fragment_main_wode extends BaseFragment implements AdapterView.OnIt
                     text_guanzhu_num.setText(myguanzhu==null?"未知":myguanzhu);
                     sex = data.getSex();
                     userbirthday = data.getUserbirthday();
-                    String userpicture = data.getUserpicture();
-                    image_head = GlobalParam.URL+userpicture;
+                    image_head = data.getUserpicture();
+                    Log.e("TAG_","userpicture="+image_head);
                     Glide.with(getActivity())
-                            .load(image_head)
+                            .load(GlobalParam.IP+image_head)
                             .centerCrop()
                             .crossFade()
+                            .transform(new GlideCircleTransform(getActivity()))
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .placeholder(R.mipmap.image_wode_geren)
                             .error(R.mipmap.image_wode_geren)

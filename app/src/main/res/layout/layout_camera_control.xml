@@ -3,27 +3,29 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-     >
+    >
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/edit_location"
             android:textSize="13sp"
             android:hint="搜索"
             android:background="@drawable/location_shape"
-            android:paddingLeft="10dp"
+            android:paddingLeft="20dp"
             android:drawablePadding="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="#F3F3F3"
+            android:layout_marginLeft="15dp"
+            android:textColor="#b3adad"
             android:drawableLeft="@mipmap/image_fujin_location"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="300dp"
+            android:layout_height="30dp" />
         <TextView
             android:id="@+id/button_cancle"
             android:text="取消"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black_33"
             android:textSize="15sp"

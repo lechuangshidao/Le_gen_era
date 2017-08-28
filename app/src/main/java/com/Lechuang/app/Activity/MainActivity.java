@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
-public class MainActivity extends SimpleTopbarActivity {
+public class MainActivity extends SimpleTopbarActivity{
 
     private static Class<?> rightFuncArray1[] = {CommonBackTopBtnFunc_right.class};
     @Bind(R.id.edit_callphone_main)
@@ -51,7 +51,7 @@ public class MainActivity extends SimpleTopbarActivity {
                 login(SHARE_MEDIA.WEIXIN);
                 break;
             case R.id.text_next:
-                editCallphoneMain.setText("15010487565");
+                editCallphoneMain.setText("15727393984");
                 String userphone = editCallphoneMain.getText().toString().trim();
                 if (TextUtils.isEmpty(userphone)) {
                     Toast.makeText(MainActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();

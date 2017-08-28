@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/linear_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/text_pet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="宠物姓名：" />
+
+            <TextView
+                android:id="@+id/text_pet_name_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_pet_name"
+                android:text="狗蛋" />
+
+            <TextView
+                android:id="@+id/text_pet_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/text_pet_name_info"
+                android:text="1岁" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/text_pet_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="宠物标签：" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_pet_tag"
+                android:text="发情期#公" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_communication"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/linear_pet"
+        android:background="#FFBC01"
+        android:gravity="center"
+        android:text="沟通请求"
+        android:textColor="#FFF"
+        android:visibility="visible" />
+
+</RelativeLayout>
+

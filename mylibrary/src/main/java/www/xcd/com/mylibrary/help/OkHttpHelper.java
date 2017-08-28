@@ -245,11 +245,12 @@ public class OkHttpHelper {
                     MultipartBody.Builder multiBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     for (String key : paramsMaps.keySet()) {
                         String value = paramsMaps.get(key).toString();
-                        if (key.equals("pet_img")) {
+                        if (key.equals("file")) {
                             multiBuilder.addFormDataPart(key, "head.png", RequestBody.create(MEDIA_TYPE_PNG, new File(value)));
                         } else {
                             multiBuilder.addFormDataPart(key, value);
                         }
+                        Log.e("TAG_","KEY="+ key+";value="+value);
                     }
                     builder.post(multiBuilder.build());
                 }
@@ -258,6 +259,7 @@ public class OkHttpHelper {
                 postCall.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException error) {
+                        Log.e("TAG_","error="+error);
                         Message message = new Message();
                         message.what = HttpConfig.REQUESTERROR;
                         message.obj = error;

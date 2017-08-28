@@ -114,7 +114,7 @@ public class Recommend_YanZhengMa_Activity extends SimpleTopbarActivity {
     private void getVerificationCode(){
         Map<String,Object>params=new HashMap<>();
         params.put("phone",callphone);
-        params.put("code","123456");
+        params.put("code",editPasswordNote.getText().toString().trim());
         okHttpPost(100, GlobalParam.VERIFICATIONCODE,params);
     }
 }

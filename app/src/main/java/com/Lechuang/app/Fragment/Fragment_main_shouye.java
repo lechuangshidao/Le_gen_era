@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.Lechuang.app.Activity.FuJin_pet_Activity;
 import com.Lechuang.app.Activity.FuWuActivity;
 import com.Lechuang.app.Activity.Fujin_Activity;
@@ -71,6 +72,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import io.rong.imkit.RongIM;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 import www.xcd.com.mylibrary.utils.XCDSharePreference;
@@ -188,8 +190,9 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
              */
             @Override
             public View getInfoWindow(Marker marker) {
-                View infoWindow = getLayoutInflater(savedInstanceState).inflate(R.layout.custom_info_window, null);
-                render(marker, infoWindow);
+                String title = marker.getTitle();
+                int position = (int) marker.getObject();
+                View infoWindow = render(title, position);
                 return infoWindow;
             }
 
@@ -201,6 +204,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                 return null;
             }
         });
+
     }
 
     //标题
@@ -488,7 +492,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                         double dlon = Double.parseDouble(lon);
                         double dlat = Double.parseDouble(lat);
                         //首页展示宠物
-                        aMap.addMarker(new MarkerOptions()
+                        Marker marker = aMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(dlat, dlon))
                                 .anchor(0.5f,0.5f)
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
@@ -496,6 +500,7 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                                 .title("附近宠物")
                                 .draggable(true));
                         aMap.setOnMarkerClickListener(this);
+                        marker.setObject(i);
                     }
                     //宠物医院
                     for (int i = 0; i < dataHospatil.size(); i++) {
@@ -505,12 +510,13 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
                         double dlon = Double.parseDouble(lat_hospital);
                         double dlat = Double.parseDouble(lon_hospital);
                         //首页展示宠物医院
-                        aMap.addMarker(new MarkerOptions()
+                        Marker marker = aMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(dlon, dlat))
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                         .decodeResource(getResources(), R.mipmap.image_pet_hospital)))
                                 .title("服务医院")
                                 .draggable(true));
+                        marker.setObject(i);
                     }
                 } else {
                     ToastUtil.showToast(returnMsg);
@@ -645,53 +651,55 @@ public class Fragment_main_shouye extends BaseFragment implements LocationSource
             window.showAsDropDown(area_layout, -5, 10);
         }
     }
-
+    private String bubble_id;
+    private String bubble_nuckname;
     //自定义infowinfow窗口
-    public void render(Marker marker, View view) {
-        linear_per = (LinearLayout) view.findViewById(R.id.linear_pet);
-        linear_hospital = (LinearLayout) view.findViewById(R.id.linear_hospital);
-        text_pet_tag = (TextView) view.findViewById(R.id.text_pet_tag);
-        text_pet_name_info = (TextView) view.findViewById(R.id.text_pet_name_info);
-        text_pet_age = (TextView) view.findViewById(R.id.text_pet_age);
-        text_communication = (TextView) view.findViewById(R.id.text_communication);
-        text_pet_hospiatl_name = (TextView) view.findViewById(R.id.text_pet_hospiatl_name);
-        img_pet_hospiat = (ImageView) view.findViewById(R.id.img_pet_hospiatl);
-        //宠物信息
-        for (int i = 0; i < dataPet.size(); i++) {
-            text_pet_name_info.setText(dataPet.get(i).getPet_age());//宠物姓名
-            text_pet_age.setText(dataPet.get(i).getPet_age());//宠物年龄
-            text_pet_tag.setText(dataPet.get(i).getPet_tag());//宠物标签
+    public View render( String title,int position) {
+        Log.e("TAG_","title="+title+";position="+position);
+        View infoWindow = null;
+        if ("附近宠物".equals(title)){
+            infoWindow = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window, null);
+            linear_per = (LinearLayout) infoWindow.findViewById(R.id.linear_pet);
+            text_pet_tag = (TextView) infoWindow.findViewById(R.id.text_pet_tag);
+            text_pet_name_info = (TextView) infoWindow.findViewById(R.id.text_pet_name_info);
+            text_pet_age = (TextView) infoWindow.findViewById(R.id.text_pet_age);
+            text_communication = (TextView) infoWindow.findViewById(R.id.text_communication);
+            PetHospital.DataBeanXX.PetBean.DataBean dataBean = dataPet.get(position);
+            text_pet_name_info.setText(dataBean.getPet_age());//宠物姓名
+            text_pet_age.setText(dataBean.getPet_age());//宠物年龄
+            text_pet_tag.setText(dataBean.getPet_tag());//宠物标签
+            bubble_nuckname = dataBean.getNickname();
+            bubble_id = dataBean.getId();
+            //沟通请求
+            text_communication.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtil.showToast("这个可以点击");
+                    if (RongIM.getInstance() != null) {
+
+                        RongIM.getInstance().startPrivateChat(getActivity(), bubble_id,bubble_nuckname);
+
+                    }
+                }
+            });
+        }else if ("服务医院".equals(title)){
+            infoWindow = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window_hospiatl, null);
+            text_pet_hospiatl_name = (TextView) infoWindow.findViewById(R.id.text_pet_hospiatl_name);
+            img_pet_hospiat = (ImageView) infoWindow.findViewById(R.id.img_pet_hospiatl);
+            PetHospital.DataBeanXX.HospitalBean.DataBeanX dataBeanX = dataHospatil.get(position);
+            text_pet_hospiatl_name.setText(dataBeanX.getH_name());//医院名称
+            tel =dataBeanX.getTel();//医院电话
+            //服务医院跳转电话
+            img_pet_hospiat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showNormalDialog();
+                    tv_content.setText("呼叫:" + tel);
+                }
+            });
         }
-        //医院信息
-        for (int i = 0; i < dataHospatil.size(); i++) {
-            text_pet_hospiatl_name.setText(dataHospatil.get(i).getH_name());//医院名称
-            tel = dataHospatil.get(i).getTel();//医院电话
-        }
-        if (marker.getTitle().equals("服务医院")) {
-            linear_hospital.setVisibility(View.VISIBLE);
-            text_communication.setVisibility(View.GONE);
-            linear_per.setVisibility(View.GONE);
-        }
-        if (marker.getTitle().equals("附近宠物")) {
-            text_communication.setVisibility(View.VISIBLE);
-            linear_per.setVisibility(View.VISIBLE);
-            linear_hospital.setVisibility(View.GONE);
-        }
-        //沟通请求
-        text_communication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.showToast("这个可以点击");
-            }
-        });
-        //服务医院跳转电话
-        img_pet_hospiat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNormalDialog();
-                tv_content.setText("呼叫:" + tel);
-            }
-        });
+
+        return infoWindow;
     }
 
     //获取展示首页信息和定位信息

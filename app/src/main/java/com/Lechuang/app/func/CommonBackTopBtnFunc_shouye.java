@@ -1,11 +1,13 @@
 package com.Lechuang.app.func;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
 
-import com.Lechuang.app.RongCloud.Rong_news;
+import java.util.HashMap;
+import java.util.Map;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.func.BaseTopImageBtnFunc;
 
@@ -27,8 +29,10 @@ public class CommonBackTopBtnFunc_shouye extends BaseTopImageBtnFunc {
 
 	@Override
 	public void onclick(View v) {
-		Intent intent_news = new Intent(getActivity(), Rong_news.class);
-		getActivity().startActivity(intent_news);
+		Map<String, Boolean> map = new HashMap<>();
+//		Log.e("TAG_", "name=" + Conversation.ConversationType.PRIVATE.getName());
+		map.put(Conversation.ConversationType.PRIVATE.getName(), false); // 会话列表需要显示私聊会话, 第二个参数 true 代表私聊会话需要聚合显示
+		RongIM.getInstance().startConversationList(getActivity(), map);
 	}
 
 }
